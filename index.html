@@ -1,0 +1,616 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>7天英语小复习</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #fff7fb;
+      --card: rgba(255, 255, 255, 0.82);
+      --text: #332534;
+      --muted: #876f84;
+      --pink: #ff6fae;
+      --pink-dark: #e54f95;
+      --rose: #fff0f7;
+      --violet: #8c6ff7;
+      --green: #27b481;
+      --shadow: 0 20px 55px rgba(176, 83, 132, 0.22);
+      --radius: 28px;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      min-height: 100vh;
+      margin: 0;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 12% 8%, #ffe1ef 0 18%, transparent 33%),
+        radial-gradient(circle at 90% 6%, #ece5ff 0 16%, transparent 34%),
+        linear-gradient(155deg, #fff8fb 0%, #fff1f7 48%, #f7f1ff 100%);
+      display: flex;
+      justify-content: center;
+      padding: 18px;
+    }
+
+    button {
+      border: 0;
+      font: inherit;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .phone {
+      width: min(430px, 100%);
+      min-height: calc(100vh - 36px);
+      border-radius: 34px;
+      background: rgba(255, 255, 255, 0.58);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.78);
+      backdrop-filter: blur(18px);
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      padding: 22px 22px 14px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.9), rgba(255,255,255,0.35));
+    }
+
+    .kicker {
+      color: var(--pink-dark);
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      font-size: 29px;
+      line-height: 1.15;
+      margin: 8px 0 12px;
+    }
+
+    .sub {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.55;
+      font-size: 15px;
+    }
+
+    main {
+      flex: 1;
+      padding: 0 16px 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid rgba(255, 255, 255, 0.88);
+      border-radius: var(--radius);
+      padding: 18px;
+      box-shadow: 0 12px 30px rgba(124, 80, 108, 0.12);
+    }
+
+    .progress-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+
+    .pill {
+      color: var(--pink-dark);
+      background: #ffe4f0;
+      border-radius: 99px;
+      padding: 7px 11px;
+      font-size: 13px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .bar {
+      height: 10px;
+      border-radius: 99px;
+      background: #f1dce9;
+      overflow: hidden;
+    }
+
+    .bar span {
+      display: block;
+      width: 0%;
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, var(--pink), var(--violet));
+      transition: width 0.35s ease;
+    }
+
+    .days {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 7px;
+      margin-top: 14px;
+    }
+
+    .day-dot {
+      min-height: 42px;
+      border-radius: 16px;
+      color: var(--muted);
+      background: rgba(255, 255, 255, 0.72);
+      display: grid;
+      place-items: center;
+      font-weight: 800;
+      border: 1px solid #f6d7e7;
+    }
+
+    .day-dot.done {
+      color: #fff;
+      background: linear-gradient(135deg, var(--pink), var(--violet));
+      border-color: transparent;
+    }
+
+    .day-dot.current {
+      outline: 3px solid rgba(255, 111, 174, 0.2);
+      color: var(--pink-dark);
+    }
+
+    .chat {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .bubble {
+      max-width: 88%;
+      padding: 12px 14px;
+      border-radius: 20px;
+      line-height: 1.55;
+      font-size: 15px;
+      animation: floatIn 0.25s ease both;
+      white-space: pre-line;
+    }
+
+    .bubble.me {
+      align-self: flex-end;
+      color: #fff;
+      background: linear-gradient(135deg, var(--pink), var(--violet));
+      border-bottom-right-radius: 8px;
+    }
+
+    .bubble.her {
+      align-self: flex-start;
+      background: #fff;
+      border: 1px solid #f5d9e7;
+      border-bottom-left-radius: 8px;
+    }
+
+    @keyframes floatIn {
+      from {
+        transform: translateY(8px);
+        opacity: 0;
+      }
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    .lesson-title {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      align-items: flex-start;
+      margin-bottom: 12px;
+    }
+
+    .lesson-title h2 {
+      margin: 0;
+      font-size: 22px;
+    }
+
+    .question {
+      margin: 10px 0 12px;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .options {
+      display: grid;
+      gap: 10px;
+    }
+
+    .option {
+      width: 100%;
+      text-align: left;
+      padding: 14px;
+      border-radius: 18px;
+      background: #fff;
+      color: var(--text);
+      border: 1px solid #f2d5e4;
+      box-shadow: 0 8px 18px rgba(139, 86, 118, 0.08);
+    }
+
+    .option.correct {
+      border-color: rgba(39, 180, 129, 0.55);
+      background: #effcf7;
+    }
+
+    .option.wrong {
+      border-color: rgba(255, 111, 111, 0.5);
+      background: #fff1f1;
+    }
+
+    .feedback {
+      display: none;
+      margin-top: 14px;
+      padding: 14px;
+      border-radius: 20px;
+      background: var(--rose);
+      line-height: 1.6;
+      color: #6c405a;
+    }
+
+    .feedback.show {
+      display: block;
+      animation: floatIn 0.25s ease both;
+    }
+
+    .primary {
+      width: 100%;
+      margin-top: 14px;
+      min-height: 52px;
+      border-radius: 18px;
+      color: #fff;
+      font-weight: 800;
+      background: linear-gradient(135deg, var(--pink), var(--violet));
+      box-shadow: 0 14px 24px rgba(255, 111, 174, 0.24);
+    }
+
+    .secondary {
+      width: 100%;
+      margin-top: 10px;
+      min-height: 48px;
+      border-radius: 18px;
+      color: var(--pink-dark);
+      font-weight: 800;
+      background: #ffe4f0;
+    }
+
+    .note {
+      display: none;
+      margin-top: 12px;
+      border-radius: 22px;
+      background: #fffaf0;
+      border: 1px dashed #efbd72;
+      padding: 14px;
+      line-height: 1.6;
+      color: #7d5722;
+    }
+
+    .note.show {
+      display: block;
+    }
+
+    .certificate {
+      display: none;
+      text-align: center;
+      background: linear-gradient(155deg, #fff8e8, #ffeaf5);
+      border: 1px solid #f1c98d;
+    }
+
+    .certificate.show {
+      display: block;
+    }
+
+    .certificate .seal {
+      width: 74px;
+      height: 74px;
+      margin: 4px auto 12px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      color: #fff;
+      background: linear-gradient(135deg, #f4b84f, #ff6fae);
+      font-size: 28px;
+      font-weight: 900;
+    }
+
+    .tiny {
+      margin: 10px 0 0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.5;
+    }
+  </style>
+</head>
+<body>
+  <section class="phone" aria-label="7天英语小复习手机网页App">
+    <header>
+      <div class="kicker">Tiny English, Big Heart</div>
+      <h1>今天也偷偷学一点英文</h1>
+      <p class="sub">每天一个小考点，一句土味情话。答对有奖励，答错也不凶。</p>
+    </header>
+
+    <main>
+      <section class="card" aria-label="学习进度">
+        <div class="progress-row">
+          <strong id="progressText">第 1 / 7 天</strong>
+          <span class="pill" id="statusPill">今日待完成</span>
+        </div>
+        <div class="bar"><span id="progressBar"></span></div>
+        <div class="days" id="days"></div>
+      </section>
+
+      <section class="card chat" id="chat" aria-label="日常对话"></section>
+
+      <section class="card" id="lessonCard" aria-label="今日小题">
+        <div class="lesson-title">
+          <div>
+            <h2 id="lessonTitle">Day 1</h2>
+            <p class="tiny" id="lessonPoint"></p>
+          </div>
+          <span class="pill" id="lessonTag">选择题</span>
+        </div>
+        <p class="question" id="question"></p>
+        <div class="options" id="options"></div>
+        <div class="feedback" id="feedback"></div>
+        <div class="note" id="note"></div>
+        <button class="primary" id="nextButton" hidden>完成今天的小复习</button>
+      </section>
+
+      <section class="card certificate" id="certificate" aria-label="毕业证书">
+        <div class="seal">7</div>
+        <h2>7天小复习完成</h2>
+        <p>恭喜你，已经把一周的英语碎片都收进口袋里了。</p>
+        <p><strong>I may forget some English words, but I won’t forget you.</strong></p>
+        <button class="secondary" id="resetButton">从第1天重新开始</button>
+      </section>
+    </main>
+  </section>
+
+  <script>
+    const lessons = [
+      {
+        title: "比较级",
+        point: "多音节形容词比较级：more + 形容词",
+        tag: "选择题",
+        chat: [
+          ["me", "问你一道英语题，important 的比较级是什么？"],
+          ["her", "这个我好像会。"],
+          ["me", "答对的话，今天的土味例句归你。"]
+        ],
+        question: "important 的比较级应该怎么说？",
+        options: ["importanter", "more important", "most important"],
+        answer: 1,
+        correct: "答对啦。But you are more important than English.",
+        wrong: "差一点。important 是多音节词，比较级用 more important。",
+        note: "今日小纸条：有些单词要慢慢背，有些人一眼就记住。"
+      },
+      {
+        title: "现在完成时",
+        point: "have/has done + for + 时间段：从过去持续到现在",
+        tag: "判断题",
+        chat: [
+          ["me", "今天这句有点认真：I have liked you for a long time."],
+          ["her", "这是例句还是表白？"],
+          ["me", "语法是例题，喜欢是事实。"]
+        ],
+        question: "I have liked you for a long time. 这句话主要表示什么？",
+        options: ["过去某个时间喜欢过", "从过去到现在一直喜欢", "将来会喜欢"],
+        answer: 1,
+        correct: "对。have liked + for a long time，表示一直持续到现在。",
+        wrong: "这题选“从过去到现在一直喜欢”。现在完成时常用来表达持续。",
+        note: "今日小纸条：有些事情不用每天说，但可以一直在。"
+      },
+      {
+        title: "条件句",
+        point: "If 引导条件，主句是祈使句时用动词原形",
+        tag: "二选一",
+        chat: [
+          ["me", "If you feel tired, ___ me."],
+          ["her", "这题怎么还带售后服务？"],
+          ["me", "英语题可以不做，但可以 call me。"]
+        ],
+        question: "If you feel tired, ___ me.",
+        options: ["call", "will call"],
+        answer: 0,
+        correct: "对，是 call。主句是祈使句，直接用动词原形。",
+        wrong: "这里用 call。If 从句负责条件，主句是祈使句。",
+        note: "今日小纸条：累的时候可以休息，也可以被好好惦记。"
+      },
+      {
+        title: "介词 between / among",
+        point: "between 多用于两者之间，among 多用于三者及以上之中",
+        tag: "选择题",
+        chat: [
+          ["me", "between 和 among 的区别你还记得吗？"],
+          ["her", "一个两者，一个很多人？"],
+          ["me", "对。但无论 among 多少人，我都能 find you。"]
+        ],
+        question: "在人群中找到你，更适合用哪句？",
+        options: ["find you among them", "find you between them"],
+        answer: 0,
+        correct: "对，among them 更适合“在一群人中”。",
+        wrong: "这里更适合 among them，表示在一群人之中。",
+        note: "今日小纸条：人很多也没关系，重点总会发光。"
+      },
+      {
+        title: "too...to...",
+        point: "too + 形容词 + to do：太……而不能……",
+        tag: "翻译感",
+        chat: [
+          ["me", "I’m too tired to move. 是什么意思？"],
+          ["her", "太累了，动不了。"],
+          ["me", "那 I’m too shy to tell you I miss you 呢？"]
+        ],
+        question: "I’m too shy to tell you I miss you. 最接近哪个意思？",
+        options: ["我太害羞了，不敢说我想你", "我很害羞，所以已经告诉你了", "我不害羞，也不想你"],
+        answer: 0,
+        correct: "对。too shy to tell，就是太害羞而说不出口。",
+        wrong: "选第一句。too...to... 表示“太……而不能……”。",
+        note: "今日小纸条：有些话说不出口，也会从例句里跑出来。"
+      },
+      {
+        title: "定语从句",
+        point: "先行词是人时，常用 who / that 引导",
+        tag: "找关系",
+        chat: [
+          ["me", "You are the person who makes my day better."],
+          ["her", "又开始了。"],
+          ["me", "别急，今天重点是 who 修饰 person。"]
+        ],
+        question: "这句话里 who 修饰的是哪个词？",
+        options: ["You", "person", "day"],
+        answer: 1,
+        correct: "对，who 修饰 person，后面那句是在补充说明这个人。",
+        wrong: "这里修饰 person。person 是先行词，who 引导定语从句。",
+        note: "今日小纸条：你不是普通名词，是需要定语从句认真说明的人。"
+      },
+      {
+        title: "一周回顾",
+        point: "把本周最容易记住的三个点收回来",
+        tag: "毕业题",
+        chat: [
+          ["me", "本周毕业测试，答对就下班。"],
+          ["her", "终于要毕业了？"],
+          ["me", "对，奖励是一句很土但很真诚的英文。"]
+        ],
+        question: "下面哪一句是正确表达？",
+        options: [
+          "I look forward to see you.",
+          "I look forward to seeing you.",
+          "I look forward seeing you."
+        ],
+        answer: 1,
+        correct: "满分。look forward to 后面接 doing。",
+        wrong: "正确答案是 seeing。这里的 to 是介词，后面接动名词。",
+        note: "毕业小纸条：I may forget some English words, but I won’t forget you."
+      }
+    ];
+
+    const storageKey = "tinyEnglishLoveReviewProgress";
+    let progress = Number(localStorage.getItem(storageKey) || "0");
+    progress = Number.isFinite(progress) ? Math.max(0, Math.min(progress, lessons.length)) : 0;
+    let answered = false;
+
+    const daysEl = document.querySelector("#days");
+    const progressText = document.querySelector("#progressText");
+    const progressBar = document.querySelector("#progressBar");
+    const statusPill = document.querySelector("#statusPill");
+    const chatEl = document.querySelector("#chat");
+    const lessonTitle = document.querySelector("#lessonTitle");
+    const lessonPoint = document.querySelector("#lessonPoint");
+    const lessonTag = document.querySelector("#lessonTag");
+    const question = document.querySelector("#question");
+    const optionsEl = document.querySelector("#options");
+    const feedback = document.querySelector("#feedback");
+    const note = document.querySelector("#note");
+    const nextButton = document.querySelector("#nextButton");
+    const certificate = document.querySelector("#certificate");
+    const lessonCard = document.querySelector("#lessonCard");
+    const resetButton = document.querySelector("#resetButton");
+
+    function renderDays() {
+      daysEl.innerHTML = "";
+      lessons.forEach((_, index) => {
+        const day = document.createElement("div");
+        day.className = "day-dot";
+        if (index < progress) day.classList.add("done");
+        if (index === progress && progress < lessons.length) day.classList.add("current");
+        day.textContent = index + 1;
+        daysEl.appendChild(day);
+      });
+    }
+
+    function renderLesson() {
+      answered = false;
+      renderDays();
+      progressText.textContent = progress >= lessons.length ? "7 / 7 天完成" : `第 ${progress + 1} / 7 天`;
+      progressBar.style.width = `${Math.round((progress / lessons.length) * 100)}%`;
+      statusPill.textContent = progress >= lessons.length ? "已毕业" : "今日待完成";
+
+      if (progress >= lessons.length) {
+        lessonCard.style.display = "none";
+        chatEl.style.display = "none";
+        certificate.classList.add("show");
+        progressBar.style.width = "100%";
+        return;
+      }
+
+      lessonCard.style.display = "";
+      chatEl.style.display = "";
+      certificate.classList.remove("show");
+
+      const lesson = lessons[progress];
+      lessonTitle.textContent = `Day ${progress + 1}｜${lesson.title}`;
+      lessonPoint.textContent = lesson.point;
+      lessonTag.textContent = lesson.tag;
+      question.textContent = lesson.question;
+      feedback.className = "feedback";
+      feedback.textContent = "";
+      note.className = "note";
+      note.textContent = lesson.note;
+      nextButton.hidden = true;
+
+      chatEl.innerHTML = "";
+      lesson.chat.forEach(([who, text], index) => {
+        const bubble = document.createElement("div");
+        bubble.className = `bubble ${who}`;
+        bubble.style.animationDelay = `${index * 0.08}s`;
+        bubble.textContent = text;
+        chatEl.appendChild(bubble);
+      });
+
+      optionsEl.innerHTML = "";
+      lesson.options.forEach((text, index) => {
+        const option = document.createElement("button");
+        option.className = "option";
+        option.textContent = `${String.fromCharCode(65 + index)}. ${text}`;
+        option.addEventListener("click", () => choose(index));
+        optionsEl.appendChild(option);
+      });
+    }
+
+    function choose(index) {
+      if (answered) return;
+      answered = true;
+      const lesson = lessons[progress];
+      const optionButtons = [...optionsEl.querySelectorAll(".option")];
+      optionButtons.forEach((button, buttonIndex) => {
+        if (buttonIndex === lesson.answer) button.classList.add("correct");
+        if (buttonIndex === index && index !== lesson.answer) button.classList.add("wrong");
+      });
+
+      feedback.textContent = index === lesson.answer ? lesson.correct : lesson.wrong;
+      feedback.classList.add("show");
+      note.classList.add("show");
+      nextButton.hidden = false;
+      statusPill.textContent = index === lesson.answer ? "答对啦" : "已复习";
+    }
+
+    nextButton.addEventListener("click", () => {
+      progress = Math.min(progress + 1, lessons.length);
+      localStorage.setItem(storageKey, String(progress));
+      renderLesson();
+      document.querySelector(".phone").scrollTo({ top: 0, behavior: "smooth" });
+    });
+
+    resetButton.addEventListener("click", () => {
+      progress = 0;
+      localStorage.setItem(storageKey, "0");
+      renderLesson();
+    });
+
+    renderLesson();
+  </script>
+</body>
+</html>
