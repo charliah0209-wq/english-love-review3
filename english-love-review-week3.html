@@ -1,0 +1,485 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>第三周：题目换新挑战，备注：来自你的小可爱</title>
+  <style>
+    :root {
+      --text: #302431;
+      --muted: #846d82;
+      --pink: #ff6fae;
+      --pink-dark: #dc4b91;
+      --violet: #816cf6;
+      --line: #f3d7e6;
+      --card: rgba(255,255,255,.85);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+    * { box-sizing: border-box; }
+    body {
+      min-height: 100vh;
+      margin: 0;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 10% 8%, #ffe1ef 0 18%, transparent 34%),
+        radial-gradient(circle at 92% 6%, #e8e2ff 0 15%, transparent 32%),
+        linear-gradient(155deg, #fff9fc 0%, #fff1f7 48%, #f6f1ff 100%);
+      display: flex;
+      justify-content: center;
+      padding: 18px;
+    }
+    button { border: 0; font: inherit; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+    .phone {
+      width: min(430px, 100%);
+      min-height: calc(100vh - 36px);
+      overflow: hidden;
+      border-radius: 34px;
+      background: rgba(255,255,255,.56);
+      border: 1px solid rgba(255,255,255,.82);
+      box-shadow: 0 18px 48px rgba(172,80,130,.2);
+      backdrop-filter: blur(18px);
+    }
+    header {
+      padding: 22px 22px 14px;
+      background: linear-gradient(180deg, rgba(255,255,255,.94), rgba(255,255,255,.32));
+    }
+    .kicker {
+      color: var(--pink-dark);
+      font-size: 12px;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      font-weight: 900;
+    }
+    h1 { margin: 8px 0 10px; font-size: 28px; line-height: 1.16; }
+    .sub { margin: 0; color: var(--muted); line-height: 1.55; font-size: 15px; }
+    main { padding: 0 16px 18px; display: grid; gap: 14px; }
+    .card {
+      background: var(--card);
+      border: 1px solid rgba(255,255,255,.9);
+      border-radius: 28px;
+      box-shadow: 0 12px 28px rgba(124,80,108,.12);
+      padding: 18px;
+    }
+    .row { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+    .pill {
+      color: var(--pink-dark);
+      background: #ffe4f0;
+      border-radius: 999px;
+      padding: 7px 11px;
+      font-size: 13px;
+      font-weight: 850;
+      white-space: nowrap;
+    }
+    .bar { height: 10px; border-radius: 999px; background: #f1dce9; overflow: hidden; margin-top: 10px; }
+    .bar span {
+      display: block;
+      width: 0%;
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, var(--pink), var(--violet));
+      transition: width .25s ease;
+    }
+    .days { display: grid; grid-template-columns: repeat(7, 1fr); gap: 7px; margin-top: 14px; }
+    .day-dot {
+      min-height: 42px;
+      display: grid;
+      place-items: center;
+      border-radius: 16px;
+      background: rgba(255,255,255,.75);
+      border: 1px solid var(--line);
+      color: var(--muted);
+      font-weight: 900;
+    }
+    .day-dot.done { color: white; background: linear-gradient(135deg, var(--pink), var(--violet)); border-color: transparent; }
+    .day-dot.current { color: var(--pink-dark); outline: 3px solid rgba(255,111,174,.22); }
+    .chat { display: flex; flex-direction: column; gap: 10px; }
+    .bubble {
+      max-width: 88%;
+      padding: 12px 14px;
+      border-radius: 20px;
+      line-height: 1.55;
+      font-size: 15px;
+      white-space: pre-line;
+      animation: floatIn .25s ease both;
+    }
+    .bubble.me {
+      align-self: flex-end;
+      color: white;
+      background: linear-gradient(135deg, var(--pink), var(--violet));
+      border-bottom-right-radius: 8px;
+    }
+    .bubble.her { align-self: flex-start; background: white; border: 1px solid var(--line); border-bottom-left-radius: 8px; }
+    @keyframes floatIn { from { transform: translateY(8px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+    h2 { margin: 0 0 5px; font-size: 22px; }
+    .tiny { margin: 0; color: var(--muted); line-height: 1.5; font-size: 13px; }
+    .lesson-head { align-items: flex-start; margin-bottom: 12px; }
+    .q-count { margin: 10px 0 0; color: var(--muted); font-weight: 850; font-size: 14px; }
+    .question { margin: 10px 0 12px; line-height: 1.6; color: #654c63; font-weight: 700; }
+    .options { display: grid; gap: 10px; }
+    .option {
+      width: 100%;
+      min-height: 50px;
+      text-align: left;
+      padding: 13px 14px;
+      border-radius: 18px;
+      background: white;
+      color: var(--text);
+      border: 1px solid var(--line);
+      box-shadow: 0 8px 16px rgba(139,86,118,.08);
+    }
+    .option.correct { border-color: rgba(33,168,120,.55); background: #effcf7; color: #106947; }
+    .option.wrong { border-color: rgba(228,90,104,.5); background: #fff1f3; color: #923340; }
+    .feedback, .note {
+      display: none;
+      margin-top: 14px;
+      padding: 14px;
+      border-radius: 20px;
+      line-height: 1.6;
+    }
+    .feedback { background: #fff0f7; color: #6c405a; }
+    .note { background: #fffaf0; border: 1px dashed #efbd72; color: #755321; }
+    .show { display: block; }
+    .primary, .secondary {
+      width: 100%;
+      min-height: 52px;
+      margin-top: 14px;
+      border-radius: 18px;
+      font-weight: 900;
+    }
+    .primary { color: white; background: linear-gradient(135deg, var(--pink), var(--violet)); box-shadow: 0 14px 24px rgba(255,111,174,.24); }
+    .secondary { color: var(--pink-dark); background: #ffe4f0; }
+    .score { margin: 12px 0 0; color: var(--muted); line-height: 1.5; font-size: 14px; }
+    .certificate {
+      display: none;
+      text-align: center;
+      background: linear-gradient(155deg, #fff8e8, #ffeaf5);
+      border: 1px solid #f1c98d;
+    }
+    .certificate.show { display: block; }
+    .seal {
+      width: 74px;
+      height: 74px;
+      margin: 4px auto 12px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      color: white;
+      background: linear-gradient(135deg, #f4b84f, #ff6fae);
+      font-size: 28px;
+      font-weight: 950;
+    }
+  </style>
+</head>
+<body>
+  <section class="phone" aria-label="第三周英语小复习手机网页App">
+    <header>
+      <div class="kicker">Week 3 · New Questions, New Flirting</div>
+      <h1>第三周：题目换新挑战</h1>
+      <p class="sub">备注：来自你的小可爱</p>
+      <p class="sub">继续来自你的 PDF：旅行住宿、面试词汇、易混词、动词短语和短文完成语法。</p>
+    </header>
+    <main>
+      <section class="card" aria-label="学习进度">
+        <div class="row">
+          <strong id="progressText">第 1 / 7 天</strong>
+          <span class="pill" id="statusPill">今日待完成</span>
+        </div>
+        <div class="bar"><span id="progressBar"></span></div>
+        <div class="days" id="days"></div>
+      </section>
+      <section class="card chat" id="chat" aria-label="日常对话"></section>
+      <section class="card" id="lessonCard" aria-label="今日小题">
+        <div class="row lesson-head">
+          <div>
+            <h2 id="lessonTitle">Day 1</h2>
+            <p class="tiny" id="lessonPoint"></p>
+          </div>
+          <span class="pill" id="lessonTag">新题</span>
+        </div>
+        <p class="q-count" id="qCount"></p>
+        <p class="question" id="question"></p>
+        <div class="options" id="options"></div>
+        <div class="feedback" id="feedback"></div>
+        <div class="note" id="note"></div>
+        <p class="score" id="scoreLine"></p>
+        <button class="primary" id="nextButton" hidden>下一题</button>
+      </section>
+      <section class="card certificate" id="certificate" aria-label="第三周毕业证书">
+        <div class="seal">W3</div>
+        <h2>第三周小复习完成</h2>
+        <p>这周 28 道题已经走完：没有全选 A，也没有重复老题。</p>
+        <p><strong>You are not an option. You are the answer I keep choosing.</strong></p>
+        <button class="secondary" id="resetButton">从第1天重新开始</button>
+      </section>
+    </main>
+  </section>
+  <script>
+    const lessons = [
+      {
+        title: "旅行和住宿场景词",
+        point: "来自 PDF：机场、酒店、住房常用词汇。",
+        tag: "场景词",
+        chat: [
+          ["me", "这周从旅行开始。"],
+          ["her", "我还没出门呢。"],
+          ["me", "没事，先在词汇里 check in。等你真的出发，我负责当 human navigation。"]
+        ],
+        note: "今日小纸条：If life has a reservation desk, I want to book one quiet evening with you.",
+        questions: [
+          { q: "机场里的 terminal 通常指什么？", options: ["登机牌", "航站楼/终点站", "行李牌"], answer: 1, ok: "对。terminal 是航站楼，也可指终点站。", no: "选 B。terminal 是航站楼/终点站。" },
+          { q: "boarding card / boarding pass 是：", options: ["护照", "免税商品", "登机证"], answer: 2, ok: "对。boarding pass 就是登机证。", no: "选 C。boarding card / boarding pass 是登机证。" },
+          { q: "room with good ventilation 指：", options: ["通风良好的房间", "豪华套间", "满房"], answer: 0, ok: "对。ventilation 是通风。", no: "选 A。ventilation 是通风。" },
+          { q: "tenant 的意思是：", options: ["房东", "房客", "市中心"], answer: 1, ok: "对。tenant 是房客；landlord/landlady 是房东。", no: "选 B。tenant 是房客。" }
+        ]
+      },
+      {
+        title: "面试与工作场景词",
+        point: "来自 PDF：面试常用词汇。",
+        tag: "面试词",
+        chat: [
+          ["me", "今天练面试词，假装你去面试。"],
+          ["her", "我应聘什么？"],
+          ["me", "应聘我的 daily favorite person，qualification 是你本人。"]
+        ],
+        note: "今日小纸条：Your resume may list experience, but your smile already impressed me.",
+        questions: [
+          { q: "resume / curriculum vitae (CV) 的意思是：", options: ["津贴", "职位", "简历"], answer: 2, ok: "对。resume 和 CV 都可指简历。", no: "选 C。resume / CV 是简历。" },
+          { q: "apply for a position 中 apply for 的意思是：", options: ["申请", "登记", "代表"], answer: 0, ok: "对。apply for 是申请。", no: "选 A。apply for 是申请。" },
+          { q: "work permit 是：", options: ["工作合同", "工作许可证", "职业病"], answer: 1, ok: "对。permit 是许可证。", no: "选 B。work permit 是工作许可证。" },
+          { q: "allowance 在面试/工作场景里常指：", options: ["岗位", "证明推荐人", "津贴/补助"], answer: 2, ok: "对。allowance 是津贴、补助。", no: "选 C。allowance 是津贴、补助。" }
+        ]
+      },
+      {
+        title: "否定副词与证明类动词",
+        point: "来自 PDF：rarely/hardly/scarcely/barely 与 certify/testify/verify。",
+        tag: "易混词",
+        chat: [
+          ["me", "今天的词都有点严肃。"],
+          ["her", "那你别土。"],
+          ["me", "我尽量。I rarely say sweet words, but when I do, they are all about you."]
+        ],
+        note: "今日小纸条：I can hardly focus when your message lights up. 这不是语法问题，是心跳问题。",
+        questions: [
+          { q: "rarely 的意思最接近：", options: ["不常，难得", "完全，彻底", "勉强，仅能"], answer: 0, ok: "对。rarely = not often。", no: "选 A。rarely 是不常、难得。" },
+          { q: "testify 更常用于哪种场合？", options: ["商场砍价", "法庭作证", "酒店入住"], answer: 1, ok: "对。testify 指在法庭上宣誓作证。", no: "选 B。testify 常指法庭作证。" },
+          { q: "verify 强调：", options: ["责骂", "留传", "用事实核实/证实"], answer: 2, ok: "对。verify 是核实、证实。", no: "选 C。verify 强调用事实核实。" },
+          { q: "hardly 后面若搭配 ever/any/at all，资料提示不能换成：", options: ["scarcely", "barely", "rarely"], answer: 1, ok: "对。资料中特别提醒这种情况下不用 barely。", no: "选 B。后接 ever/any/at all 时，不用 barely。" }
+        ]
+      },
+      {
+        title: "形近形容词 I",
+        point: "来自 PDF：considerable/considerate、continual/continuous、efficient/effective。",
+        tag: "形容词辨析",
+        chat: [
+          ["me", "今天都是长得像的形容词。"],
+          ["her", "又来了。"],
+          ["me", "别怕，considerate 是体贴。比如我把答案打乱，就是很 considerate。"]
+        ],
+        note: "今日小纸条：A considerable distance is nothing if the person is considerate enough.",
+        questions: [
+          { q: "considerate 的意思是：", options: ["相当大的", "连续不断的", "体贴的，考虑周到的"], answer: 2, ok: "对。considerate 是体贴的。", no: "选 C。considerate 是体贴的。" },
+          { q: "continuous 强调：", options: ["时断时续", "中间不停顿的连续", "相当多的"], answer: 1, ok: "对。continuous 强调不中断。", no: "选 B。continuous 是连续不断、中间不停顿。" },
+          { q: "efficient 常用来形容：", options: ["人或工作方式有效率", "电产生的", "令人感动的演讲"], answer: 0, ok: "对。efficient 偏“高效率的”。", no: "选 A。efficient 常指人或方法有效率。" },
+          { q: "effective 更常形容：", options: ["房客", "政策/措施有效", "简历"], answer: 1, ok: "对。effective 常指政策、措施等有效。", no: "选 B。effective 是有效的、奏效的。" }
+        ]
+      },
+      {
+        title: "看、暗示与勤奋",
+        point: "来自 PDF：gaze/glance/glare/stare、imply/infer、industrial/industrious。",
+        tag: "动词辨析",
+        chat: [
+          ["me", "今天有一组‘看’的词。"],
+          ["her", "你想说什么？"],
+          ["me", "glance 是看一眼，gaze 是凝视。考试时 glance at the options，见你时 gaze a little longer。"]
+        ],
+        note: "今日小纸条：Don't glare at the questions. Glance first, then think slowly.",
+        questions: [
+          { q: "glare 的意思最接近：", options: ["瞥一眼", "怒目而视", "推断"], answer: 1, ok: "对。glare 是怒目而视。", no: "选 B。glare 强调带敌意或气愤地看。" },
+          { q: "infer 的意思是：", options: ["凝视", "传播", "推断"], answer: 2, ok: "对。infer 是由证据推断。", no: "选 C。infer 是推断，不是暗示。" },
+          { q: "industrial 的意思是：", options: ["工业的", "勤奋的", "无价的"], answer: 0, ok: "对。industrial 是工业的。", no: "选 A。industrial 是工业的；industrious 是勤奋的。" },
+          { q: "imply 与 infer 的区别中，imply 是：", options: ["由证据得出结论", "暗含某种意思而不明说", "恐吓威胁"], answer: 1, ok: "对。imply 是暗示、暗含。", no: "选 B。imply 是暗含不明说；infer 是推断。" }
+        ]
+      },
+      {
+        title: "价值、情绪和短语",
+        point: "来自 PDF：invaluable/valueless、sensible/sensitive、put 短语。",
+        tag: "词汇+短语",
+        chat: [
+          ["me", "今天讲价值。"],
+          ["her", "别又拐到土味情话。"],
+          ["me", "那我直接拐：invaluable 是无价的。例句：Your patience is invaluable to my teaching career."]
+        ],
+        note: "今日小纸条：Be sensible with grammar, but stay sensitive to tiny joys.",
+        questions: [
+          { q: "invaluable 的意思是：", options: ["没有价值的", "无价的，非常宝贵的", "敏感的"], answer: 1, ok: "对。invaluable = priceless。", no: "选 B。invaluable 是无价的、宝贵的。" },
+          { q: "sensible 的意思更接近：", options: ["耸人听闻的", "感伤的", "明智的"], answer: 2, ok: "对。sensible 可以表示明智的。", no: "选 C。sensible 是明智的；sensitive 是敏感的。" },
+          { q: "put off 的意思是：", options: ["推迟，推延", "容忍", "提出"], answer: 0, ok: "对。put off 是推迟。", no: "选 A。put off 是推迟，put up with 是容忍。" },
+          { q: "put up with 的意思是：", options: ["熄灭", "容忍，忍受", "储存"], answer: 1, ok: "对。put up with 是容忍。", no: "选 B。put up with 是容忍、忍受。" }
+        ]
+      },
+      {
+        title: "短文完成语法",
+        point: "来自 PDF：非谓语、形容词位置、副词位置、简单句句型。",
+        tag: "短文完成",
+        chat: [
+          ["me", "最后一天练短文完成里的语法。"],
+          ["her", "听起来很正经。"],
+          ["me", "正经三秒：Seeing is believing. 土味三秒：Seeing your progress is my favorite proof."]
+        ],
+        note: "毕业小纸条：Step by step 不是慢，是认真抵达。",
+        questions: [
+          { q: "资料里 Seeing is believing. 中 Seeing 作：", options: ["动名词作主语", "过去分词作状语", "副词作定语"], answer: 0, ok: "对。Seeing 是动名词作主语。", no: "选 A。Seeing 在句中是动名词作主语。" },
+          { q: "something wrong 中形容词 wrong 的位置说明：", options: ["形容词永远放名词前", "形容词不能修饰不定代词", "修饰复合不定代词时常后置"], answer: 2, ok: "对。修饰 something/anything 等时形容词后置。", no: "选 C。形容词修饰复合不定代词时通常后置。" },
+          { q: "地点副词和时间副词同时出现时，资料中常见顺序是：", options: ["时间在地点前", "地点在时间前", "都必须放句首"], answer: 1, ok: "对。常见顺序是地点副词在时间副词前。", no: "选 B。地点副词通常放在时间副词前。" },
+          { q: "He kept me waiting for two hours. 属于简单句五种结构中的：", options: ["主+谓+宾+宾补", "主+系+表", "主+谓"], answer: 0, ok: "对。me 是宾语，waiting 是宾补。", no: "选 A。这是主+谓+宾+宾补。" }
+        ]
+      }
+    ];
+
+    const storageKey = "tinyEnglishLoveReviewWeek3Progress";
+    let dayIndex = Number(localStorage.getItem(storageKey + ":day") || "0");
+    let questionIndex = Number(localStorage.getItem(storageKey + ":question") || "0");
+    let score = Number(localStorage.getItem(storageKey + ":score") || "0");
+    dayIndex = Number.isFinite(dayIndex) ? Math.max(0, Math.min(dayIndex, lessons.length)) : 0;
+    questionIndex = Number.isFinite(questionIndex) ? Math.max(0, questionIndex) : 0;
+    score = Number.isFinite(score) ? Math.max(0, score) : 0;
+    let answered = false;
+
+    const daysEl = document.querySelector("#days");
+    const progressText = document.querySelector("#progressText");
+    const progressBar = document.querySelector("#progressBar");
+    const statusPill = document.querySelector("#statusPill");
+    const chatEl = document.querySelector("#chat");
+    const lessonCard = document.querySelector("#lessonCard");
+    const lessonTitle = document.querySelector("#lessonTitle");
+    const lessonPoint = document.querySelector("#lessonPoint");
+    const lessonTag = document.querySelector("#lessonTag");
+    const qCount = document.querySelector("#qCount");
+    const question = document.querySelector("#question");
+    const optionsEl = document.querySelector("#options");
+    const feedback = document.querySelector("#feedback");
+    const note = document.querySelector("#note");
+    const scoreLine = document.querySelector("#scoreLine");
+    const nextButton = document.querySelector("#nextButton");
+    const certificate = document.querySelector("#certificate");
+    const resetButton = document.querySelector("#resetButton");
+
+    function totalQuestionsBefore(day) {
+      return lessons.slice(0, day).reduce((sum, lesson) => sum + lesson.questions.length, 0);
+    }
+    function totalQuestions() {
+      return lessons.reduce((sum, lesson) => sum + lesson.questions.length, 0);
+    }
+    function save() {
+      localStorage.setItem(storageKey + ":day", String(dayIndex));
+      localStorage.setItem(storageKey + ":question", String(questionIndex));
+      localStorage.setItem(storageKey + ":score", String(score));
+    }
+    function renderDays() {
+      daysEl.innerHTML = "";
+      lessons.forEach((_, index) => {
+        const day = document.createElement("div");
+        day.className = "day-dot";
+        if (index < dayIndex) day.classList.add("done");
+        if (index === dayIndex && dayIndex < lessons.length) day.classList.add("current");
+        day.textContent = index + 1;
+        daysEl.appendChild(day);
+      });
+    }
+    function render() {
+      answered = false;
+      renderDays();
+      const doneQuestions = dayIndex >= lessons.length ? totalQuestions() : totalQuestionsBefore(dayIndex) + questionIndex;
+      progressBar.style.width = `${Math.round(doneQuestions / totalQuestions() * 100)}%`;
+      progressText.textContent = dayIndex >= lessons.length ? "第三周完成" : `第 ${dayIndex + 1} / 7 天`;
+      statusPill.textContent = dayIndex >= lessons.length ? "已毕业" : "今日待完成";
+
+      if (dayIndex >= lessons.length) {
+        lessonCard.style.display = "none";
+        chatEl.style.display = "none";
+        certificate.classList.add("show");
+        return;
+      }
+
+      const lesson = lessons[dayIndex];
+      if (questionIndex >= lesson.questions.length) {
+        dayIndex += 1;
+        questionIndex = 0;
+        save();
+        render();
+        return;
+      }
+
+      const current = lesson.questions[questionIndex];
+      lessonCard.style.display = "";
+      chatEl.style.display = "";
+      certificate.classList.remove("show");
+      lessonTitle.textContent = `Day ${dayIndex + 1}｜${lesson.title}`;
+      lessonPoint.textContent = lesson.point;
+      lessonTag.textContent = lesson.tag;
+      qCount.textContent = `今日第 ${questionIndex + 1} / ${lesson.questions.length} 题`;
+      question.textContent = current.q;
+      feedback.className = "feedback";
+      feedback.textContent = "";
+      note.className = "note";
+      note.textContent = lesson.note;
+      nextButton.hidden = true;
+      nextButton.textContent = questionIndex === lesson.questions.length - 1 ? "完成今天的小复习" : "下一题";
+      scoreLine.textContent = `本周目前答对 ${score} / ${doneQuestions} 题`;
+
+      chatEl.innerHTML = "";
+      lesson.chat.forEach(([who, text], index) => {
+        const bubble = document.createElement("div");
+        bubble.className = `bubble ${who}`;
+        bubble.style.animationDelay = `${index * .08}s`;
+        bubble.textContent = text;
+        chatEl.appendChild(bubble);
+      });
+
+      optionsEl.innerHTML = "";
+      current.options.forEach((text, index) => {
+        const option = document.createElement("button");
+        option.className = "option";
+        option.textContent = `${String.fromCharCode(65 + index)}. ${text}`;
+        option.addEventListener("click", () => choose(index));
+        optionsEl.appendChild(option);
+      });
+    }
+    function choose(index) {
+      if (answered) return;
+      answered = true;
+      const current = lessons[dayIndex].questions[questionIndex];
+      if (index === current.answer) score += 1;
+      [...optionsEl.querySelectorAll(".option")].forEach((button, buttonIndex) => {
+        if (buttonIndex === current.answer) button.classList.add("correct");
+        if (buttonIndex === index && index !== current.answer) button.classList.add("wrong");
+      });
+      feedback.textContent = index === current.answer ? current.ok : current.no;
+      feedback.classList.add("show");
+      note.classList.add("show");
+      nextButton.hidden = false;
+      statusPill.textContent = index === current.answer ? "答对啦" : "已复习";
+      scoreLine.textContent = `本周目前答对 ${score} / ${totalQuestionsBefore(dayIndex) + questionIndex + 1} 题`;
+      save();
+    }
+    nextButton.addEventListener("click", () => {
+      questionIndex += 1;
+      if (questionIndex >= lessons[dayIndex].questions.length) {
+        dayIndex += 1;
+        questionIndex = 0;
+      }
+      save();
+      render();
+      document.querySelector(".phone").scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+    resetButton.addEventListener("click", () => {
+      dayIndex = 0;
+      questionIndex = 0;
+      score = 0;
+      save();
+      render();
+    });
+    render();
+  </script>
+</body>
+</html>
