@@ -1,0 +1,599 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>第六周：词汇加速，但不把你逼疯，备注：来自你的专属陪练</title>
+  <style>
+    :root {
+      --text: #302431;
+      --muted: #846d82;
+      --pink: #ff6fae;
+      --pink-dark: #dc4b91;
+      --violet: #816cf6;
+      --line: #f3d7e6;
+      --card: rgba(255,255,255,.85);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+    * { box-sizing: border-box; }
+    body {
+      min-height: 100vh;
+      margin: 0;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 10% 8%, #ffe1ef 0 18%, transparent 34%),
+        radial-gradient(circle at 92% 6%, #e8e2ff 0 15%, transparent 32%),
+        linear-gradient(155deg, #fff9fc 0%, #fff1f7 48%, #f6f1ff 100%);
+      display: flex;
+      justify-content: center;
+      padding: 18px;
+    }
+    button { border: 0; font: inherit; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+    .phone {
+      width: min(430px, 100%);
+      min-height: calc(100vh - 36px);
+      overflow: hidden;
+      border-radius: 34px;
+      background: rgba(255,255,255,.56);
+      border: 1px solid rgba(255,255,255,.82);
+      box-shadow: 0 18px 48px rgba(172,80,130,.2);
+      backdrop-filter: blur(18px);
+    }
+    header {
+      padding: 22px 22px 14px;
+      background: linear-gradient(180deg, rgba(255,255,255,.94), rgba(255,255,255,.32));
+    }
+    .kicker {
+      color: var(--pink-dark);
+      font-size: 12px;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      font-weight: 900;
+    }
+    h1 { margin: 8px 0 10px; font-size: 28px; line-height: 1.16; }
+    .sub { margin: 0; color: var(--muted); line-height: 1.55; font-size: 15px; }
+    main { padding: 0 16px 18px; display: grid; gap: 14px; }
+    .card {
+      background: var(--card);
+      border: 1px solid rgba(255,255,255,.9);
+      border-radius: 28px;
+      box-shadow: 0 12px 28px rgba(124,80,108,.12);
+      padding: 18px;
+    }
+    .row { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+    .pill {
+      color: var(--pink-dark);
+      background: #ffe4f0;
+      border-radius: 999px;
+      padding: 7px 11px;
+      font-size: 13px;
+      font-weight: 850;
+      white-space: nowrap;
+    }
+    .bar { height: 10px; border-radius: 999px; background: #f1dce9; overflow: hidden; margin-top: 10px; }
+    .bar span {
+      display: block;
+      width: 0%;
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, var(--pink), var(--violet));
+      transition: width .25s ease;
+    }
+    .days { display: grid; grid-template-columns: repeat(7, 1fr); gap: 7px; margin-top: 14px; }
+    .day-dot {
+      min-height: 42px;
+      display: grid;
+      place-items: center;
+      border-radius: 16px;
+      background: rgba(255,255,255,.75);
+      border: 1px solid var(--line);
+      color: var(--muted);
+      font-weight: 900;
+    }
+    .day-dot.done { color: white; background: linear-gradient(135deg, var(--pink), var(--violet)); border-color: transparent; }
+    .day-dot.current { color: var(--pink-dark); outline: 3px solid rgba(255,111,174,.22); }
+    .chat { display: flex; flex-direction: column; gap: 10px; }
+    .bubble {
+      max-width: 88%;
+      padding: 12px 14px;
+      border-radius: 20px;
+      line-height: 1.55;
+      font-size: 15px;
+      white-space: pre-line;
+      animation: floatIn .25s ease both;
+    }
+    .bubble.me {
+      align-self: flex-end;
+      color: white;
+      background: linear-gradient(135deg, var(--pink), var(--violet));
+      border-bottom-right-radius: 8px;
+    }
+    .bubble.her { align-self: flex-start; background: white; border: 1px solid var(--line); border-bottom-left-radius: 8px; }
+    @keyframes floatIn { from { transform: translateY(8px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+    h2 { margin: 0 0 5px; font-size: 22px; }
+    .tiny { margin: 0; color: var(--muted); line-height: 1.5; font-size: 13px; }
+    .lesson-head { align-items: flex-start; margin-bottom: 12px; }
+    .q-count { margin: 10px 0 0; color: var(--muted); font-weight: 850; font-size: 14px; }
+    .question { margin: 10px 0 12px; line-height: 1.6; color: #654c63; font-weight: 700; }
+    .options { display: grid; gap: 10px; }
+    .option {
+      width: 100%;
+      min-height: 50px;
+      text-align: left;
+      padding: 13px 14px;
+      border-radius: 18px;
+      background: white;
+      color: var(--text);
+      border: 1px solid var(--line);
+      box-shadow: 0 8px 16px rgba(139,86,118,.08);
+    }
+    .option.correct { border-color: rgba(33,168,120,.55); background: #effcf7; color: #106947; }
+    .option.wrong { border-color: rgba(228,90,104,.5); background: #fff1f3; color: #923340; }
+    .feedback, .note {
+      display: none;
+      margin-top: 14px;
+      padding: 14px;
+      border-radius: 20px;
+      line-height: 1.6;
+    }
+    .feedback { background: #fff0f7; color: #6c405a; }
+    .note { background: #fffaf0; border: 1px dashed #efbd72; color: #755321; }
+    .show { display: block; }
+    .primary, .secondary {
+      width: 100%;
+      min-height: 52px;
+      margin-top: 14px;
+      border-radius: 18px;
+      font-weight: 900;
+    }
+    .primary { color: white; background: linear-gradient(135deg, var(--pink), var(--violet)); box-shadow: 0 14px 24px rgba(255,111,174,.24); }
+    .secondary { color: var(--pink-dark); background: #ffe4f0; }
+    .score { margin: 12px 0 0; color: var(--muted); line-height: 1.5; font-size: 14px; }
+    .mistake-box {
+      display: none;
+      background: #fffaf0;
+      border: 1px dashed #efbd72;
+    }
+    .mistake-box.show { display: block; }
+    .mistake-list {
+      display: grid;
+      gap: 10px;
+      margin-top: 12px;
+    }
+    .mistake-item {
+      padding: 12px;
+      border-radius: 18px;
+      background: rgba(255,255,255,.78);
+      border: 1px solid #f1d8a7;
+      line-height: 1.55;
+      color: #755321;
+      font-size: 14px;
+    }
+    .mistake-item strong { color: #5f3f13; }
+    .certificate {
+      display: none;
+      text-align: center;
+      background: linear-gradient(155deg, #fff8e8, #ffeaf5);
+      border: 1px solid #f1c98d;
+    }
+    .certificate.show { display: block; }
+    .seal {
+      width: 74px;
+      height: 74px;
+      margin: 4px auto 12px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      color: white;
+      background: linear-gradient(135deg, #f4b84f, #ff6fae);
+      font-size: 28px;
+      font-weight: 950;
+    }
+  </style>
+</head>
+<body>
+  <section class="phone" aria-label="第六周英语小复习手机网页App">
+    <header>
+      <div class="kicker">Week 6 · Faster Words, Softer Landing</div>
+      <h1>第六周：词汇加速，但不把你逼疯</h1>
+      <p class="sub">备注：来自你的专属陪练</p>
+      <p class="sub">这周开始加速：复习少一点，新词多一点。答错仍然会进“错题小本本”。</p>
+    </header>
+    <main>
+      <section class="card" aria-label="学习进度">
+        <div class="row">
+          <strong id="progressText">第 1 / 7 天</strong>
+          <span class="pill" id="statusPill">今日待完成</span>
+        </div>
+        <div class="bar"><span id="progressBar"></span></div>
+        <div class="days" id="days"></div>
+      </section>
+      <section class="card chat" id="chat" aria-label="日常对话"></section>
+      <section class="card" id="lessonCard" aria-label="今日小题">
+        <div class="row lesson-head">
+          <div>
+            <h2 id="lessonTitle">Day 1</h2>
+            <p class="tiny" id="lessonPoint"></p>
+          </div>
+          <span class="pill" id="lessonTag">新题</span>
+        </div>
+        <p class="q-count" id="qCount"></p>
+        <p class="question" id="question"></p>
+        <div class="options" id="options"></div>
+        <div class="feedback" id="feedback"></div>
+        <div class="note" id="note"></div>
+        <p class="score" id="scoreLine"></p>
+        <button class="primary" id="nextButton" hidden>下一题</button>
+      </section>
+      <section class="card mistake-box" id="mistakeBox" aria-label="错题小本本">
+        <div class="row lesson-head">
+          <div>
+            <h2>错题小本本</h2>
+            <p class="tiny">错题不是黑历史，是下次见面会认出来的老熟人。</p>
+          </div>
+          <span class="pill" id="mistakeCount">0 题</span>
+        </div>
+        <div class="mistake-list" id="mistakeList"></div>
+        <button class="secondary" id="clearMistakesButton">清空错题小本本</button>
+      </section>
+      <section class="card certificate" id="certificate" aria-label="第六周毕业证书">
+        <div class="seal">W6</div>
+        <h2>第六周词汇加速完成</h2>
+        <p>这一周不是慢慢热身，是认真加速。你已经不只是见过这些词，而是开始能认出它们的脾气了。</p>
+        <p><strong>Progress is composed of tiny choices, and today you chose one more.</strong></p>
+        <button class="secondary" id="resetButton">从第1天重新开始</button>
+      </section>
+    </main>
+  </section>
+  <script>
+    const lessons = [
+      {
+        title: "组成、创造、获得",
+        point: "少量回收 complement / supplement，重点加速 compose、compile、comprise、constitute 等。",
+        tag: "词汇加速",
+        chat: [
+          ["me", "第六周开始加速。"],
+          ["her", "听起来有点危险。"],
+          ["me", "放心，加速但不失控。今天的复习由单词、题目和一点点想你组成。"]
+        ],
+        note: "今日小纸条：compose 是组成，也是创作。今天这套题，由认真和一点点偏心组成。",
+        questions: [
+          { q: "小回收：complement 更强调：", options: ["补足，使更完整", "临时推迟", "怒目而视"], answer: 0, ok: "对。complement 是补足，让整体更完整。记忆：complete 是完整，complement 像“让它 complete”。", no: "选 A。complement 偏“补足、使完整”。" },
+          { q: "小回收：supplement 更接近：", options: ["额外增补", "法庭作证", "看不起"], answer: 0, ok: "对。supplement 是额外补充、增补。", no: "选 A。supplement 是另外加上的补充。" },
+          { q: "compose music 中 compose 的意思是：", options: ["推迟", "编曲，创作", "核实"], answer: 1, ok: "对。compose 可以表示创作乐曲，也可表示组成。", no: "选 B。compose music = 作曲、创作音乐。" },
+          { q: "be composed of 的意思是：", options: ["由……组成", "被……打断", "被……推迟"], answer: 0, ok: "对。be composed of = 由……组成。记忆：compose 常用被动结构。", no: "选 A。be composed of 是“由……组成”。" },
+          { q: "compile a dictionary 中 compile 是：", options: ["编纂，汇编", "怒视", "预订"], answer: 0, ok: "对。compile 强调收集材料后编成词典、书等。", no: "选 A。compile a dictionary = 编纂词典。" },
+          { q: "conceive an idea 更接近：", options: ["想出一个主意", "尊敬一个主意", "取消一个主意"], answer: 0, ok: "对。conceive 是头脑中构想、想出。记忆：conceive 比 think of 更书面。", no: "选 A。conceive an idea = 构想出一个主意。" },
+          { q: "comprise 的常见意思是：", options: ["包含，包括，由……组成", "恐吓", "下降"], answer: 0, ok: "对。comprise 可表示包含、包括、由……组成。", no: "选 A。comprise 常和“整体包含部分”有关。" },
+          { q: "constitute 更接近：", options: ["泄露", "构成，组成", "熄灭"], answer: 1, ok: "对。constitute 是构成、组成。记忆：constitution 是宪法，也有“构成”这层味道。", no: "选 B。constitute = 构成、组成。" }
+        ]
+      },
+      {
+        title: "改变、调整、转换",
+        point: "少量回收 transform / modify，重点加速 adjust、rectify、amend、convert、revert。",
+        tag: "改变类动词",
+        chat: [
+          ["me", "今天讲改变。"],
+          ["her", "我希望英语自己改变成中文。"],
+          ["me", "这个叫奇迹。我们先 adjust 一下节奏，慢慢把它变熟。"]
+        ],
+        note: "今日小纸条：adjust 是小调整。我不想改变你，只想把题目调成你刚好能记住的样子。",
+        questions: [
+          { q: "小回收：transform 更强调：", options: ["预订", "轻微改动", "彻底、明显的改变"], answer: 2, ok: "对。transform 是较大、较深的转变。", no: "选 C。transform 强调彻底改变。" },
+          { q: "小回收：modify 更接近：", options: ["怒目而视", "作证", "修改，调整，使更合适"], answer: 2, ok: "对。modify 是修改、调整，通常不是彻底改变。", no: "选 C。modify 是小幅修改、调整。" },
+          { q: "adjust the seat 中 adjust 是：", options: ["泄露", "爆发", "调节，调整"], answer: 2, ok: "对。adjust 是调整，常指小调整。", no: "选 C。adjust the seat = 调整座椅。" },
+          { q: "regulate the temperature 中 regulate 是：", options: ["调节，控制", "尊敬", "想出"], answer: 0, ok: "对。regulate 是调节、控制，使其按规则运行。", no: "选 A。regulate the temperature = 调节温度。" },
+          { q: "rectify a mistake 中 rectify 是：", options: ["纠正", "预留", "联合"], answer: 0, ok: "对。rectify 是纠正错误。记忆：rect- 有“正”的感觉，把错的纠正。", no: "选 A。rectify a mistake = 纠正错误。" },
+          { q: "amend a law 中 amend 是：", options: ["打断谈话", "修改法律或文件", "编纂词典"], answer: 1, ok: "对。amend 常用于修改法律、文件、条文。", no: "选 B。amend a law = 修改法律。" },
+          { q: "convert a room into an office 是：", options: ["把房间分成单词", "把房间改成办公室", "把房间预订出去"], answer: 1, ok: "对。convert 强调转换形式或用途。", no: "选 B。convert A into B = 把 A 转换成 B。" },
+          { q: "revert to the old system 是：", options: ["发起新制度", "补充旧制度", "恢复到旧制度"], answer: 2, ok: "对。revert 是恢复原状、回到原来的状态。", no: "选 C。revert to = 恢复到、回到。" }
+        ]
+      },
+      {
+        title: "减少、加强、影响",
+        point: "少量回收 effective / efficient，重点加速 alleviate、aggravate、intensify、influence。",
+        tag: "程度变化",
+        chat: [
+          ["me", "今天的词负责变多、变少、变严重。"],
+          ["her", "听起来很像生活。"],
+          ["me", "所以我们要 alleviate 英语压力，intensify 一点点信心。"]
+        ],
+        note: "今日小纸条：alleviate 是缓解。如果英语让你头疼，我负责 alleviating your pain.",
+        questions: [
+          { q: "小回收：efficient 更常形容：", options: ["无价的错误", "具体的房间", "高效率的人或方法"], answer: 2, ok: "对。efficient 偏高效率。", no: "选 C。efficient 常指人或方法有效率。" },
+          { q: "小回收：effective measures 中 effective 是：", options: ["有效的，奏效的", "亲密的", "敏感的"], answer: 0, ok: "对。effective 常形容措施、政策有效。", no: "选 A。effective measures = 有效措施。" },
+          { q: "alleviate pain 的意思是：", options: ["缓解疼痛", "加重疼痛", "编写疼痛"], answer: 0, ok: "对。alleviate 是缓解痛苦、减轻负担。记忆：lev 像 lift，往上托一点，痛就轻一点。", no: "选 A。alleviate pain = 缓解疼痛。" },
+          { q: "aggravate the problem 是：", options: ["解决问题", "使问题恶化", "复习问题"], answer: 1, ok: "对。aggravate 是加重、恶化。", no: "选 B。aggravate the problem = 使问题更严重。" },
+          { q: "intensify the conflict 是：", options: ["证明冲突", "加剧冲突", "取消冲突"], answer: 1, ok: "对。intensify 是使更强烈、加剧。记忆：intense = 强烈的。", no: "选 B。intensify = 加强、加剧。" },
+          { q: "reinforce the wall 中 reinforce 是：", options: ["忽视", "羡慕", "加固"], answer: 2, ok: "对。reinforce 是加固、增强。re- + enforce，可想成“再加强一遍”。", no: "选 C。reinforce the wall = 加固墙。" },
+          { q: "decline 可表示：", options: ["凝视；怒视", "作证；核实", "下降；谢绝"], answer: 2, ok: "对。decline 既可表示下降，也可表示婉拒。", no: "选 C。decline 有下降、谢绝的意思。" },
+          { q: "influence 更偏：", options: ["潜移默化的影响", "正式颁奖", "立刻爆炸"], answer: 0, ok: "对。influence 常是间接、潜移默化的影响。", no: "选 A。influence 偏间接影响。" }
+        ]
+      },
+      {
+        title: "看、认出、忽视、模仿",
+        point: "少量回收 glance / infer，重点加速 gaze、stare、distinguish、identify、ignore、intimidate。",
+        tag: "识别类动词",
+        chat: [
+          ["me", "今天有很多‘看’。"],
+          ["her", "看题会头晕。"],
+          ["me", "那就 glance at the options，别 stare too long。看你可以另说。"]
+        ],
+        note: "今日小纸条：gaze 是凝视。看题可以 glance，看你可以 gaze.",
+        questions: [
+          { q: "小回收：glance 的意思是：", options: ["瞥一眼", "怒目而视", "恢复原状"], answer: 0, ok: "对。glance = 看一眼。", no: "选 A。glance 是短促地看一眼。" },
+          { q: "小回收：infer 是：", options: ["暗示", "推断", "恐吓"], answer: 1, ok: "对。infer 是由证据推断。", no: "选 B。infer 是推断；imply 才是暗示。" },
+          { q: "gaze 更接近：", options: ["补足", "凝视，注视", "偶然遇见"], answer: 1, ok: "对。gaze 是长时间注视，常带好奇或欣赏。", no: "选 B。gaze = 凝视、注视。" },
+          { q: "stare at someone 常表示：", options: ["尊敬某人", "预订某人", "盯着看"], answer: 2, ok: "对。stare 是盯着看，有时显得不太礼貌。", no: "选 C。stare at = 盯着看。" },
+          { q: "glimpse 的意思是：", options: ["加剧", "构成", "瞥见，一瞥"], answer: 2, ok: "对。glimpse 是短促地看见。", no: "选 C。glimpse = 瞥见。" },
+          { q: "identify the person 是：", options: ["认出这个人", "编纂这个人", "打断这个人"], answer: 0, ok: "对。identify 是认出、识别出。", no: "选 A。identify = 认出、识别。" },
+          { q: "distinguish A from B 是：", options: ["区分 A 和 B", "把 A 预订给 B", "让 A 影响 B"], answer: 0, ok: "对。distinguish 强调区分差异。", no: "选 A。distinguish A from B = 区分 A 和 B。" },
+          { q: "intimidate 的意思是：", options: ["亲密的", "恐吓，威胁", "模仿"], answer: 1, ok: "对。intimidate 是恐吓、威胁。别和 intimate 混：intimate 是亲密的。", no: "选 B。intimidate = 恐吓；intimate = 亲密的。" }
+        ]
+      },
+      {
+        title: "态度、价值、情绪",
+        point: "少量回收 sensible / sensitive，重点加速 respectable、respective、sentimental、sensational、peculiar。",
+        tag: "形容词加速",
+        chat: [
+          ["me", "今天都是形容词。"],
+          ["her", "形容词也会长得像陷阱。"],
+          ["me", "所以我给它们贴标签。你负责变厉害，我负责 respective 地心动。"]
+        ],
+        note: "今日小纸条：respective 是各自的。你负责进步，我负责在旁边认真开心。",
+        questions: [
+          { q: "小回收：sensitive 是：", options: ["无价的", "敏感的", "明智的"], answer: 1, ok: "对。sensitive = 敏感的。sense 是感觉。", no: "选 B。sensitive 是敏感的。" },
+          { q: "小回收：sensible 是：", options: ["耸人听闻的", "各自的", "明智的，理智的"], answer: 2, ok: "对。sensible = 明智的。", no: "选 C。sensible 是明智的；sensitive 是敏感的。" },
+          { q: "respectable 的意思是：", options: ["敏感的", "各自的", "值得尊敬的"], answer: 2, ok: "对。respectable 是值得尊敬的、有好名声的。", no: "选 C。respectable = 值得尊敬的。" },
+          { q: "respectful 的意思是：", options: ["尊敬他人的，恭敬的", "特定的", "无价值的"], answer: 0, ok: "对。respectful 是尊敬他人的。记忆：full of respect。", no: "选 A。respectful = 恭敬的。" },
+          { q: "respective 的意思是：", options: ["各自的，分别的", "珍贵的", "工业的"], answer: 0, ok: "对。respective 是各自的、分别的。", no: "选 A。respective = 各自的。" },
+          { q: "sentimental 更接近：", options: ["轰动的", "多愁善感的", "具体的"], answer: 1, ok: "对。sentimental 是多愁善感的、感伤的。", no: "选 B。sentimental = 多愁善感的。" },
+          { q: "sensational news 是：", options: ["各自新闻", "轰动新闻", "明智新闻"], answer: 1, ok: "对。sensational 是轰动的、令人激动的。", no: "选 B。sensational news = 轰动新闻。" },
+          { q: "peculiar 的意思更接近：", options: ["高效的", "正式的", "奇特的，怪异的"], answer: 2, ok: "对。peculiar 是奇特的、怪异的、不寻常的。", no: "选 C。peculiar = 奇特的、怪异的。" }
+        ]
+      },
+      {
+        title: "连接、联合、转移",
+        point: "少量回收 qualification / reference，重点加速 associate、combine、unite、transition、transfer。",
+        tag: "连接类词",
+        chat: [
+          ["me", "今天不是做题，是牵线。"],
+          ["her", "给谁牵线？"],
+          ["me", "给你和这些词。connect 是连接，我负责介绍，你负责眼熟。"]
+        ],
+        note: "今日小纸条：connect 是连接。今天不是做题，是给你和这些单词牵个线。",
+        questions: [
+          { q: "小回收：qualification 常指：", options: ["空房间", "通风", "资格，条件"], answer: 2, ok: "对。qualification = 资格、条件。", no: "选 C。qualification 常指资格、条件。" },
+          { q: "小回收：reference 在求职里可指：", options: ["证明推荐人", "登机证", "住宿费"], answer: 0, ok: "对。reference 可指证明推荐人。", no: "选 A。reference 在求职场景里常指证明推荐人。" },
+          { q: "associate A with B 是：", options: ["把 A 和 B 联系起来", "把 A 恐吓成 B", "把 A 降低成 B"], answer: 0, ok: "对。associate with 可表示联系、联想，也可表示交往。", no: "选 A。associate A with B = 把 A 和 B 联系起来。" },
+          { q: "ally with someone 是：", options: ["打断某人", "与某人结盟", "忽视某人"], answer: 1, ok: "对。ally with = 与……结盟。", no: "选 B。ally with someone = 与某人结盟。" },
+          { q: "combine theory with practice 是：", options: ["把实践推迟", "把理论和实践结合", "把理论取消"], answer: 1, ok: "对。combine 是结合、联合。", no: "选 B。combine A with B = 把 A 和 B 结合。" },
+          { q: "unite 更强调：", options: ["短暂瞥见", "编纂内容", "联合成一个整体"], answer: 2, ok: "对。unite 强调联合、团结成统一体。", no: "选 C。unite = 联合、团结。" },
+          { q: "transition 的意思是：", options: ["传播", "交易", "过渡，转变过程"], answer: 2, ok: "对。transition 是从一种状态到另一种状态的过渡。", no: "选 C。transition = 过渡。" },
+          { q: "transfer to another train 是：", options: ["换乘另一列车", "编写另一列车", "尊敬另一列车"], answer: 0, ok: "对。transfer 可指转移、调动、换乘。", no: "选 A。transfer 可表示换乘、转移。" }
+        ]
+      },
+      {
+        title: "词汇加速综合挑战",
+        point: "本周混合挑战：组成、改变、影响、识别、态度、连接。",
+        tag: "综合挑战",
+        chat: [
+          ["me", "最后一天，综合挑战。"],
+          ["her", "这周题好多。"],
+          ["me", "是的，但你也走了很远。错题小本本还在，答错也有人兜底。"]
+        ],
+        note: "毕业小纸条：这一周不是慢慢热身，是认真加速。你开始能认出这些词的脾气了。",
+        questions: [
+          { q: "compile 最适合搭配：", options: ["a dictionary", "a pain", "a glance"], answer: 0, ok: "对。compile a dictionary = 编纂词典。", no: "选 A。compile 常用于编纂词典、汇编内容。" },
+          { q: "rectify 最常和哪类词搭配？", options: ["smile", "mistake", "reservation"], answer: 1, ok: "对。rectify a mistake = 纠正错误。", no: "选 B。rectify 常指纠正错误。" },
+          { q: "aggravate illness 是：", options: ["预订病情", "加重病情", "缓解病情"], answer: 1, ok: "对。aggravate 是加重、恶化。", no: "选 B。aggravate illness = 加重病情。" },
+          { q: "distinguish 更强调：", options: ["构想主意", "颁发奖项", "区分差异"], answer: 2, ok: "对。distinguish 是区分、辨别。", no: "选 C。distinguish 强调区分差异。" },
+          { q: "intimate 和 intimidate 的区别正确的是：", options: ["两个都表示编纂", "intimate 是恐吓；intimidate 是亲密", "intimate 是亲密的；intimidate 是恐吓"], answer: 2, ok: "对。差一个字母，意思差很多：intimate 亲密，intimidate 恐吓。", no: "选 C。intimate = 亲密的；intimidate = 恐吓。" },
+          { q: "respective rooms 是：", options: ["各自的房间", "轰动的房间", "值得尊敬的房间"], answer: 0, ok: "对。respective = 各自的、分别的。", no: "选 A。respective rooms = 各自的房间。" },
+          { q: "transition 和 transaction 的区别更准确的是：", options: ["transition 是过渡；transaction 是交易", "transition 是交易；transaction 是过渡", "两个都只表示住宿费"], answer: 0, ok: "对。transition = 过渡；transaction = 交易。", no: "选 A。transition 是过渡，transaction 是交易。" },
+          { q: "alleviate 与 aggravate 的关系更像：", options: ["尊敬 vs 各自", "缓解 vs 加重", "凝视 vs 瞥见"], answer: 1, ok: "对。alleviate 是缓解，aggravate 是加重。", no: "选 B。alleviate = 缓解；aggravate = 加重。" },
+          { q: "be composed of 与 consist of 都可表示：", options: ["从……换乘", "由……组成", "与……结盟"], answer: 1, ok: "对。两个都可以表示由……组成；注意 consist of 常主动，be composed of 是被动结构。", no: "选 B。be composed of / consist of 都可表示由……组成。" }
+        ]
+      }
+    ];
+
+    const storageKey = "tinyEnglishLoveReviewWeek6Progress";
+    let dayIndex = Number(localStorage.getItem(storageKey + ":day") || "0");
+    let questionIndex = Number(localStorage.getItem(storageKey + ":question") || "0");
+    let score = Number(localStorage.getItem(storageKey + ":score") || "0");
+    let mistakes = [];
+    try {
+      mistakes = JSON.parse(localStorage.getItem(storageKey + ":mistakes") || "[]");
+    } catch {
+      mistakes = [];
+    }
+    dayIndex = Number.isFinite(dayIndex) ? Math.max(0, Math.min(dayIndex, lessons.length)) : 0;
+    questionIndex = Number.isFinite(questionIndex) ? Math.max(0, questionIndex) : 0;
+    score = Number.isFinite(score) ? Math.max(0, score) : 0;
+    let answered = false;
+
+    const daysEl = document.querySelector("#days");
+    const progressText = document.querySelector("#progressText");
+    const progressBar = document.querySelector("#progressBar");
+    const statusPill = document.querySelector("#statusPill");
+    const chatEl = document.querySelector("#chat");
+    const lessonCard = document.querySelector("#lessonCard");
+    const lessonTitle = document.querySelector("#lessonTitle");
+    const lessonPoint = document.querySelector("#lessonPoint");
+    const lessonTag = document.querySelector("#lessonTag");
+    const qCount = document.querySelector("#qCount");
+    const question = document.querySelector("#question");
+    const optionsEl = document.querySelector("#options");
+    const feedback = document.querySelector("#feedback");
+    const note = document.querySelector("#note");
+    const scoreLine = document.querySelector("#scoreLine");
+    const nextButton = document.querySelector("#nextButton");
+    const mistakeBox = document.querySelector("#mistakeBox");
+    const mistakeCount = document.querySelector("#mistakeCount");
+    const mistakeList = document.querySelector("#mistakeList");
+    const clearMistakesButton = document.querySelector("#clearMistakesButton");
+    const certificate = document.querySelector("#certificate");
+    const resetButton = document.querySelector("#resetButton");
+
+    function totalQuestionsBefore(day) {
+      return lessons.slice(0, day).reduce((sum, lesson) => sum + lesson.questions.length, 0);
+    }
+    function totalQuestions() {
+      return lessons.reduce((sum, lesson) => sum + lesson.questions.length, 0);
+    }
+    function save() {
+      localStorage.setItem(storageKey + ":day", String(dayIndex));
+      localStorage.setItem(storageKey + ":question", String(questionIndex));
+      localStorage.setItem(storageKey + ":score", String(score));
+      localStorage.setItem(storageKey + ":mistakes", JSON.stringify(mistakes));
+    }
+    function renderMistakes() {
+      mistakeCount.textContent = `${mistakes.length} 题`;
+      mistakeBox.classList.toggle("show", mistakes.length > 0);
+      mistakeList.innerHTML = "";
+      const recentMistakes = mistakes.slice(-8).reverse();
+      recentMistakes.forEach((item) => {
+        const row = document.createElement("div");
+        row.className = "mistake-item";
+        row.innerHTML = `
+          <strong>${item.day}｜${item.title}</strong><br>
+          ${item.question}<br>
+          你选：${item.chosen}<br>
+          正确：${item.correct}<br>
+          ${item.tip}
+        `;
+        mistakeList.appendChild(row);
+      });
+    }
+    function renderDays() {
+      daysEl.innerHTML = "";
+      lessons.forEach((_, index) => {
+        const day = document.createElement("div");
+        day.className = "day-dot";
+        if (index < dayIndex) day.classList.add("done");
+        if (index === dayIndex && dayIndex < lessons.length) day.classList.add("current");
+        day.textContent = index + 1;
+        daysEl.appendChild(day);
+      });
+    }
+    function render() {
+      answered = false;
+      renderDays();
+      renderMistakes();
+      const doneQuestions = dayIndex >= lessons.length ? totalQuestions() : totalQuestionsBefore(dayIndex) + questionIndex;
+      progressBar.style.width = `${Math.round(doneQuestions / totalQuestions() * 100)}%`;
+      progressText.textContent = dayIndex >= lessons.length ? "第六周完成" : `第 ${dayIndex + 1} / 7 天`;
+      statusPill.textContent = dayIndex >= lessons.length ? "已毕业" : "今日待完成";
+
+      if (dayIndex >= lessons.length) {
+        lessonCard.style.display = "none";
+        chatEl.style.display = "none";
+        certificate.classList.add("show");
+        return;
+      }
+
+      const lesson = lessons[dayIndex];
+      if (questionIndex >= lesson.questions.length) {
+        dayIndex += 1;
+        questionIndex = 0;
+        save();
+        render();
+        return;
+      }
+
+      const current = lesson.questions[questionIndex];
+      lessonCard.style.display = "";
+      chatEl.style.display = "";
+      certificate.classList.remove("show");
+      lessonTitle.textContent = `Day ${dayIndex + 1}｜${lesson.title}`;
+      lessonPoint.textContent = lesson.point;
+      lessonTag.textContent = lesson.tag;
+      qCount.textContent = `今日第 ${questionIndex + 1} / ${lesson.questions.length} 题`;
+      question.textContent = current.q;
+      feedback.className = "feedback";
+      feedback.textContent = "";
+      note.className = "note";
+      note.textContent = lesson.note;
+      nextButton.hidden = true;
+      nextButton.textContent = questionIndex === lesson.questions.length - 1 ? "完成今天的小复习" : "下一题";
+      scoreLine.textContent = `本周目前答对 ${score} / ${doneQuestions} 题`;
+
+      chatEl.innerHTML = "";
+      lesson.chat.forEach(([who, text], index) => {
+        const bubble = document.createElement("div");
+        bubble.className = `bubble ${who}`;
+        bubble.style.animationDelay = `${index * .08}s`;
+        bubble.textContent = text;
+        chatEl.appendChild(bubble);
+      });
+
+      optionsEl.innerHTML = "";
+      current.options.forEach((text, index) => {
+        const option = document.createElement("button");
+        option.className = "option";
+        option.textContent = `${String.fromCharCode(65 + index)}. ${text}`;
+        option.addEventListener("click", () => choose(index));
+        optionsEl.appendChild(option);
+      });
+    }
+    function choose(index) {
+      if (answered) return;
+      answered = true;
+      const current = lessons[dayIndex].questions[questionIndex];
+      if (index === current.answer) {
+        score += 1;
+      } else {
+        const key = `${dayIndex}-${questionIndex}`;
+        const chosen = `${String.fromCharCode(65 + index)}. ${current.options[index]}`;
+        const correct = `${String.fromCharCode(65 + current.answer)}. ${current.options[current.answer]}`;
+        mistakes = mistakes.filter((item) => item.key !== key);
+        mistakes.push({
+          key,
+          day: `Day ${dayIndex + 1}`,
+          title: lessons[dayIndex].title,
+          question: current.q,
+          chosen,
+          correct,
+          tip: current.no
+        });
+      }
+      [...optionsEl.querySelectorAll(".option")].forEach((button, buttonIndex) => {
+        if (buttonIndex === current.answer) button.classList.add("correct");
+        if (buttonIndex === index && index !== current.answer) button.classList.add("wrong");
+      });
+      feedback.textContent = index === current.answer ? current.ok : current.no;
+      feedback.classList.add("show");
+      note.classList.add("show");
+      nextButton.hidden = false;
+      statusPill.textContent = index === current.answer ? "答对啦" : "已复习";
+      scoreLine.textContent = `本周目前答对 ${score} / ${totalQuestionsBefore(dayIndex) + questionIndex + 1} 题`;
+      save();
+      renderMistakes();
+    }
+    nextButton.addEventListener("click", () => {
+      questionIndex += 1;
+      if (questionIndex >= lessons[dayIndex].questions.length) {
+        dayIndex += 1;
+        questionIndex = 0;
+      }
+      save();
+      render();
+      document.querySelector(".phone").scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+    resetButton.addEventListener("click", () => {
+      dayIndex = 0;
+      questionIndex = 0;
+      score = 0;
+      mistakes = [];
+      save();
+      render();
+    });
+    clearMistakesButton.addEventListener("click", () => {
+      mistakes = [];
+      save();
+      renderMistakes();
+    });
+    render();
+  </script>
+</body>
+</html>
