@@ -92,6 +92,38 @@
     }
     .day-dot.done { color: white; background: linear-gradient(135deg, var(--pink), var(--violet)); border-color: transparent; }
     .day-dot.current { color: var(--pink-dark); outline: 3px solid rgba(255,111,174,.22); }
+    .home-card h2 { margin-bottom: 8px; }
+    .home-actions { display: grid; gap: 10px; margin-top: 14px; }
+    .home-tip {
+      display: none;
+      margin-top: 12px;
+      padding: 12px 14px;
+      border-radius: 18px;
+      background: #fff0f7;
+      color: #6c405a;
+      line-height: 1.55;
+      font-size: 14px;
+    }
+    .home-tip.show { display: block; }
+    .day-picker {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 9px;
+      margin-top: 14px;
+    }
+    .day-button {
+      min-height: 48px;
+      padding: 10px;
+      border-radius: 16px;
+      background: rgba(255,255,255,.78);
+      border: 1px solid var(--line);
+      color: var(--text);
+      font-weight: 850;
+      text-align: left;
+    }
+    .day-button span { display: block; margin-top: 3px; color: var(--muted); font-size: 12px; font-weight: 700; }
+    .day-button.done { color: white; background: linear-gradient(135deg, var(--pink), var(--violet)); border-color: transparent; }
+    .day-button.current { outline: 3px solid rgba(255,111,174,.22); }
     .chat { display: flex; flex-direction: column; gap: 10px; }
     .bubble {
       max-width: 88%;
@@ -208,6 +240,17 @@
         <div class="bar"><span id="progressBar"></span></div>
         <div class="days" id="days"></div>
       </section>
+      <section class="card home-card" id="homeCard" aria-label="分段学习入口">
+        <h2>今天想怎么复习？</h2>
+        <p class="tiny" id="homeSummary">已经帮你保存进度，下次打开可以继续。</p>
+        <div class="home-actions">
+          <button class="primary" id="continueButton">继续上次的小复习</button>
+          <button class="secondary" id="miniSessionButton">今天先做 5 题</button>
+          <button class="secondary" id="mistakeHomeButton">看看错题小本本</button>
+        </div>
+        <div class="home-tip" id="homeTip"></div>
+        <div class="day-picker" id="dayPicker" aria-label="选择某一天练习"></div>
+      </section>
       <section class="card chat" id="chat" aria-label="日常对话"></section>
       <section class="card" id="lessonCard" aria-label="今日小题">
         <div class="row lesson-head">
@@ -224,6 +267,7 @@
         <div class="note" id="note"></div>
         <p class="score" id="scoreLine"></p>
         <button class="primary" id="nextButton" hidden>下一题</button>
+        <button class="secondary" id="pauseButton">今天先到这里</button>
       </section>
       <section class="card mistake-box" id="mistakeBox" aria-label="错题小本本">
         <div class="row lesson-head">
@@ -416,6 +460,13 @@
     const progressText = document.querySelector("#progressText");
     const progressBar = document.querySelector("#progressBar");
     const statusPill = document.querySelector("#statusPill");
+    const homeCard = document.querySelector("#homeCard");
+    const homeSummary = document.querySelector("#homeSummary");
+    const homeTip = document.querySelector("#homeTip");
+    const continueButton = document.querySelector("#continueButton");
+    const miniSessionButton = document.querySelector("#miniSessionButton");
+    const mistakeHomeButton = document.querySelector("#mistakeHomeButton");
+    const dayPicker = document.querySelector("#dayPicker");
     const chatEl = document.querySelector("#chat");
     const lessonCard = document.querySelector("#lessonCard");
     const lessonTitle = document.querySelector("#lessonTitle");
@@ -428,12 +479,15 @@
     const note = document.querySelector("#note");
     const scoreLine = document.querySelector("#scoreLine");
     const nextButton = document.querySelector("#nextButton");
+    const pauseButton = document.querySelector("#pauseButton");
     const mistakeBox = document.querySelector("#mistakeBox");
     const mistakeCount = document.querySelector("#mistakeCount");
     const mistakeList = document.querySelector("#mistakeList");
     const clearMistakesButton = document.querySelector("#clearMistakesButton");
     const certificate = document.querySelector("#certificate");
     const resetButton = document.querySelector("#resetButton");
+    let sessionLimit = 0;
+    let sessionAnswered = 0;
 
     function totalQuestionsBefore(day) {
       return lessons.slice(0, day).reduce((sum, lesson) => sum + lesson.questions.length, 0);
@@ -476,14 +530,78 @@
         daysEl.appendChild(day);
       });
     }
+    function updateProgress() {
+      const doneQuestions = dayIndex >= lessons.length ? totalQuestions() : totalQuestionsBefore(dayIndex) + questionIndex;
+      progressBar.style.width = `${Math.round(doneQuestions / totalQuestions() * 100)}%`;
+      progressText.textContent = dayIndex >= lessons.length ? "第六周完成" : `第 ${dayIndex + 1} / 7 天`;
+      statusPill.textContent = dayIndex >= lessons.length ? "已毕业" : "已保存进度";
+      return doneQuestions;
+    }
+    function renderDayPicker() {
+      dayPicker.innerHTML = "";
+      lessons.forEach((lesson, index) => {
+        const button = document.createElement("button");
+        button.className = "day-button";
+        if (index < dayIndex) button.classList.add("done");
+        if (index === dayIndex && dayIndex < lessons.length) button.classList.add("current");
+        const state = index < dayIndex ? "已完成" : index === dayIndex ? "从这里继续" : "未解锁";
+        button.innerHTML = `Day ${index + 1}<span>${lesson.title}｜${lesson.questions.length} 题｜${state}</span>`;
+        button.addEventListener("click", () => {
+          if (dayIndex >= lessons.length) {
+            showHome("这一周已经完成啦。想重刷的话，可以点证书里的重新开始。");
+            return;
+          }
+          if (index < dayIndex) {
+            showHome(`Day ${index + 1} 已经完成啦。想回看薄弱点，可以先看错题小本本。`);
+            return;
+          }
+          if (index > dayIndex) {
+            showHome(`先把 Day ${dayIndex + 1} 做完，再解锁 Day ${index + 1}。我会帮你把节奏守住。`);
+            return;
+          }
+          startQuiz(0);
+        });
+        dayPicker.appendChild(button);
+      });
+    }
+    function showHome(message = "") {
+      sessionLimit = 0;
+      sessionAnswered = 0;
+      answered = false;
+      renderDays();
+      renderMistakes();
+      renderDayPicker();
+      const doneQuestions = updateProgress();
+      homeCard.style.display = "";
+      chatEl.style.display = "none";
+      lessonCard.style.display = "none";
+      certificate.classList.toggle("show", dayIndex >= lessons.length);
+      homeSummary.textContent = dayIndex >= lessons.length
+        ? `第六周已经完成啦：本周答对 ${score} / ${totalQuestions()} 题。`
+        : `现在停在 Day ${dayIndex + 1}，第 ${questionIndex + 1} 题附近。本周已完成 ${doneQuestions} / ${totalQuestions()} 题。`;
+      homeTip.textContent = message || "不用一次性做完。今天学一点，明天还能从这里接着来。";
+      homeTip.classList.add("show");
+      continueButton.textContent = dayIndex >= lessons.length ? "本周已完成，看看证书" : "继续上次的小复习";
+      miniSessionButton.hidden = dayIndex >= lessons.length;
+      document.querySelector(".phone").scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+    function startQuiz(limit) {
+      if (dayIndex >= lessons.length) {
+        showHome("这一周已经完成啦。想重刷的话，可以点证书里的重新开始。");
+        return;
+      }
+      sessionLimit = limit;
+      sessionAnswered = 0;
+      homeCard.style.display = "none";
+      render();
+    }
     function render() {
       answered = false;
       renderDays();
       renderMistakes();
-      const doneQuestions = dayIndex >= lessons.length ? totalQuestions() : totalQuestionsBefore(dayIndex) + questionIndex;
-      progressBar.style.width = `${Math.round(doneQuestions / totalQuestions() * 100)}%`;
-      progressText.textContent = dayIndex >= lessons.length ? "第六周完成" : `第 ${dayIndex + 1} / 7 天`;
-      statusPill.textContent = dayIndex >= lessons.length ? "已毕业" : "今日待完成";
+      const doneQuestions = updateProgress();
+      if (dayIndex < lessons.length) statusPill.textContent = sessionLimit ? `轻量 ${sessionLimit} 题` : "今日待完成";
+      homeCard.style.display = "none";
 
       if (dayIndex >= lessons.length) {
         lessonCard.style.display = "none";
@@ -577,8 +695,19 @@
         questionIndex = 0;
       }
       save();
+      if (sessionLimit) {
+        sessionAnswered += 1;
+        if (sessionAnswered >= sessionLimit && dayIndex < lessons.length) {
+          showHome(`今天 ${sessionLimit} 题完成啦。进度已经存好，下次点“继续上次的小复习”就接着来。`);
+          return;
+        }
+      }
       render();
       document.querySelector(".phone").scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+    pauseButton.addEventListener("click", () => {
+      save();
+      showHome("已保存到这里。今天先收工也很好，英语不是一口吞完的。");
     });
     resetButton.addEventListener("click", () => {
       dayIndex = 0;
@@ -586,14 +715,24 @@
       score = 0;
       mistakes = [];
       save();
-      render();
+      showHome("已经从第 1 天重新开始。我们轻一点来，慢慢也会很远。");
     });
     clearMistakesButton.addEventListener("click", () => {
       mistakes = [];
       save();
       renderMistakes();
     });
-    render();
+    continueButton.addEventListener("click", () => startQuiz(0));
+    miniSessionButton.addEventListener("click", () => startQuiz(5));
+    mistakeHomeButton.addEventListener("click", () => {
+      renderMistakes();
+      if (mistakes.length === 0) {
+        showHome("目前还没有错题，小本本空空的，心情亮亮的。");
+      } else {
+        mistakeBox.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    });
+    showHome();
   </script>
 </body>
 </html>
