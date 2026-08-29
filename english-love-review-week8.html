@@ -6,31 +6,30 @@
   <title>第八周：高频辨析进阶，备注：来自你的小可爱陪练</title>
   <style>
     :root {
-      --ink: #241824;
-      --muted: #7d6478;
-      --cream: #fff8ef;
-      --rose: #ff6fae;
-      --rose-deep: #d9448a;
-      --violet: #765df4;
-      --plum: #35213b;
-      --line: rgba(255,255,255,.66);
-      --card: rgba(255,255,255,.78);
-      font-family: "Geist", "Outfit", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      --text: #2c2030;
+      --muted: #7f667d;
+      --pink: #ff6fae;
+      --pink-dark: #cf3f86;
+      --violet: #7565f7;
+      --apricot: #ffc977;
+      --line: rgba(246, 204, 226, .88);
+      --card: rgba(255,255,255,.82);
+      font-family: "Outfit", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     }
     * { box-sizing: border-box; }
     html { overflow-x: hidden; }
     body {
       min-height: 100vh;
       margin: 0;
-      color: var(--ink);
+      color: var(--text);
       background:
-        radial-gradient(circle at 18% 2%, rgba(255,111,174,.36), transparent 30%),
-        radial-gradient(circle at 88% 8%, rgba(118,93,244,.30), transparent 31%),
-        radial-gradient(circle at 50% 96%, rgba(255,214,165,.42), transparent 32%),
-        linear-gradient(145deg, #fff8ef 0%, #fff0f8 42%, #eeeaff 100%);
+        radial-gradient(circle at 12% 5%, rgba(255, 111, 174, .34) 0 16%, transparent 31%),
+        radial-gradient(circle at 92% 10%, rgba(117, 101, 247, .28) 0 15%, transparent 30%),
+        radial-gradient(circle at 52% 92%, rgba(255, 201, 119, .34) 0 16%, transparent 34%),
+        linear-gradient(155deg, #fffaf6 0%, #fff0f8 46%, #f0edff 100%);
       display: flex;
       justify-content: center;
-      padding: 14px;
+      padding: 18px;
       overflow-x: hidden;
     }
     body::before {
@@ -38,168 +37,277 @@
       position: fixed;
       inset: 0;
       pointer-events: none;
-      opacity: .13;
-      background-image: linear-gradient(rgba(36,24,36,.22) 1px, transparent 1px), linear-gradient(90deg, rgba(36,24,36,.18) 1px, transparent 1px);
-      background-size: 42px 42px;
-      mask-image: radial-gradient(circle at 50% 18%, black, transparent 72%);
+      opacity: .18;
+      background-image:
+        linear-gradient(rgba(255,255,255,.8) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.65) 1px, transparent 1px);
+      background-size: 38px 38px;
+      mask-image: radial-gradient(circle at 50% 16%, black, transparent 70%);
     }
     button { border: 0; font: inherit; cursor: pointer; -webkit-tap-highlight-color: transparent; }
     .phone {
       position: relative;
-      width: min(450px, 100%);
-      min-height: calc(100vh - 28px);
+      width: min(430px, 100%);
+      min-height: calc(100vh - 36px);
       overflow: hidden;
       border-radius: 34px;
-      background: rgba(255,255,255,.54);
+      background: linear-gradient(180deg, rgba(255,255,255,.72), rgba(255,255,255,.46));
       border: 1px solid rgba(255,255,255,.9);
-      box-shadow: 0 30px 80px rgba(91,47,91,.22);
+      box-shadow: 0 26px 70px rgba(129, 78, 128, .22);
       backdrop-filter: blur(22px);
     }
-    .top-nav {
-      position: sticky;
-      top: 10px;
-      z-index: 5;
-      width: calc(100% - 28px);
-      margin: 12px auto 0;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 12px;
-      padding: 10px 12px;
-      border: 1px solid rgba(255,255,255,.9);
-      border-radius: 999px;
-      background: rgba(255,255,255,.72);
-      box-shadow: 0 12px 30px rgba(95,55,110,.12);
-      backdrop-filter: blur(18px);
+    .phone::before {
+      content: "";
+      position: absolute;
+      inset: -80px -80px auto auto;
+      width: 210px;
+      height: 210px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255,111,174,.22), transparent 68%);
+      pointer-events: none;
     }
-    .brand { font-size: 13px; font-weight: 950; letter-spacing: .02em; color: var(--plum); }
-    .nav-link { font-size: 12px; font-weight: 850; color: var(--rose-deep); text-decoration: none; }
     header {
       position: relative;
-      min-height: 300px;
-      padding: 28px 22px 24px;
-      display: grid;
-      align-items: end;
-      isolation: isolate;
-    }
-    header::before {
-      content: "";
-      position: absolute;
-      inset: 12px;
-      z-index: -2;
-      border-radius: 30px;
+      padding: 24px 22px 18px;
       background:
-        linear-gradient(105deg, rgba(36,24,36,.88), rgba(36,24,36,.42) 54%, rgba(255,111,174,.24)),
-        url('https://picsum.photos/seed/week8-study-glass/1200/900') center/cover;
-      filter: contrast(1.08) saturate(.78);
-      box-shadow: inset 0 -80px 120px rgba(0,0,0,.32);
+        linear-gradient(135deg, rgba(255,255,255,.96), rgba(255,255,255,.46)),
+        radial-gradient(circle at 92% 18%, rgba(255,111,174,.28), transparent 34%);
+      border-bottom: 1px solid rgba(255,255,255,.58);
+      overflow: hidden;
     }
     header::after {
-      content: "";
+      content: "Love review";
       position: absolute;
-      right: 28px;
-      top: 42px;
-      width: 104px;
-      height: 142px;
-      z-index: -1;
-      border-radius: 999px;
-      background: url('https://picsum.photos/seed/tiny-review-note/420/560') center/cover;
-      opacity: .78;
-      mix-blend-mode: luminosity;
-      border: 1px solid rgba(255,255,255,.38);
-      box-shadow: 0 22px 50px rgba(0,0,0,.26);
+      right: -18px;
+      bottom: 6px;
+      color: rgba(207,63,134,.08);
+      font-size: 42px;
+      font-weight: 950;
+      letter-spacing: -.06em;
+      pointer-events: none;
     }
     .kicker {
-      color: #ffd7e7;
-      font-size: 11px;
-      letter-spacing: .12em;
+      color: var(--pink-dark);
+      font-size: 12px;
+      letter-spacing: .1em;
       text-transform: uppercase;
       font-weight: 950;
     }
-    h1 { max-width: 390px; margin: 8px 0 10px; color: white; font-size: clamp(34px, 10vw, 46px); line-height: .98; letter-spacing: -.055em; }
-    .sub { max-width: 330px; margin: 0; color: rgba(255,255,255,.82); line-height: 1.55; font-size: 14px; }
-    main { width: 100%; max-width: 100%; padding: 0 16px 18px; display: grid; gap: 16px; overflow-x: hidden; }
-    .card {
-      background: var(--card);
-      border: 1px solid rgba(255,255,255,.9);
-      border-radius: 28px;
-      box-shadow: 0 16px 34px rgba(87,54,92,.12);
-      padding: 18px;
-      backdrop-filter: blur(16px);
+    h1 {
+      width: min(100%, 360px);
+      margin: 8px 0 10px;
+      font-size: clamp(28px, 7.6vw, 36px);
+      line-height: 1.08;
+      letter-spacing: -.045em;
     }
-    .stack-card { transform-origin: top center; }
+    .sub { position: relative; margin: 0; color: var(--muted); line-height: 1.58; font-size: 15px; }
+    main { padding: 0 16px 18px; display: grid; gap: 14px; }
+    .card {
+      position: relative;
+      background: var(--card);
+      border: 1px solid rgba(255,255,255,.92);
+      border-radius: 28px;
+      box-shadow: 0 16px 34px rgba(124,80,108,.13);
+      padding: 18px;
+      backdrop-filter: blur(18px);
+    }
+    .card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      pointer-events: none;
+      background: linear-gradient(135deg, rgba(255,255,255,.46), transparent 42%);
+    }
     .row { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
-    .pill { color: var(--rose-deep); background: #ffe4f0; border-radius: 999px; padding: 7px 11px; font-size: 13px; font-weight: 850; white-space: nowrap; }
-    .bar { height: 10px; border-radius: 999px; background: rgba(241,220,233,.86); overflow: hidden; margin-top: 10px; }
-    .bar span { display: block; width: 0%; height: 100%; border-radius: inherit; background: linear-gradient(90deg, var(--rose), var(--violet)); transition: width .25s ease; }
+    .pill {
+      color: var(--pink-dark);
+      background: linear-gradient(135deg, #ffe4f0, #efeaff);
+      border: 1px solid rgba(255,255,255,.72);
+      border-radius: 999px;
+      padding: 7px 11px;
+      font-size: 13px;
+      font-weight: 900;
+      white-space: nowrap;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.7);
+    }
+    .bar { height: 11px; border-radius: 999px; background: rgba(241,220,233,.92); overflow: hidden; margin-top: 11px; box-shadow: inset 0 1px 4px rgba(83,52,80,.08); }
+    .bar span {
+      display: block;
+      width: 0%;
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, var(--pink), var(--violet), var(--apricot));
+      transition: width .32s ease;
+    }
     .days { display: grid; grid-template-columns: repeat(7, 1fr); gap: 7px; margin-top: 14px; }
-    .day-dot { min-height: 42px; display: grid; place-items: center; border-radius: 16px; background: rgba(255,255,255,.75); border: 1px solid #f3d7e6; color: var(--muted); font-weight: 900; }
-    .day-dot.done { color: white; background: linear-gradient(135deg, var(--rose), var(--violet)); border-color: transparent; }
-    .day-dot.current { color: var(--rose-deep); outline: 3px solid rgba(255,111,174,.22); }
-    .home-card { background: linear-gradient(155deg, rgba(255,255,255,.86), rgba(255,239,247,.70)); }
+    .day-dot {
+      min-height: 42px;
+      display: grid;
+      place-items: center;
+      border-radius: 16px;
+      background: rgba(255,255,255,.78);
+      border: 1px solid var(--line);
+      color: var(--muted);
+      font-weight: 950;
+      box-shadow: 0 6px 14px rgba(139,86,118,.06);
+    }
+    .day-dot.done { color: white; background: linear-gradient(135deg, var(--pink), var(--violet)); border-color: transparent; }
+    .day-dot.current { color: var(--pink-dark); outline: 3px solid rgba(255,111,174,.2); background: #fff; }
+    .home-card { background: linear-gradient(155deg, rgba(255,255,255,.9), rgba(255,244,250,.76)); }
     .home-card h2 { margin-bottom: 8px; }
-    .home-actions { display: grid; grid-template-columns: repeat(2, 1fr); grid-auto-flow: dense; gap: 10px; margin-top: 14px; }
-    .home-actions .primary { grid-column: span 2; }
-    .home-tip { display: none; margin-top: 12px; padding: 12px 14px; border-radius: 18px; background: #fff0f7; color: #6c405a; line-height: 1.55; font-size: 14px; }
+    .home-actions { display: grid; gap: 10px; margin-top: 14px; }
+    .home-tip {
+      display: none;
+      margin-top: 12px;
+      padding: 12px 14px;
+      border-radius: 18px;
+      background: linear-gradient(135deg, #fff0f7, #f5f0ff);
+      color: #6c405a;
+      line-height: 1.55;
+      font-size: 14px;
+      border: 1px solid rgba(255,255,255,.72);
+    }
     .home-tip.show { display: block; }
-    .day-picker { display: grid; grid-template-columns: repeat(2, 1fr); grid-auto-flow: dense; gap: 9px; margin-top: 14px; }
-    .day-button { min-height: 54px; padding: 11px; border-radius: 18px; background: rgba(255,255,255,.78); border: 1px solid #f3d7e6; color: var(--ink); font-weight: 900; text-align: left; transition: transform .35s ease, box-shadow .35s ease; }
-    .day-button:hover, .option:hover { transform: translateY(-2px); box-shadow: 0 14px 28px rgba(120,70,120,.16); }
-    .day-button span { display: block; margin-top: 3px; color: var(--muted); font-size: 12px; font-weight: 700; }
-    .day-button.done { color: white; background: linear-gradient(135deg, var(--rose), var(--violet)); border-color: transparent; }
+    .day-picker {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 9px;
+      margin-top: 14px;
+    }
+    .day-button {
+      min-height: 50px;
+      padding: 11px;
+      border-radius: 17px;
+      background: rgba(255,255,255,.82);
+      border: 1px solid var(--line);
+      color: var(--text);
+      font-weight: 900;
+      text-align: left;
+      box-shadow: 0 8px 18px rgba(139,86,118,.07);
+      transition: transform .22s ease, box-shadow .22s ease, border-color .22s ease;
+    }
+    .day-button:active, .option:active, .primary:active, .secondary:active { transform: scale(.985); }
+    .day-button span { display: block; margin-top: 3px; color: var(--muted); font-size: 12px; font-weight: 700; line-height: 1.35; }
+    .day-button.done { color: white; background: linear-gradient(135deg, var(--pink), var(--violet)); border-color: transparent; }
     .day-button.done span { color: rgba(255,255,255,.82); }
-    .day-button.current { outline: 3px solid rgba(255,111,174,.22); }
-    .accordion-strip { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-top: 14px; }
-    .slice { min-height: 72px; padding: 12px; border-radius: 20px; color: white; background: linear-gradient(145deg, #35213b, #765df4); overflow: hidden; transition: grid-column .45s ease, transform .45s ease; }
-    .slice:hover { transform: scale(1.025); }
-    .slice small { display: block; opacity: .72; margin-bottom: 6px; }
-    .slice strong { font-size: 15px; line-height: 1.2; }
+    .day-button.current { color: var(--pink-dark); outline: 3px solid rgba(255,111,174,.18); border-color: rgba(255,111,174,.42); }
     .chat { display: flex; flex-direction: column; gap: 10px; }
-    .bubble { max-width: 88%; padding: 12px 14px; border-radius: 20px; line-height: 1.55; font-size: 15px; white-space: pre-line; animation: floatIn .25s ease both; }
-    .bubble.me { align-self: flex-end; color: white; background: linear-gradient(135deg, var(--rose), var(--violet)); border-bottom-right-radius: 8px; }
-    .bubble.her { align-self: flex-start; background: white; border: 1px solid #f3d7e6; border-bottom-left-radius: 8px; }
+    .bubble {
+      max-width: 88%;
+      padding: 12px 14px;
+      border-radius: 20px;
+      line-height: 1.55;
+      font-size: 15px;
+      white-space: pre-line;
+      animation: floatIn .25s ease both;
+      box-shadow: 0 10px 20px rgba(139,86,118,.08);
+    }
+    .bubble.me {
+      align-self: flex-end;
+      color: white;
+      background: linear-gradient(135deg, var(--pink), var(--violet));
+      border-bottom-right-radius: 8px;
+    }
+    .bubble.her { align-self: flex-start; background: white; border: 1px solid var(--line); border-bottom-left-radius: 8px; }
     @keyframes floatIn { from { transform: translateY(8px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
     h2 { margin: 0 0 5px; font-size: 22px; letter-spacing: -.02em; }
     .tiny { margin: 0; color: var(--muted); line-height: 1.5; font-size: 13px; }
     .lesson-head { align-items: flex-start; margin-bottom: 12px; }
-    .q-count { margin: 10px 0 0; color: var(--muted); font-weight: 850; font-size: 14px; }
-    .question { margin: 10px 0 12px; line-height: 1.6; color: #5c425b; font-weight: 800; }
+    .q-count { margin: 10px 0 0; color: var(--muted); font-weight: 900; font-size: 14px; }
+    .question { margin: 10px 0 12px; line-height: 1.62; color: #5d425f; font-weight: 850; }
     .options { display: grid; gap: 10px; }
-    .option { width: 100%; min-height: 52px; text-align: left; padding: 13px 14px; border-radius: 18px; background: white; color: var(--ink); border: 1px solid #f3d7e6; box-shadow: 0 8px 16px rgba(139,86,118,.08); transition: transform .25s ease, box-shadow .25s ease; }
+    .option {
+      width: 100%;
+      min-height: 52px;
+      text-align: left;
+      padding: 13px 14px;
+      border-radius: 18px;
+      background: rgba(255,255,255,.95);
+      color: var(--text);
+      border: 1px solid var(--line);
+      box-shadow: 0 9px 18px rgba(139,86,118,.08);
+      transition: transform .22s ease, box-shadow .22s ease, border-color .22s ease;
+    }
+    .option:hover, .day-button:hover { transform: translateY(-1px); box-shadow: 0 12px 24px rgba(139,86,118,.12); }
     .option.correct { border-color: rgba(33,168,120,.55); background: #effcf7; color: #106947; }
     .option.wrong { border-color: rgba(228,90,104,.5); background: #fff1f3; color: #923340; }
-    .feedback, .note { display: none; margin-top: 14px; padding: 14px; border-radius: 20px; line-height: 1.6; }
-    .feedback { background: #fff0f7; color: #6c405a; }
+    .feedback, .note {
+      display: none;
+      margin-top: 14px;
+      padding: 14px;
+      border-radius: 20px;
+      line-height: 1.6;
+    }
+    .feedback { background: linear-gradient(135deg, #fff0f7, #f7f1ff); color: #6c405a; }
     .note { background: #fffaf0; border: 1px dashed #efbd72; color: #755321; }
     .show { display: block; }
-    .primary, .secondary { width: 100%; min-height: 52px; margin-top: 0; border-radius: 18px; font-weight: 950; transition: transform .25s ease, box-shadow .25s ease; }
-    #nextButton, #pauseButton, #resetButton, #clearMistakesButton { margin-top: 14px; }
-    .primary { color: white; background: linear-gradient(135deg, var(--plum), var(--violet) 54%, var(--rose)); box-shadow: 0 16px 30px rgba(118,93,244,.25); }
-    .secondary { color: var(--plum); background: rgba(255,228,240,.95); border: 1px solid rgba(255,255,255,.7); }
-    .primary:hover, .secondary:hover { transform: translateY(-2px); }
+    .primary, .secondary {
+      width: 100%;
+      min-height: 52px;
+      margin-top: 14px;
+      border-radius: 18px;
+      font-weight: 950;
+      transition: transform .22s ease, box-shadow .22s ease;
+    }
+    .primary { color: white; background: linear-gradient(135deg, #302431, var(--violet) 58%, var(--pink)); box-shadow: 0 16px 28px rgba(117,101,247,.24); }
+    .secondary { color: var(--pink-dark); background: linear-gradient(135deg, #ffe4f0, #f3efff); border: 1px solid rgba(255,255,255,.72); }
+    .primary:hover, .secondary:hover { transform: translateY(-1px); }
     .score { margin: 12px 0 0; color: var(--muted); line-height: 1.5; font-size: 14px; }
-    .mistake-box { display: none; background: #fffaf0; border: 1px dashed #efbd72; }
+    .mistake-box {
+      display: none;
+      background: linear-gradient(155deg, #fffaf0, #fff5df);
+      border: 1px dashed #efbd72;
+    }
     .mistake-box.show { display: block; }
     .mistake-list { display: grid; gap: 10px; margin-top: 12px; }
-    .mistake-item { padding: 12px; border-radius: 18px; background: rgba(255,255,255,.78); border: 1px solid #f1d8a7; line-height: 1.55; color: #755321; font-size: 14px; }
+    .mistake-item {
+      padding: 12px;
+      border-radius: 18px;
+      background: rgba(255,255,255,.82);
+      border: 1px solid #f1d8a7;
+      line-height: 1.55;
+      color: #755321;
+      font-size: 14px;
+      box-shadow: 0 8px 16px rgba(117,83,33,.07);
+    }
     .mistake-item strong { color: #5f3f13; }
-    .certificate { display: none; text-align: center; background: linear-gradient(155deg, #fff8e8, #ffeaf5); border: 1px solid #f1c98d; }
+    .certificate {
+      display: none;
+      text-align: center;
+      background: linear-gradient(155deg, #fff8e8, #ffeaf5);
+      border: 1px solid #f1c98d;
+    }
     .certificate.show { display: block; }
-    .seal { width: 74px; height: 74px; margin: 4px auto 12px; display: grid; place-items: center; border-radius: 50%; color: white; background: linear-gradient(135deg, #f4b84f, #ff6fae); font-size: 28px; font-weight: 950; }
+    .seal {
+      width: 74px;
+      height: 74px;
+      margin: 4px auto 12px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      color: white;
+      background: linear-gradient(135deg, #f4b84f, #ff6fae, #7565f7);
+      font-size: 28px;
+      font-weight: 950;
+      box-shadow: 0 14px 30px rgba(255,111,174,.24);
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }
+    }
 
   </style>
 </head>
 <body>
   <section class="phone" aria-label="第八周英语小复习手机网页App">
-    <nav class="top-nav" aria-label="学习导航"><span class="brand">Week 8 Review</span><a class="nav-link" href="#lessonCard">开始小题</a></nav>
     <header>
-      <div class="kicker">Week 8 · Distinctions, Softer Focus</div>
+      <div class="kicker">Week 8 · Distinctions, Tiny Steps</div>
       <h1>第八周：高频辨析进阶</h1>
       <p class="sub">备注：来自你的小可爱陪练</p>
       <p class="sub">这周进入高频辨析：遵守、清除、事件、获得、影响、声称、保证、评估和保存。每次可以只做 5 题，答错仍然会进“错题小本本”。</p>
     </header>
     <main>
-      <section class="card stack-card" aria-label="学习进度">
+      <section class="card" aria-label="学习进度">
         <div class="row">
           <strong id="progressText">第 1 / 7 天</strong>
           <span class="pill" id="statusPill">今日待完成</span>
@@ -207,7 +315,7 @@
         <div class="bar"><span id="progressBar"></span></div>
         <div class="days" id="days"></div>
       </section>
-      <section class="card home-card stack-card" id="homeCard" aria-label="分段学习入口">
+      <section class="card home-card" id="homeCard" aria-label="分段学习入口">
         <h2>今天想怎么复习？</h2>
         <p class="tiny" id="homeSummary">已经帮你保存进度，下次打开可以继续。</p>
         <div class="home-actions">
@@ -216,10 +324,10 @@
           <button class="secondary" id="mistakeHomeButton">看看错题小本本</button>
         </div>
         <div class="home-tip" id="homeTip"></div>
-        <div class="accordion-strip" aria-label="学习节奏提示"><div class="slice"><small>先轻量</small><strong>5 题也算认真来过</strong></div><div class="slice"><small>再辨析</small><strong>介词和搭配一起记</strong></div><div class="slice"><small>后回看</small><strong>错题本负责兜底</strong></div></div><div class="day-picker" id="dayPicker" aria-label="选择某一天练习"></div>
+        <div class="day-picker" id="dayPicker" aria-label="选择某一天练习"></div>
       </section>
-      <section class="card chat stack-card" id="chat" aria-label="日常对话"></section>
-      <section class="card stack-card" id="lessonCard" aria-label="今日小题">
+      <section class="card chat" id="chat" aria-label="日常对话"></section>
+      <section class="card" id="lessonCard" aria-label="今日小题">
         <div class="row lesson-head">
           <div>
             <h2 id="lessonTitle">Day 1</h2>
@@ -236,7 +344,7 @@
         <button class="primary" id="nextButton" hidden>下一题</button>
         <button class="secondary" id="pauseButton">今天先到这里</button>
       </section>
-      <section class="card mistake-box stack-card" id="mistakeBox" aria-label="错题小本本">
+      <section class="card mistake-box" id="mistakeBox" aria-label="错题小本本">
         <div class="row lesson-head">
           <div>
             <h2>错题小本本</h2>
@@ -1119,6 +1227,7 @@
     }
     dayIndex = Number.isFinite(dayIndex) ? Math.max(0, Math.min(dayIndex, lessons.length)) : 0;
     questionIndex = Number.isFinite(questionIndex) ? Math.max(0, questionIndex) : 0;
+    if (dayIndex < lessons.length && questionIndex >= lessons[dayIndex].questions.length) questionIndex = 0;
     score = Number.isFinite(score) ? Math.max(0, score) : 0;
     let answered = false;
 
@@ -1244,10 +1353,10 @@
       certificate.classList.toggle("show", dayIndex >= lessons.length);
       homeSummary.textContent = dayIndex >= lessons.length
         ? `第八周已经完成啦：本周答对 ${score} / ${totalQuestions()} 题。`
-        : `现在停在 Day ${dayIndex + 1}，第 ${questionIndex + 1} 题附近。本周已完成 ${doneQuestions} / ${totalQuestions()} 题。`;
+        : `现在停在 Day ${dayIndex + 1}，第 ${questionIndex + 1} 题。本周已完成 ${doneQuestions} / ${totalQuestions()} 题。点下面按钮就能出题。`;
       homeTip.textContent = message || "不用一次性做完。今天学一点，明天还能从这里接着来。";
       homeTip.classList.add("show");
-      continueButton.textContent = dayIndex >= lessons.length ? "本周已完成，看看证书" : "继续上次的小复习";
+      continueButton.textContent = dayIndex >= lessons.length ? "本周已完成，看看证书" : questionIndex === 0 && dayIndex === 0 ? "开始第 1 题" : "继续上次的小复习";
       miniSessionButton.hidden = dayIndex >= lessons.length;
       document.querySelector(".phone").scrollIntoView({ behavior: "smooth", block: "start" });
     }
@@ -1399,29 +1508,6 @@
       }
     });
     showHome();
-  </script>
-  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
-  <script>
-    window.addEventListener("load", () => {
-      if (!window.gsap) return;
-      if (window.ScrollTrigger) gsap.registerPlugin(ScrollTrigger);
-      gsap.from("header", { opacity: 0, y: 18, duration: .8, ease: "power3.out" });
-      gsap.utils.toArray(".stack-card").forEach((card, index) => {
-        gsap.from(card, {
-          opacity: 0,
-          y: 24,
-          scale: .96,
-          duration: .7,
-          delay: index * .04,
-          ease: "power3.out",
-          scrollTrigger: window.ScrollTrigger ? { trigger: card, start: "top 88%" } : undefined
-        });
-      });
-      gsap.utils.toArray(".slice").forEach((slice, index) => {
-        gsap.from(slice, { opacity: .2, y: 16, duration: .5, delay: index * .08, ease: "power2.out" });
-      });
-    });
   </script>
 </body>
 </html>
