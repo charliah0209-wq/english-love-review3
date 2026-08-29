@@ -1,0 +1,1427 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>第八周：高频辨析进阶，备注：来自你的小可爱陪练</title>
+  <style>
+    :root {
+      --ink: #241824;
+      --muted: #7d6478;
+      --cream: #fff8ef;
+      --rose: #ff6fae;
+      --rose-deep: #d9448a;
+      --violet: #765df4;
+      --plum: #35213b;
+      --line: rgba(255,255,255,.66);
+      --card: rgba(255,255,255,.78);
+      font-family: "Geist", "Outfit", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+    * { box-sizing: border-box; }
+    html { overflow-x: hidden; }
+    body {
+      min-height: 100vh;
+      margin: 0;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 18% 2%, rgba(255,111,174,.36), transparent 30%),
+        radial-gradient(circle at 88% 8%, rgba(118,93,244,.30), transparent 31%),
+        radial-gradient(circle at 50% 96%, rgba(255,214,165,.42), transparent 32%),
+        linear-gradient(145deg, #fff8ef 0%, #fff0f8 42%, #eeeaff 100%);
+      display: flex;
+      justify-content: center;
+      padding: 14px;
+      overflow-x: hidden;
+    }
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: .13;
+      background-image: linear-gradient(rgba(36,24,36,.22) 1px, transparent 1px), linear-gradient(90deg, rgba(36,24,36,.18) 1px, transparent 1px);
+      background-size: 42px 42px;
+      mask-image: radial-gradient(circle at 50% 18%, black, transparent 72%);
+    }
+    button { border: 0; font: inherit; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+    .phone {
+      position: relative;
+      width: min(450px, 100%);
+      min-height: calc(100vh - 28px);
+      overflow: hidden;
+      border-radius: 34px;
+      background: rgba(255,255,255,.54);
+      border: 1px solid rgba(255,255,255,.9);
+      box-shadow: 0 30px 80px rgba(91,47,91,.22);
+      backdrop-filter: blur(22px);
+    }
+    .top-nav {
+      position: sticky;
+      top: 10px;
+      z-index: 5;
+      width: calc(100% - 28px);
+      margin: 12px auto 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 12px;
+      border: 1px solid rgba(255,255,255,.9);
+      border-radius: 999px;
+      background: rgba(255,255,255,.72);
+      box-shadow: 0 12px 30px rgba(95,55,110,.12);
+      backdrop-filter: blur(18px);
+    }
+    .brand { font-size: 13px; font-weight: 950; letter-spacing: .02em; color: var(--plum); }
+    .nav-link { font-size: 12px; font-weight: 850; color: var(--rose-deep); text-decoration: none; }
+    header {
+      position: relative;
+      min-height: 300px;
+      padding: 28px 22px 24px;
+      display: grid;
+      align-items: end;
+      isolation: isolate;
+    }
+    header::before {
+      content: "";
+      position: absolute;
+      inset: 12px;
+      z-index: -2;
+      border-radius: 30px;
+      background:
+        linear-gradient(105deg, rgba(36,24,36,.88), rgba(36,24,36,.42) 54%, rgba(255,111,174,.24)),
+        url('https://picsum.photos/seed/week8-study-glass/1200/900') center/cover;
+      filter: contrast(1.08) saturate(.78);
+      box-shadow: inset 0 -80px 120px rgba(0,0,0,.32);
+    }
+    header::after {
+      content: "";
+      position: absolute;
+      right: 28px;
+      top: 42px;
+      width: 104px;
+      height: 142px;
+      z-index: -1;
+      border-radius: 999px;
+      background: url('https://picsum.photos/seed/tiny-review-note/420/560') center/cover;
+      opacity: .78;
+      mix-blend-mode: luminosity;
+      border: 1px solid rgba(255,255,255,.38);
+      box-shadow: 0 22px 50px rgba(0,0,0,.26);
+    }
+    .kicker {
+      color: #ffd7e7;
+      font-size: 11px;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      font-weight: 950;
+    }
+    h1 { max-width: 390px; margin: 8px 0 10px; color: white; font-size: clamp(34px, 10vw, 46px); line-height: .98; letter-spacing: -.055em; }
+    .sub { max-width: 330px; margin: 0; color: rgba(255,255,255,.82); line-height: 1.55; font-size: 14px; }
+    main { width: 100%; max-width: 100%; padding: 0 16px 18px; display: grid; gap: 16px; overflow-x: hidden; }
+    .card {
+      background: var(--card);
+      border: 1px solid rgba(255,255,255,.9);
+      border-radius: 28px;
+      box-shadow: 0 16px 34px rgba(87,54,92,.12);
+      padding: 18px;
+      backdrop-filter: blur(16px);
+    }
+    .stack-card { transform-origin: top center; }
+    .row { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+    .pill { color: var(--rose-deep); background: #ffe4f0; border-radius: 999px; padding: 7px 11px; font-size: 13px; font-weight: 850; white-space: nowrap; }
+    .bar { height: 10px; border-radius: 999px; background: rgba(241,220,233,.86); overflow: hidden; margin-top: 10px; }
+    .bar span { display: block; width: 0%; height: 100%; border-radius: inherit; background: linear-gradient(90deg, var(--rose), var(--violet)); transition: width .25s ease; }
+    .days { display: grid; grid-template-columns: repeat(7, 1fr); gap: 7px; margin-top: 14px; }
+    .day-dot { min-height: 42px; display: grid; place-items: center; border-radius: 16px; background: rgba(255,255,255,.75); border: 1px solid #f3d7e6; color: var(--muted); font-weight: 900; }
+    .day-dot.done { color: white; background: linear-gradient(135deg, var(--rose), var(--violet)); border-color: transparent; }
+    .day-dot.current { color: var(--rose-deep); outline: 3px solid rgba(255,111,174,.22); }
+    .home-card { background: linear-gradient(155deg, rgba(255,255,255,.86), rgba(255,239,247,.70)); }
+    .home-card h2 { margin-bottom: 8px; }
+    .home-actions { display: grid; grid-template-columns: repeat(2, 1fr); grid-auto-flow: dense; gap: 10px; margin-top: 14px; }
+    .home-actions .primary { grid-column: span 2; }
+    .home-tip { display: none; margin-top: 12px; padding: 12px 14px; border-radius: 18px; background: #fff0f7; color: #6c405a; line-height: 1.55; font-size: 14px; }
+    .home-tip.show { display: block; }
+    .day-picker { display: grid; grid-template-columns: repeat(2, 1fr); grid-auto-flow: dense; gap: 9px; margin-top: 14px; }
+    .day-button { min-height: 54px; padding: 11px; border-radius: 18px; background: rgba(255,255,255,.78); border: 1px solid #f3d7e6; color: var(--ink); font-weight: 900; text-align: left; transition: transform .35s ease, box-shadow .35s ease; }
+    .day-button:hover, .option:hover { transform: translateY(-2px); box-shadow: 0 14px 28px rgba(120,70,120,.16); }
+    .day-button span { display: block; margin-top: 3px; color: var(--muted); font-size: 12px; font-weight: 700; }
+    .day-button.done { color: white; background: linear-gradient(135deg, var(--rose), var(--violet)); border-color: transparent; }
+    .day-button.done span { color: rgba(255,255,255,.82); }
+    .day-button.current { outline: 3px solid rgba(255,111,174,.22); }
+    .accordion-strip { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-top: 14px; }
+    .slice { min-height: 72px; padding: 12px; border-radius: 20px; color: white; background: linear-gradient(145deg, #35213b, #765df4); overflow: hidden; transition: grid-column .45s ease, transform .45s ease; }
+    .slice:hover { transform: scale(1.025); }
+    .slice small { display: block; opacity: .72; margin-bottom: 6px; }
+    .slice strong { font-size: 15px; line-height: 1.2; }
+    .chat { display: flex; flex-direction: column; gap: 10px; }
+    .bubble { max-width: 88%; padding: 12px 14px; border-radius: 20px; line-height: 1.55; font-size: 15px; white-space: pre-line; animation: floatIn .25s ease both; }
+    .bubble.me { align-self: flex-end; color: white; background: linear-gradient(135deg, var(--rose), var(--violet)); border-bottom-right-radius: 8px; }
+    .bubble.her { align-self: flex-start; background: white; border: 1px solid #f3d7e6; border-bottom-left-radius: 8px; }
+    @keyframes floatIn { from { transform: translateY(8px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+    h2 { margin: 0 0 5px; font-size: 22px; letter-spacing: -.02em; }
+    .tiny { margin: 0; color: var(--muted); line-height: 1.5; font-size: 13px; }
+    .lesson-head { align-items: flex-start; margin-bottom: 12px; }
+    .q-count { margin: 10px 0 0; color: var(--muted); font-weight: 850; font-size: 14px; }
+    .question { margin: 10px 0 12px; line-height: 1.6; color: #5c425b; font-weight: 800; }
+    .options { display: grid; gap: 10px; }
+    .option { width: 100%; min-height: 52px; text-align: left; padding: 13px 14px; border-radius: 18px; background: white; color: var(--ink); border: 1px solid #f3d7e6; box-shadow: 0 8px 16px rgba(139,86,118,.08); transition: transform .25s ease, box-shadow .25s ease; }
+    .option.correct { border-color: rgba(33,168,120,.55); background: #effcf7; color: #106947; }
+    .option.wrong { border-color: rgba(228,90,104,.5); background: #fff1f3; color: #923340; }
+    .feedback, .note { display: none; margin-top: 14px; padding: 14px; border-radius: 20px; line-height: 1.6; }
+    .feedback { background: #fff0f7; color: #6c405a; }
+    .note { background: #fffaf0; border: 1px dashed #efbd72; color: #755321; }
+    .show { display: block; }
+    .primary, .secondary { width: 100%; min-height: 52px; margin-top: 0; border-radius: 18px; font-weight: 950; transition: transform .25s ease, box-shadow .25s ease; }
+    #nextButton, #pauseButton, #resetButton, #clearMistakesButton { margin-top: 14px; }
+    .primary { color: white; background: linear-gradient(135deg, var(--plum), var(--violet) 54%, var(--rose)); box-shadow: 0 16px 30px rgba(118,93,244,.25); }
+    .secondary { color: var(--plum); background: rgba(255,228,240,.95); border: 1px solid rgba(255,255,255,.7); }
+    .primary:hover, .secondary:hover { transform: translateY(-2px); }
+    .score { margin: 12px 0 0; color: var(--muted); line-height: 1.5; font-size: 14px; }
+    .mistake-box { display: none; background: #fffaf0; border: 1px dashed #efbd72; }
+    .mistake-box.show { display: block; }
+    .mistake-list { display: grid; gap: 10px; margin-top: 12px; }
+    .mistake-item { padding: 12px; border-radius: 18px; background: rgba(255,255,255,.78); border: 1px solid #f1d8a7; line-height: 1.55; color: #755321; font-size: 14px; }
+    .mistake-item strong { color: #5f3f13; }
+    .certificate { display: none; text-align: center; background: linear-gradient(155deg, #fff8e8, #ffeaf5); border: 1px solid #f1c98d; }
+    .certificate.show { display: block; }
+    .seal { width: 74px; height: 74px; margin: 4px auto 12px; display: grid; place-items: center; border-radius: 50%; color: white; background: linear-gradient(135deg, #f4b84f, #ff6fae); font-size: 28px; font-weight: 950; }
+
+  </style>
+</head>
+<body>
+  <section class="phone" aria-label="第八周英语小复习手机网页App">
+    <nav class="top-nav" aria-label="学习导航"><span class="brand">Week 8 Review</span><a class="nav-link" href="#lessonCard">开始小题</a></nav>
+    <header>
+      <div class="kicker">Week 8 · Distinctions, Softer Focus</div>
+      <h1>第八周：高频辨析进阶</h1>
+      <p class="sub">备注：来自你的小可爱陪练</p>
+      <p class="sub">这周进入高频辨析：遵守、清除、事件、获得、影响、声称、保证、评估和保存。每次可以只做 5 题，答错仍然会进“错题小本本”。</p>
+    </header>
+    <main>
+      <section class="card stack-card" aria-label="学习进度">
+        <div class="row">
+          <strong id="progressText">第 1 / 7 天</strong>
+          <span class="pill" id="statusPill">今日待完成</span>
+        </div>
+        <div class="bar"><span id="progressBar"></span></div>
+        <div class="days" id="days"></div>
+      </section>
+      <section class="card home-card stack-card" id="homeCard" aria-label="分段学习入口">
+        <h2>今天想怎么复习？</h2>
+        <p class="tiny" id="homeSummary">已经帮你保存进度，下次打开可以继续。</p>
+        <div class="home-actions">
+          <button class="primary" id="continueButton">继续上次的小复习</button>
+          <button class="secondary" id="miniSessionButton">今天先做 5 题</button>
+          <button class="secondary" id="mistakeHomeButton">看看错题小本本</button>
+        </div>
+        <div class="home-tip" id="homeTip"></div>
+        <div class="accordion-strip" aria-label="学习节奏提示"><div class="slice"><small>先轻量</small><strong>5 题也算认真来过</strong></div><div class="slice"><small>再辨析</small><strong>介词和搭配一起记</strong></div><div class="slice"><small>后回看</small><strong>错题本负责兜底</strong></div></div><div class="day-picker" id="dayPicker" aria-label="选择某一天练习"></div>
+      </section>
+      <section class="card chat stack-card" id="chat" aria-label="日常对话"></section>
+      <section class="card stack-card" id="lessonCard" aria-label="今日小题">
+        <div class="row lesson-head">
+          <div>
+            <h2 id="lessonTitle">Day 1</h2>
+            <p class="tiny" id="lessonPoint"></p>
+          </div>
+          <span class="pill" id="lessonTag">新题</span>
+        </div>
+        <p class="q-count" id="qCount"></p>
+        <p class="question" id="question"></p>
+        <div class="options" id="options"></div>
+        <div class="feedback" id="feedback"></div>
+        <div class="note" id="note"></div>
+        <p class="score" id="scoreLine"></p>
+        <button class="primary" id="nextButton" hidden>下一题</button>
+        <button class="secondary" id="pauseButton">今天先到这里</button>
+      </section>
+      <section class="card mistake-box stack-card" id="mistakeBox" aria-label="错题小本本">
+        <div class="row lesson-head">
+          <div>
+            <h2>错题小本本</h2>
+            <p class="tiny">错题不是黑历史，是下次见面会认出来的老熟人。</p>
+          </div>
+          <span class="pill" id="mistakeCount">0 题</span>
+        </div>
+        <div class="mistake-list" id="mistakeList"></div>
+        <button class="secondary" id="clearMistakesButton">清空错题小本本</button>
+      </section>
+      <section class="card certificate" id="certificate" aria-label="第八周毕业证书">
+        <div class="seal">W8</div>
+        <h2>第八周高频辨析完成</h2>
+        <p>这一周你开始处理真正容易混的词：搭配、语气、场景和细微差别，都被你一点点拆开了。</p>
+        <p><strong>Precision grows quietly, and today you made it a little brighter.</strong></p>
+        <button class="secondary" id="resetButton">从第1天重新开始</button>
+      </section>
+    </main>
+  </section>
+  <script>
+    const lessons = [
+      {
+            "title": "遵守与清除：搭配别跑偏",
+            "point": "重点区分 abide by、adhere to、conform to、comply with，以及 abolish、cancel、eliminate、dispose of、extinguish。",
+            "tag": "辨析加速",
+            "chat": [
+                  [
+                        "me",
+                        "第八周开场，今天先讲“遵守”。"
+                  ],
+                  [
+                        "her",
+                        "单词还要遵守介词，规矩真多。"
+                  ],
+                  [
+                        "me",
+                        "是的，但你只要 abide by 节奏，我就 comply with 想你的规定。"
+                  ]
+            ],
+            "note": "今日小纸条：adhere to 可以记成“粘在 to 上”，所以是坚持、遵守。学单词也一样，粘住一点点，就不会跑远。",
+            "questions": [
+                  {
+                        "q": "abide 通常搭配哪个介词表示“遵守”？",
+                        "options": [
+                              "by",
+                              "with",
+                              "from"
+                        ],
+                        "answer": 0,
+                        "ok": "对。abide by = 遵守。",
+                        "no": "正确答案是 by。abide by 表示遵守。"
+                  },
+                  {
+                        "q": "adhere to rules 中 adhere to 的意思是：",
+                        "options": [
+                              "取消规则",
+                              "遵守规则；坚持规则",
+                              "扑灭规则"
+                        ],
+                        "answer": 1,
+                        "ok": "对。adhere to 可表示遵守，也可表示坚持。",
+                        "no": "正确答案是“遵守规则；坚持规则”。adhere 常和 to 连用。"
+                  },
+                  {
+                        "q": "conform to the standard 是：",
+                        "options": [
+                              "擦掉标准",
+                              "责骂标准",
+                              "符合标准"
+                        ],
+                        "answer": 2,
+                        "ok": "对。conform to = 符合、遵守。",
+                        "no": "正确答案是“符合标准”。conform 后常接 to。"
+                  },
+                  {
+                        "q": "comply with the law 是：",
+                        "options": [
+                              "遵守法律",
+                              "违反法律",
+                              "估计法律"
+                        ],
+                        "answer": 0,
+                        "ok": "对。comply with = 遵守、服从，语气较正式。",
+                        "no": "正确答案是“遵守法律”。comply 后常接 with。"
+                  },
+                  {
+                        "q": "abolish slavery 中 abolish 是：",
+                        "options": [
+                              "预约",
+                              "废除",
+                              "补充"
+                        ],
+                        "answer": 1,
+                        "ok": "对。abolish 常用于废除制度、法律、习俗。",
+                        "no": "正确答案是“废除”。abolish 常搭配制度、法律、习俗。"
+                  },
+                  {
+                        "q": "cancel a meeting 是：",
+                        "options": [
+                              "消除会议上的错误",
+                              "遵守会议",
+                              "取消会议"
+                        ],
+                        "answer": 2,
+                        "ok": "对。cancel 常用于取消计划、会议、旅行等。",
+                        "no": "正确答案是“取消会议”。cancel 常和预先安排的活动搭配。"
+                  },
+                  {
+                        "q": "eliminate errors 更接近：",
+                        "options": [
+                              "消除错误",
+                              "宣布错误",
+                              "奖励错误"
+                        ],
+                        "answer": 0,
+                        "ok": "对。eliminate = 消除、淘汰。",
+                        "no": "正确答案是“消除错误”。eliminate 指去掉已经存在但不需要的东西。"
+                  },
+                  {
+                        "q": "dispose of waste 是：",
+                        "options": [
+                              "获得废物",
+                              "处理废物",
+                              "遵守废物"
+                        ],
+                        "answer": 1,
+                        "ok": "对。dispose of = 处理、处置。",
+                        "no": "正确答案是“处理废物”。dispose 常和 of 连用。"
+                  },
+                  {
+                        "q": "extinguish a fire 是：",
+                        "options": [
+                              "宣布火",
+                              "估计火",
+                              "扑灭火"
+                        ],
+                        "answer": 2,
+                        "ok": "对。extinguish = 熄灭、扑灭。",
+                        "no": "正确答案是“扑灭火”。extinguish 常用于 fire。"
+                  }
+            ]
+      },
+      {
+            "title": "事件、完成与指控",
+            "point": "重点区分 accident、incident、event；accomplish、achieve、complete；accuse of 与 charge with。",
+            "tag": "易混词组",
+            "chat": [
+                  [
+                        "me",
+                        "今天有 accident、incident、event。"
+                  ],
+                  [
+                        "her",
+                        "三个都是事，怎么分？"
+                  ],
+                  [
+                        "me",
+                        "意外事、小事件、大事件，我都帮你分。你只负责 accomplish 今天这一点。"
+                  ]
+            ],
+            "note": "今日小纸条：accomplish 强调经过努力完成任务。你做完今天几题，就是一个小小 accomplish。",
+            "questions": [
+                  {
+                        "q": "car accident 中 accident 更强调：",
+                        "options": [
+                              "意外事故",
+                              "普通活动",
+                              "正式宣布"
+                        ],
+                        "answer": 0,
+                        "ok": "对。accident 多指意外事故。",
+                        "no": "正确答案是“意外事故”。accident 常指造成损失的意外。"
+                  },
+                  {
+                        "q": "international incident 中 incident 可指：",
+                        "options": [
+                              "奖学金",
+                              "事件；事变",
+                              "处方"
+                        ],
+                        "answer": 1,
+                        "ok": "对。incident 可指事件，也可指较敏感的事变。",
+                        "no": "正确答案是“事件；事变”。incident 不一定是 accident。"
+                  },
+                  {
+                        "q": "a historical event 是：",
+                        "options": [
+                              "历史折扣",
+                              "历史处方",
+                              "历史事件"
+                        ],
+                        "answer": 2,
+                        "ok": "对。event 常指重要事件。",
+                        "no": "正确答案是“历史事件”。event 往往比 incident 更重大。"
+                  },
+                  {
+                        "q": "by accident 的意思是：",
+                        "options": [
+                              "偶然",
+                              "故意",
+                              "正式地"
+                        ],
+                        "answer": 0,
+                        "ok": "对。by accident = by chance，偶然。",
+                        "no": "正确答案是“偶然”。by accident 是固定表达。"
+                  },
+                  {
+                        "q": "accomplish a task 是：",
+                        "options": [
+                              "控告任务",
+                              "完成任务",
+                              "估计任务"
+                        ],
+                        "answer": 1,
+                        "ok": "对。accomplish 强调努力后完成任务。",
+                        "no": "正确答案是“完成任务”。accomplish 常搭配 task、mission。"
+                  },
+                  {
+                        "q": "achieve a goal 是：",
+                        "options": [
+                              "取消目标",
+                              "擦掉目标",
+                              "达到目标"
+                        ],
+                        "answer": 2,
+                        "ok": "对。achieve a goal = 达到目标。",
+                        "no": "正确答案是“达到目标”。achieve 常和 goal、success 搭配。"
+                  },
+                  {
+                        "q": "complete the form 是：",
+                        "options": [
+                              "填完表格",
+                              "控告表格",
+                              "扑灭表格"
+                        ],
+                        "answer": 0,
+                        "ok": "对。complete 可表示完成、填完。",
+                        "no": "正确答案是“填完表格”。complete 强调全部完成。"
+                  },
+                  {
+                        "q": "accuse someone ___ stealing，应填：",
+                        "options": [
+                              "with",
+                              "of",
+                              "by"
+                        ],
+                        "answer": 1,
+                        "ok": "对。accuse someone of doing sth. = 指控某人做某事。",
+                        "no": "正确答案是 of。accuse 常与 of 连用。"
+                  },
+                  {
+                        "q": "charge someone ___ murder，应填：",
+                        "options": [
+                              "of",
+                              "to",
+                              "with"
+                        ],
+                        "answer": 2,
+                        "ok": "对。charge someone with sth. = 指控某人某罪。",
+                        "no": "正确答案是 with。charge 常与 with 连用。"
+                  }
+            ]
+      },
+      {
+            "title": "获得与影响：努力会留下痕迹",
+            "point": "重点区分 acquire、attain、obtain、gain、earn、achieve，以及 affect / influence。",
+            "tag": "核心动词",
+            "chat": [
+                  [
+                        "me",
+                        "今天讲“获得”。"
+                  ],
+                  [
+                        "her",
+                        "我想获得不用背单词的能力。"
+                  ],
+                  [
+                        "me",
+                        "这个能力暂时 obtain 不到，但 confidence 可以一点点 acquire。"
+                  ]
+            ],
+            "note": "今日小纸条：acquire 强调慢慢获得并长期持有。就像熟悉一个人，也不是一下子，是每天多一点。",
+            "questions": [
+                  {
+                        "q": "acquire knowledge 更强调：",
+                        "options": [
+                              "逐步获得知识",
+                              "擦掉知识",
+                              "宣布知识"
+                        ],
+                        "answer": 0,
+                        "ok": "对。acquire 常指逐步获得知识、能力、习惯。",
+                        "no": "正确答案是“逐步获得知识”。acquire 有长期获得的感觉。"
+                  },
+                  {
+                        "q": "attain a high level 是：",
+                        "options": [
+                              "降低高水平",
+                              "达到高水平",
+                              "责骂高水平"
+                        ],
+                        "answer": 1,
+                        "ok": "对。attain 指经过努力达到某目标或水平。",
+                        "no": "正确答案是“达到高水平”。attain 常强调努力后达到。"
+                  },
+                  {
+                        "q": "obtain permission 是：",
+                        "options": [
+                              "废除许可",
+                              "责备许可",
+                              "获得许可"
+                        ],
+                        "answer": 2,
+                        "ok": "对。obtain 是较正式的“获得”。",
+                        "no": "正确答案是“获得许可”。obtain 常用于正式语体。"
+                  },
+                  {
+                        "q": "gain experience 是：",
+                        "options": [
+                              "获得经验",
+                              "取消经验",
+                              "扑灭经验"
+                        ],
+                        "answer": 0,
+                        "ok": "对。gain experience = 获得经验。",
+                        "no": "正确答案是“获得经验”。gain 常指获得利益、经验、好处。"
+                  },
+                  {
+                        "q": "earn money 是：",
+                        "options": [
+                              "退款",
+                              "挣钱",
+                              "借钱"
+                        ],
+                        "answer": 1,
+                        "ok": "对。earn = 挣得。",
+                        "no": "正确答案是“挣钱”。earn 常指通过劳动得到报酬。"
+                  },
+                  {
+                        "q": "achieve success 是：",
+                        "options": [
+                              "处理成功",
+                              "控告成功",
+                              "取得成功"
+                        ],
+                        "answer": 2,
+                        "ok": "对。achieve success = 取得成功。",
+                        "no": "正确答案是“取得成功”。achieve 常和 success、goal 搭配。"
+                  },
+                  {
+                        "q": "affect 通常更偏：",
+                        "options": [
+                              "直接产生影响或造成变化",
+                              "只表示保险",
+                              "只表示入住"
+                        ],
+                        "answer": 0,
+                        "ok": "对。affect 可指直接影响，也常有不利影响。",
+                        "no": "正确答案是“直接产生影响或造成变化”。affect 比 influence 更直接。"
+                  },
+                  {
+                        "q": "influence 更偏：",
+                        "options": [
+                              "正式控告",
+                              "潜移默化的影响",
+                              "完全废除"
+                        ],
+                        "answer": 1,
+                        "ok": "对。influence 常指间接、潜移默化的影响。",
+                        "no": "正确答案是“潜移默化的影响”。influence 往往更间接。"
+                  },
+                  {
+                        "q": "His words deeply affected her. 中 affected 是：",
+                        "options": [
+                              "保险",
+                              "预订",
+                              "打动；影响"
+                        ],
+                        "answer": 2,
+                        "ok": "对。affect 也可以表示感情上打动、影响。",
+                        "no": "正确答案是“打动；影响”。这里是情感上的影响。"
+                  }
+            ]
+      },
+      {
+            "title": "声称与宣布：谁说的，怎么说",
+            "point": "重点区分 affirm、assert、allege、claim、announce、proclaim。",
+            "tag": "表达态度",
+            "chat": [
+                  [
+                        "me",
+                        "今天这组词都和“说”有关。"
+                  ],
+                  [
+                        "her",
+                        "那我 claim 今天已经会了。"
+                  ],
+                  [
+                        "me",
+                        "我先不反驳，等你答对再 officially announce。"
+                  ]
+            ],
+            "note": "今日小纸条：allege 常带“未经证实地声称”。记忆：a + lie 的影子，不一定是假，但还没有被证实。",
+            "questions": [
+                  {
+                        "q": "affirm 更接近：",
+                        "options": [
+                              "肯定，坚称",
+                              "退款",
+                              "通风"
+                        ],
+                        "answer": 0,
+                        "ok": "对。affirm 是肯定、确认，语气坚定。",
+                        "no": "正确答案是“肯定，坚称”。affirm 是 deny 的反义方向。"
+                  },
+                  {
+                        "q": "assert 通常表示：",
+                        "options": [
+                              "提供住宿",
+                              "自信地断言",
+                              "扑灭"
+                        ],
+                        "answer": 1,
+                        "ok": "对。assert = 断言、坚持声称。",
+                        "no": "正确答案是“自信地断言”。assert 带主观坚持的意味。"
+                  },
+                  {
+                        "q": "allege 的特点是：",
+                        "options": [
+                              "正式颁奖",
+                              "逐步获得",
+                              "在证据不足时声称"
+                        ],
+                        "answer": 2,
+                        "ok": "对。allege 常指未经证实地宣称。",
+                        "no": "正确答案是“在证据不足时声称”。allege 常见于新闻和法律语境。"
+                  },
+                  {
+                        "q": "claim compensation 中 claim 是：",
+                        "options": [
+                              "要求；索赔",
+                              "熄灭",
+                              "遵守"
+                        ],
+                        "answer": 0,
+                        "ok": "对。claim 可表示要求、索赔，也可表示声称。",
+                        "no": "正确答案是“要求；索赔”。claim 不只表示声称。"
+                  },
+                  {
+                        "q": "announce the result 是：",
+                        "options": [
+                              "估计结果",
+                              "宣布结果",
+                              "责骂结果"
+                        ],
+                        "answer": 1,
+                        "ok": "对。announce = 宣布、宣告。",
+                        "no": "正确答案是“宣布结果”。announce 常指公开宣布。"
+                  },
+                  {
+                        "q": "proclaim independence 更接近：",
+                        "options": [
+                              "取消独立",
+                              "勉强独立",
+                              "宣布独立"
+                        ],
+                        "answer": 2,
+                        "ok": "对。proclaim 常用于重大、正式的宣告。",
+                        "no": "正确答案是“宣布独立”。proclaim 更正式、重大。"
+                  },
+                  {
+                        "q": "deny 的反义方向更接近：",
+                        "options": [
+                              "affirm",
+                              "erase",
+                              "dispose"
+                        ],
+                        "answer": 0,
+                        "ok": "对。affirm 是肯定；deny 是否认。",
+                        "no": "正确答案是 affirm。affirm 与 deny 方向相反。"
+                  },
+                  {
+                        "q": "“据称，但还没证实”更适合用：",
+                        "options": [
+                              "complete",
+                              "allege",
+                              "insure"
+                        ],
+                        "answer": 1,
+                        "ok": "对。allege 就是这种“声称但证据不足”的味道。",
+                        "no": "正确答案是 allege。它常用于尚未证实的说法。"
+                  },
+                  {
+                        "q": "官方宣布重大决定，更适合：",
+                        "options": [
+                              "scold",
+                              "diminish",
+                              "proclaim"
+                        ],
+                        "answer": 2,
+                        "ok": "对。proclaim 常用于重大官方宣告。",
+                        "no": "正确答案是 proclaim。它比 announce 更庄重。"
+                  }
+            ]
+      },
+      {
+            "title": "小心、体贴与“活”的四种说法",
+            "point": "重点区分 alert、cautious、considerate，以及 alive、live、living、lively。",
+            "tag": "形容词辨析",
+            "chat": [
+                  [
+                        "me",
+                        "今天的词都比较像。"
+                  ],
+                  [
+                        "her",
+                        "像到我 cautious 起来了。"
+                  ],
+                  [
+                        "me",
+                        "很好，保持 alert。至于 considerate，我已经替你把题量切成小块了。"
+                  ]
+            ],
+            "note": "今日小纸条：considerate = 体贴的。拆成 consider + ate，能考虑别人感受的人，就是 considerate。",
+            "questions": [
+                  {
+                        "q": "alert 更强调：",
+                        "options": [
+                              "警惕的，留神的",
+                              "活泼的",
+                              "相当大的"
+                        ],
+                        "answer": 0,
+                        "ok": "对。alert = 警惕的、留神的。",
+                        "no": "正确答案是“警惕的，留神的”。alert 像随时保持提醒。"
+                  },
+                  {
+                        "q": "cautious 的意思是：",
+                        "options": [
+                              "活着的",
+                              "谨慎的",
+                              "普遍的"
+                        ],
+                        "answer": 1,
+                        "ok": "对。cautious = 谨慎的。",
+                        "no": "正确答案是“谨慎的”。cautious 强调小心行事。"
+                  },
+                  {
+                        "q": "considerate 更接近：",
+                        "options": [
+                              "平均的",
+                              "活的，现场直播的",
+                              "体贴的"
+                        ],
+                        "answer": 2,
+                        "ok": "对。considerate = 体贴的、考虑周到的。",
+                        "no": "正确答案是“体贴的”。considerate 常指关心他人感受。"
+                  },
+                  {
+                        "q": "alive 常作：",
+                        "options": [
+                              "表语，表示活着的",
+                              "只作动词",
+                              "只表示平均"
+                        ],
+                        "answer": 0,
+                        "ok": "对。alive 常作表语，作定语时一般后置。",
+                        "no": "正确答案是“表语，表示活着的”。如 The fish is alive。"
+                  },
+                  {
+                        "q": "a live broadcast 中 live 是：",
+                        "options": [
+                              "体贴的",
+                              "现场直播的",
+                              "谨慎的"
+                        ],
+                        "answer": 1,
+                        "ok": "对。live 可表示现场直播的。",
+                        "no": "正确答案是“现场直播的”。live broadcast = 直播。"
+                  },
+                  {
+                        "q": "living things 是：",
+                        "options": [
+                              "直播的事情",
+                              "普通事情",
+                              "生物，活着的东西"
+                        ],
+                        "answer": 2,
+                        "ok": "对。living 可作定语，表示活着的。",
+                        "no": "正确答案是“生物，活着的东西”。living things = 生物。"
+                  },
+                  {
+                        "q": "a lively discussion 是：",
+                        "options": [
+                              "热烈的讨论",
+                              "活着的讨论",
+                              "谨慎的讨论"
+                        ],
+                        "answer": 0,
+                        "ok": "对。lively = 活泼的、热烈的。",
+                        "no": "正确答案是“热烈的讨论”。lively 常形容气氛活跃。"
+                  },
+                  {
+                        "q": "She is still alive. 中 alive 是：",
+                        "options": [
+                              "普通的",
+                              "活着的",
+                              "正式的"
+                        ],
+                        "answer": 1,
+                        "ok": "对。alive 表示活着的。",
+                        "no": "正确答案是“活着的”。alive 常放在 be 动词后。"
+                  },
+                  {
+                        "q": "“体贴的朋友”更适合：",
+                        "options": [
+                              "an alert friend",
+                              "a live friend",
+                              "a considerate friend"
+                        ],
+                        "answer": 2,
+                        "ok": "对。considerate friend = 体贴的朋友。",
+                        "no": "正确答案是 a considerate friend。considerate 表示体贴。"
+                  }
+            ]
+      },
+      {
+            "title": "保证、评估与奖励",
+            "point": "重点区分 assure、ensure、insure、reassure；assessment、estimate、evaluation；award、reward。",
+            "tag": "高频混淆",
+            "chat": [
+                  [
+                        "me",
+                        "今天是“保证”和“奖励”。"
+                  ],
+                  [
+                        "her",
+                        "答对有 reward 吗？"
+                  ],
+                  [
+                        "me",
+                        "有，我保证 assure you：每答对一题，我心里都给你 award 一朵小花。"
+                  ]
+            ],
+            "note": "今日小纸条：ensure 关注结果能否发生，assure 关注让某人放心。你看，ensure progress，assure you。",
+            "questions": [
+                  {
+                        "q": "assure someone 是：",
+                        "options": [
+                              "向某人保证，使其放心",
+                              "给某物保险",
+                              "估计某物"
+                        ],
+                        "answer": 0,
+                        "ok": "对。assure 后面常跟人。",
+                        "no": "正确答案是“向某人保证，使其放心”。assure someone that... 很常见。"
+                  },
+                  {
+                        "q": "ensure success 是：",
+                        "options": [
+                              "安慰成功",
+                              "确保成功",
+                              "保险成功"
+                        ],
+                        "answer": 1,
+                        "ok": "对。ensure 强调保证结果发生。",
+                        "no": "正确答案是“确保成功”。ensure 后常接事情或结果。"
+                  },
+                  {
+                        "q": "insure a car 是：",
+                        "options": [
+                              "向车保证",
+                              "评估车",
+                              "给车保险"
+                        ],
+                        "answer": 2,
+                        "ok": "对。insure 特指保险。",
+                        "no": "正确答案是“给车保险”。insure 和 insurance 同源。"
+                  },
+                  {
+                        "q": "reassure her 是：",
+                        "options": [
+                              "使她安心，再次保证",
+                              "废除她",
+                              "控告她"
+                        ],
+                        "answer": 0,
+                        "ok": "对。reassure = 使安心、再次保证。",
+                        "no": "正确答案是“使她安心，再次保证”。re- 有再次的感觉。"
+                  },
+                  {
+                        "q": "assessment 更接近：",
+                        "options": [
+                              "直播",
+                              "评估，估价",
+                              "退款"
+                        ],
+                        "answer": 1,
+                        "ok": "对。assessment = 评估、估价。",
+                        "no": "正确答案是“评估，估价”。assessment 常用于价值、风险、能力评估。"
+                  },
+                  {
+                        "q": "give an estimate 是：",
+                        "options": [
+                              "给出处方",
+                              "给出折扣",
+                              "给出估计"
+                        ],
+                        "answer": 2,
+                        "ok": "对。estimate = 估计，常和 give 搭配。",
+                        "no": "正确答案是“给出估计”。estimate 强调估算结果。"
+                  },
+                  {
+                        "q": "evaluation 常指：",
+                        "options": [
+                              "评价，评估",
+                              "扑灭",
+                              "遵守"
+                        ],
+                        "answer": 0,
+                        "ok": "对。evaluation = 评价、评估。",
+                        "no": "正确答案是“评价，评估”。evaluation 常用于能力、价值、表现评价。"
+                  },
+                  {
+                        "q": "award a prize 是：",
+                        "options": [
+                              "责骂奖品",
+                              "正式颁奖",
+                              "消除奖品"
+                        ],
+                        "answer": 1,
+                        "ok": "对。award 常指正式授予、颁发。",
+                        "no": "正确答案是“正式颁奖”。award 更正式。"
+                  },
+                  {
+                        "q": "reward someone for help 是：",
+                        "options": [
+                              "因帮助而控告某人",
+                              "因帮助而取消某人",
+                              "因帮助而奖赏某人"
+                        ],
+                        "answer": 2,
+                        "ok": "对。reward 强调因行为得到回报或奖赏。",
+                        "no": "正确答案是“因帮助而奖赏某人”。reward 常对应某种服务或行为。"
+                  }
+            ]
+      },
+      {
+            "title": "保存、连续与集中：最后综合挑战",
+            "point": "综合区分 conserve、preserve、reserve；continual、continuous、constant；concentrate on 与 focus on。",
+            "tag": "综合挑战",
+            "chat": [
+                  [
+                        "me",
+                        "第八周最后一天，来个综合挑战。"
+                  ],
+                  [
+                        "her",
+                        "我想 reserve 一点力气。"
+                  ],
+                  [
+                        "me",
+                        "可以。你 conserve energy，我 preserve your confidence。最后一点点，我们稳稳过。"
+                  ]
+            ],
+            "note": "毕业小纸条：concentrate on 是集中精力。今天不用集中一整天，只要集中这几分钟，就已经很好。",
+            "questions": [
+                  {
+                        "q": "conserve energy 是：",
+                        "options": [
+                              "节约能源",
+                              "预订能源",
+                              "责备能源"
+                        ],
+                        "answer": 0,
+                        "ok": "对。conserve 强调节约、保护。",
+                        "no": "正确答案是“节约能源”。conserve 常和 energy、resources 搭配。"
+                  },
+                  {
+                        "q": "preserve food 是：",
+                        "options": [
+                              "预订食物",
+                              "保存食物，防止变质",
+                              "取消食物"
+                        ],
+                        "answer": 1,
+                        "ok": "对。preserve 强调保护、维持、防止破坏或腐败。",
+                        "no": "正确答案是“保存食物，防止变质”。preserve food 很常见。"
+                  },
+                  {
+                        "q": "reserve a seat 是：",
+                        "options": [
+                              "节约座位",
+                              "评估座位",
+                              "预订座位"
+                        ],
+                        "answer": 2,
+                        "ok": "对。reserve = 预留、预订。",
+                        "no": "正确答案是“预订座位”。reserve 常用于 seat、room。"
+                  },
+                  {
+                        "q": "continual interruptions 更接近：",
+                        "options": [
+                              "频繁打断，时断时续",
+                              "完全不停的打断",
+                              "体贴的打断"
+                        ],
+                        "answer": 0,
+                        "ok": "对。continual 常表示反复发生、时断时续。",
+                        "no": "正确答案是“频繁打断，时断时续”。continual 不一定完全不停。"
+                  },
+                  {
+                        "q": "continuous rain 更强调：",
+                        "options": [
+                              "偶尔下雨",
+                              "连续不断的雨，中间不停",
+                              "谨慎的雨"
+                        ],
+                        "answer": 1,
+                        "ok": "对。continuous 强调中间不停顿。",
+                        "no": "正确答案是“连续不断的雨，中间不停”。continuous 更连续。"
+                  },
+                  {
+                        "q": "constant noise 是：",
+                        "options": [
+                              "正式的噪音",
+                              "获奖的噪音",
+                              "持续经常出现的噪音"
+                        ],
+                        "answer": 2,
+                        "ok": "对。constant 强调不断、经常、始终如一。",
+                        "no": "正确答案是“持续经常出现的噪音”。constant noise 常指持续噪音。"
+                  },
+                  {
+                        "q": "concentrate ___ the task，应填：",
+                        "options": [
+                              "on",
+                              "with",
+                              "of"
+                        ],
+                        "answer": 0,
+                        "ok": "对。concentrate on = 集中精力于。",
+                        "no": "正确答案是 on。concentrate on the task。"
+                  },
+                  {
+                        "q": "focus ___ the problem，应填：",
+                        "options": [
+                              "by",
+                              "on",
+                              "with"
+                        ],
+                        "answer": 1,
+                        "ok": "对。focus on = 集中于。",
+                        "no": "正确答案是 on。focus on the problem。"
+                  },
+                  {
+                        "q": "reserve / preserve / conserve 的区别更准确的是：",
+                        "options": [
+                              "reserve 扑灭；preserve 控告；conserve 直播",
+                              "三个都只能表示奖励",
+                              "reserve 预留；preserve 保护保存；conserve 节约保护"
+                        ],
+                        "answer": 2,
+                        "ok": "对。这组三个词都和保存有关，但侧重点不同。",
+                        "no": "正确答案是“reserve 预留；preserve 保护保存；conserve 节约保护”。"
+                  }
+            ]
+      }
+];
+
+    const storageKey = "tinyEnglishLoveReviewWeek8Progress";
+    let dayIndex = Number(localStorage.getItem(storageKey + ":day") || "0");
+    let questionIndex = Number(localStorage.getItem(storageKey + ":question") || "0");
+    let score = Number(localStorage.getItem(storageKey + ":score") || "0");
+    let mistakes = [];
+    try {
+      mistakes = JSON.parse(localStorage.getItem(storageKey + ":mistakes") || "[]");
+    } catch {
+      mistakes = [];
+    }
+    dayIndex = Number.isFinite(dayIndex) ? Math.max(0, Math.min(dayIndex, lessons.length)) : 0;
+    questionIndex = Number.isFinite(questionIndex) ? Math.max(0, questionIndex) : 0;
+    score = Number.isFinite(score) ? Math.max(0, score) : 0;
+    let answered = false;
+
+    const daysEl = document.querySelector("#days");
+    const progressText = document.querySelector("#progressText");
+    const progressBar = document.querySelector("#progressBar");
+    const statusPill = document.querySelector("#statusPill");
+    const homeCard = document.querySelector("#homeCard");
+    const homeSummary = document.querySelector("#homeSummary");
+    const homeTip = document.querySelector("#homeTip");
+    const continueButton = document.querySelector("#continueButton");
+    const miniSessionButton = document.querySelector("#miniSessionButton");
+    const mistakeHomeButton = document.querySelector("#mistakeHomeButton");
+    const dayPicker = document.querySelector("#dayPicker");
+    const chatEl = document.querySelector("#chat");
+    const lessonCard = document.querySelector("#lessonCard");
+    const lessonTitle = document.querySelector("#lessonTitle");
+    const lessonPoint = document.querySelector("#lessonPoint");
+    const lessonTag = document.querySelector("#lessonTag");
+    const qCount = document.querySelector("#qCount");
+    const question = document.querySelector("#question");
+    const optionsEl = document.querySelector("#options");
+    const feedback = document.querySelector("#feedback");
+    const note = document.querySelector("#note");
+    const scoreLine = document.querySelector("#scoreLine");
+    const nextButton = document.querySelector("#nextButton");
+    const pauseButton = document.querySelector("#pauseButton");
+    const mistakeBox = document.querySelector("#mistakeBox");
+    const mistakeCount = document.querySelector("#mistakeCount");
+    const mistakeList = document.querySelector("#mistakeList");
+    const clearMistakesButton = document.querySelector("#clearMistakesButton");
+    const certificate = document.querySelector("#certificate");
+    const resetButton = document.querySelector("#resetButton");
+    let sessionLimit = 0;
+    let sessionAnswered = 0;
+
+    function totalQuestionsBefore(day) {
+      return lessons.slice(0, day).reduce((sum, lesson) => sum + lesson.questions.length, 0);
+    }
+    function totalQuestions() {
+      return lessons.reduce((sum, lesson) => sum + lesson.questions.length, 0);
+    }
+    function save() {
+      localStorage.setItem(storageKey + ":day", String(dayIndex));
+      localStorage.setItem(storageKey + ":question", String(questionIndex));
+      localStorage.setItem(storageKey + ":score", String(score));
+      localStorage.setItem(storageKey + ":mistakes", JSON.stringify(mistakes));
+    }
+    function renderMistakes() {
+      mistakeCount.textContent = `${mistakes.length} 题`;
+      mistakeBox.classList.toggle("show", mistakes.length > 0);
+      mistakeList.innerHTML = "";
+      const recentMistakes = mistakes.slice(-8).reverse();
+      recentMistakes.forEach((item) => {
+        const row = document.createElement("div");
+        row.className = "mistake-item";
+        row.innerHTML = `
+          <strong>${item.day}｜${item.title}</strong><br>
+          ${item.question}<br>
+          你选：${item.chosen}<br>
+          正确：${item.correct}<br>
+          ${item.tip}
+        `;
+        mistakeList.appendChild(row);
+      });
+    }
+    function renderDays() {
+      daysEl.innerHTML = "";
+      lessons.forEach((_, index) => {
+        const day = document.createElement("div");
+        day.className = "day-dot";
+        if (index < dayIndex) day.classList.add("done");
+        if (index === dayIndex && dayIndex < lessons.length) day.classList.add("current");
+        day.textContent = index + 1;
+        daysEl.appendChild(day);
+      });
+    }
+    function updateProgress() {
+      const doneQuestions = dayIndex >= lessons.length ? totalQuestions() : totalQuestionsBefore(dayIndex) + questionIndex;
+      progressBar.style.width = `${Math.round(doneQuestions / totalQuestions() * 100)}%`;
+      progressText.textContent = dayIndex >= lessons.length ? "第八周完成" : `第 ${dayIndex + 1} / 7 天`;
+      statusPill.textContent = dayIndex >= lessons.length ? "已毕业" : "已保存进度";
+      return doneQuestions;
+    }
+    function renderDayPicker() {
+      dayPicker.innerHTML = "";
+      lessons.forEach((lesson, index) => {
+        const button = document.createElement("button");
+        button.className = "day-button";
+        if (index < dayIndex) button.classList.add("done");
+        if (index === dayIndex && dayIndex < lessons.length) button.classList.add("current");
+        const state = index < dayIndex ? "已完成" : index === dayIndex ? "从这里继续" : "未解锁";
+        button.innerHTML = `Day ${index + 1}<span>${lesson.title}｜${lesson.questions.length} 题｜${state}</span>`;
+        button.addEventListener("click", () => {
+          if (dayIndex >= lessons.length) {
+            showHome("这一周已经完成啦。想重刷的话，可以点证书里的重新开始。");
+            return;
+          }
+          if (index < dayIndex) {
+            showHome(`Day ${index + 1} 已经完成啦。想回看薄弱点，可以先看错题小本本。`);
+            return;
+          }
+          if (index > dayIndex) {
+            showHome(`先把 Day ${dayIndex + 1} 做完，再解锁 Day ${index + 1}。我会帮你把节奏守住。`);
+            return;
+          }
+          startQuiz(0);
+        });
+        dayPicker.appendChild(button);
+      });
+    }
+    function showHome(message = "") {
+      sessionLimit = 0;
+      sessionAnswered = 0;
+      answered = false;
+      renderDays();
+      renderMistakes();
+      renderDayPicker();
+      const doneQuestions = updateProgress();
+      homeCard.style.display = "";
+      chatEl.style.display = "none";
+      lessonCard.style.display = "none";
+      certificate.classList.toggle("show", dayIndex >= lessons.length);
+      homeSummary.textContent = dayIndex >= lessons.length
+        ? `第八周已经完成啦：本周答对 ${score} / ${totalQuestions()} 题。`
+        : `现在停在 Day ${dayIndex + 1}，第 ${questionIndex + 1} 题附近。本周已完成 ${doneQuestions} / ${totalQuestions()} 题。`;
+      homeTip.textContent = message || "不用一次性做完。今天学一点，明天还能从这里接着来。";
+      homeTip.classList.add("show");
+      continueButton.textContent = dayIndex >= lessons.length ? "本周已完成，看看证书" : "继续上次的小复习";
+      miniSessionButton.hidden = dayIndex >= lessons.length;
+      document.querySelector(".phone").scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+    function startQuiz(limit) {
+      if (dayIndex >= lessons.length) {
+        showHome("这一周已经完成啦。想重刷的话，可以点证书里的重新开始。");
+        return;
+      }
+      sessionLimit = limit;
+      sessionAnswered = 0;
+      homeCard.style.display = "none";
+      render();
+    }
+    function render() {
+      answered = false;
+      renderDays();
+      renderMistakes();
+      const doneQuestions = updateProgress();
+      if (dayIndex < lessons.length) statusPill.textContent = sessionLimit ? `轻量 ${sessionLimit} 题` : "今日待完成";
+      homeCard.style.display = "none";
+
+      if (dayIndex >= lessons.length) {
+        lessonCard.style.display = "none";
+        chatEl.style.display = "none";
+        certificate.classList.add("show");
+        return;
+      }
+
+      const lesson = lessons[dayIndex];
+      if (questionIndex >= lesson.questions.length) {
+        dayIndex += 1;
+        questionIndex = 0;
+        save();
+        render();
+        return;
+      }
+
+      const current = lesson.questions[questionIndex];
+      lessonCard.style.display = "";
+      chatEl.style.display = "";
+      certificate.classList.remove("show");
+      lessonTitle.textContent = `Day ${dayIndex + 1}｜${lesson.title}`;
+      lessonPoint.textContent = lesson.point;
+      lessonTag.textContent = lesson.tag;
+      qCount.textContent = `今日第 ${questionIndex + 1} / ${lesson.questions.length} 题`;
+      question.textContent = current.q;
+      feedback.className = "feedback";
+      feedback.textContent = "";
+      note.className = "note";
+      note.textContent = lesson.note;
+      nextButton.hidden = true;
+      nextButton.textContent = questionIndex === lesson.questions.length - 1 ? "完成今天的小复习" : "下一题";
+      scoreLine.textContent = `本周目前答对 ${score} / ${doneQuestions} 题`;
+
+      chatEl.innerHTML = "";
+      lesson.chat.forEach(([who, text], index) => {
+        const bubble = document.createElement("div");
+        bubble.className = `bubble ${who}`;
+        bubble.style.animationDelay = `${index * .08}s`;
+        bubble.textContent = text;
+        chatEl.appendChild(bubble);
+      });
+
+      optionsEl.innerHTML = "";
+      current.options.forEach((text, index) => {
+        const option = document.createElement("button");
+        option.className = "option";
+        option.textContent = `${String.fromCharCode(65 + index)}. ${text}`;
+        option.addEventListener("click", () => choose(index));
+        optionsEl.appendChild(option);
+      });
+    }
+    function choose(index) {
+      if (answered) return;
+      answered = true;
+      const current = lessons[dayIndex].questions[questionIndex];
+      if (index === current.answer) {
+        score += 1;
+      } else {
+        const key = `${dayIndex}-${questionIndex}`;
+        const chosen = `${String.fromCharCode(65 + index)}. ${current.options[index]}`;
+        const correct = `${String.fromCharCode(65 + current.answer)}. ${current.options[current.answer]}`;
+        mistakes = mistakes.filter((item) => item.key !== key);
+        mistakes.push({
+          key,
+          day: `Day ${dayIndex + 1}`,
+          title: lessons[dayIndex].title,
+          question: current.q,
+          chosen,
+          correct,
+          tip: current.no
+        });
+      }
+      [...optionsEl.querySelectorAll(".option")].forEach((button, buttonIndex) => {
+        if (buttonIndex === current.answer) button.classList.add("correct");
+        if (buttonIndex === index && index !== current.answer) button.classList.add("wrong");
+      });
+      feedback.textContent = index === current.answer ? current.ok : current.no;
+      feedback.classList.add("show");
+      note.classList.add("show");
+      nextButton.hidden = false;
+      statusPill.textContent = index === current.answer ? "答对啦" : "已复习";
+      scoreLine.textContent = `本周目前答对 ${score} / ${totalQuestionsBefore(dayIndex) + questionIndex + 1} 题`;
+      save();
+      renderMistakes();
+    }
+    nextButton.addEventListener("click", () => {
+      questionIndex += 1;
+      if (questionIndex >= lessons[dayIndex].questions.length) {
+        dayIndex += 1;
+        questionIndex = 0;
+      }
+      save();
+      if (sessionLimit) {
+        sessionAnswered += 1;
+        if (sessionAnswered >= sessionLimit && dayIndex < lessons.length) {
+          showHome(`今天 ${sessionLimit} 题完成啦。进度已经存好，下次点“继续上次的小复习”就接着来。`);
+          return;
+        }
+      }
+      render();
+      document.querySelector(".phone").scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+    pauseButton.addEventListener("click", () => {
+      save();
+      showHome("已保存到这里。今天先收工也很好，英语不是一口吞完的。");
+    });
+    resetButton.addEventListener("click", () => {
+      dayIndex = 0;
+      questionIndex = 0;
+      score = 0;
+      mistakes = [];
+      save();
+      showHome("已经从第 1 天重新开始。我们轻一点来，慢慢也会很远。");
+    });
+    clearMistakesButton.addEventListener("click", () => {
+      mistakes = [];
+      save();
+      renderMistakes();
+    });
+    continueButton.addEventListener("click", () => startQuiz(0));
+    miniSessionButton.addEventListener("click", () => startQuiz(5));
+    mistakeHomeButton.addEventListener("click", () => {
+      renderMistakes();
+      if (mistakes.length === 0) {
+        showHome("目前还没有错题，小本本空空的，心情亮亮的。");
+      } else {
+        mistakeBox.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    });
+    showHome();
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+  <script>
+    window.addEventListener("load", () => {
+      if (!window.gsap) return;
+      if (window.ScrollTrigger) gsap.registerPlugin(ScrollTrigger);
+      gsap.from("header", { opacity: 0, y: 18, duration: .8, ease: "power3.out" });
+      gsap.utils.toArray(".stack-card").forEach((card, index) => {
+        gsap.from(card, {
+          opacity: 0,
+          y: 24,
+          scale: .96,
+          duration: .7,
+          delay: index * .04,
+          ease: "power3.out",
+          scrollTrigger: window.ScrollTrigger ? { trigger: card, start: "top 88%" } : undefined
+        });
+      });
+      gsap.utils.toArray(".slice").forEach((slice, index) => {
+        gsap.from(slice, { opacity: .2, y: 16, duration: .5, delay: index * .08, ease: "power2.out" });
+      });
+    });
+  </script>
+</body>
+</html>

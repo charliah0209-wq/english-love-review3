@@ -1,0 +1,1415 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>第七周：场景词汇加速，备注：来自你的小可爱陪练</title>
+  <style>
+    :root {
+      --text: #302431;
+      --muted: #846d82;
+      --pink: #ff6fae;
+      --pink-dark: #dc4b91;
+      --violet: #816cf6;
+      --line: #f3d7e6;
+      --card: rgba(255,255,255,.85);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+    * { box-sizing: border-box; }
+    body {
+      min-height: 100vh;
+      margin: 0;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 10% 8%, #ffe1ef 0 18%, transparent 34%),
+        radial-gradient(circle at 92% 6%, #e8e2ff 0 15%, transparent 32%),
+        linear-gradient(155deg, #fff9fc 0%, #fff1f7 48%, #f6f1ff 100%);
+      display: flex;
+      justify-content: center;
+      padding: 18px;
+    }
+    button { border: 0; font: inherit; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+    .phone {
+      width: min(430px, 100%);
+      min-height: calc(100vh - 36px);
+      overflow: hidden;
+      border-radius: 34px;
+      background: rgba(255,255,255,.56);
+      border: 1px solid rgba(255,255,255,.82);
+      box-shadow: 0 18px 48px rgba(172,80,130,.2);
+      backdrop-filter: blur(18px);
+    }
+    header {
+      padding: 22px 22px 14px;
+      background: linear-gradient(180deg, rgba(255,255,255,.94), rgba(255,255,255,.32));
+    }
+    .kicker {
+      color: var(--pink-dark);
+      font-size: 12px;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      font-weight: 900;
+    }
+    h1 { margin: 8px 0 10px; font-size: 28px; line-height: 1.16; }
+    .sub { margin: 0; color: var(--muted); line-height: 1.55; font-size: 15px; }
+    main { padding: 0 16px 18px; display: grid; gap: 14px; }
+    .card {
+      background: var(--card);
+      border: 1px solid rgba(255,255,255,.9);
+      border-radius: 28px;
+      box-shadow: 0 12px 28px rgba(124,80,108,.12);
+      padding: 18px;
+    }
+    .row { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+    .pill {
+      color: var(--pink-dark);
+      background: #ffe4f0;
+      border-radius: 999px;
+      padding: 7px 11px;
+      font-size: 13px;
+      font-weight: 850;
+      white-space: nowrap;
+    }
+    .bar { height: 10px; border-radius: 999px; background: #f1dce9; overflow: hidden; margin-top: 10px; }
+    .bar span {
+      display: block;
+      width: 0%;
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, var(--pink), var(--violet));
+      transition: width .25s ease;
+    }
+    .days { display: grid; grid-template-columns: repeat(7, 1fr); gap: 7px; margin-top: 14px; }
+    .day-dot {
+      min-height: 42px;
+      display: grid;
+      place-items: center;
+      border-radius: 16px;
+      background: rgba(255,255,255,.75);
+      border: 1px solid var(--line);
+      color: var(--muted);
+      font-weight: 900;
+    }
+    .day-dot.done { color: white; background: linear-gradient(135deg, var(--pink), var(--violet)); border-color: transparent; }
+    .day-dot.current { color: var(--pink-dark); outline: 3px solid rgba(255,111,174,.22); }
+    .home-card h2 { margin-bottom: 8px; }
+    .home-actions { display: grid; gap: 10px; margin-top: 14px; }
+    .home-tip {
+      display: none;
+      margin-top: 12px;
+      padding: 12px 14px;
+      border-radius: 18px;
+      background: #fff0f7;
+      color: #6c405a;
+      line-height: 1.55;
+      font-size: 14px;
+    }
+    .home-tip.show { display: block; }
+    .day-picker {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 9px;
+      margin-top: 14px;
+    }
+    .day-button {
+      min-height: 48px;
+      padding: 10px;
+      border-radius: 16px;
+      background: rgba(255,255,255,.78);
+      border: 1px solid var(--line);
+      color: var(--text);
+      font-weight: 850;
+      text-align: left;
+    }
+    .day-button span { display: block; margin-top: 3px; color: var(--muted); font-size: 12px; font-weight: 700; }
+    .day-button.done { color: white; background: linear-gradient(135deg, var(--pink), var(--violet)); border-color: transparent; }
+    .day-button.current { outline: 3px solid rgba(255,111,174,.22); }
+    .chat { display: flex; flex-direction: column; gap: 10px; }
+    .bubble {
+      max-width: 88%;
+      padding: 12px 14px;
+      border-radius: 20px;
+      line-height: 1.55;
+      font-size: 15px;
+      white-space: pre-line;
+      animation: floatIn .25s ease both;
+    }
+    .bubble.me {
+      align-self: flex-end;
+      color: white;
+      background: linear-gradient(135deg, var(--pink), var(--violet));
+      border-bottom-right-radius: 8px;
+    }
+    .bubble.her { align-self: flex-start; background: white; border: 1px solid var(--line); border-bottom-left-radius: 8px; }
+    @keyframes floatIn { from { transform: translateY(8px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+    h2 { margin: 0 0 5px; font-size: 22px; }
+    .tiny { margin: 0; color: var(--muted); line-height: 1.5; font-size: 13px; }
+    .lesson-head { align-items: flex-start; margin-bottom: 12px; }
+    .q-count { margin: 10px 0 0; color: var(--muted); font-weight: 850; font-size: 14px; }
+    .question { margin: 10px 0 12px; line-height: 1.6; color: #654c63; font-weight: 700; }
+    .options { display: grid; gap: 10px; }
+    .option {
+      width: 100%;
+      min-height: 50px;
+      text-align: left;
+      padding: 13px 14px;
+      border-radius: 18px;
+      background: white;
+      color: var(--text);
+      border: 1px solid var(--line);
+      box-shadow: 0 8px 16px rgba(139,86,118,.08);
+    }
+    .option.correct { border-color: rgba(33,168,120,.55); background: #effcf7; color: #106947; }
+    .option.wrong { border-color: rgba(228,90,104,.5); background: #fff1f3; color: #923340; }
+    .feedback, .note {
+      display: none;
+      margin-top: 14px;
+      padding: 14px;
+      border-radius: 20px;
+      line-height: 1.6;
+    }
+    .feedback { background: #fff0f7; color: #6c405a; }
+    .note { background: #fffaf0; border: 1px dashed #efbd72; color: #755321; }
+    .show { display: block; }
+    .primary, .secondary {
+      width: 100%;
+      min-height: 52px;
+      margin-top: 14px;
+      border-radius: 18px;
+      font-weight: 900;
+    }
+    .primary { color: white; background: linear-gradient(135deg, var(--pink), var(--violet)); box-shadow: 0 14px 24px rgba(255,111,174,.24); }
+    .secondary { color: var(--pink-dark); background: #ffe4f0; }
+    .score { margin: 12px 0 0; color: var(--muted); line-height: 1.5; font-size: 14px; }
+    .mistake-box {
+      display: none;
+      background: #fffaf0;
+      border: 1px dashed #efbd72;
+    }
+    .mistake-box.show { display: block; }
+    .mistake-list {
+      display: grid;
+      gap: 10px;
+      margin-top: 12px;
+    }
+    .mistake-item {
+      padding: 12px;
+      border-radius: 18px;
+      background: rgba(255,255,255,.78);
+      border: 1px solid #f1d8a7;
+      line-height: 1.55;
+      color: #755321;
+      font-size: 14px;
+    }
+    .mistake-item strong { color: #5f3f13; }
+    .certificate {
+      display: none;
+      text-align: center;
+      background: linear-gradient(155deg, #fff8e8, #ffeaf5);
+      border: 1px solid #f1c98d;
+    }
+    .certificate.show { display: block; }
+    .seal {
+      width: 74px;
+      height: 74px;
+      margin: 4px auto 12px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      color: white;
+      background: linear-gradient(135deg, #f4b84f, #ff6fae);
+      font-size: 28px;
+      font-weight: 950;
+    }
+  </style>
+</head>
+<body>
+  <section class="phone" aria-label="第七周英语小复习手机网页App">
+    <header>
+      <div class="kicker">Week 7 · Real Scenes, Tiny Wins</div>
+      <h1>第七周：场景词汇加速</h1>
+      <p class="sub">备注：来自你的小可爱陪练</p>
+      <p class="sub">这周继续加速：医院、购物、校园、住房、旅行、面试和口语句型一起推进。每次可以只做 5 题，答错仍然会进“错题小本本”。</p>
+    </header>
+    <main>
+      <section class="card" aria-label="学习进度">
+        <div class="row">
+          <strong id="progressText">第 1 / 7 天</strong>
+          <span class="pill" id="statusPill">今日待完成</span>
+        </div>
+        <div class="bar"><span id="progressBar"></span></div>
+        <div class="days" id="days"></div>
+      </section>
+      <section class="card home-card" id="homeCard" aria-label="分段学习入口">
+        <h2>今天想怎么复习？</h2>
+        <p class="tiny" id="homeSummary">已经帮你保存进度，下次打开可以继续。</p>
+        <div class="home-actions">
+          <button class="primary" id="continueButton">继续上次的小复习</button>
+          <button class="secondary" id="miniSessionButton">今天先做 5 题</button>
+          <button class="secondary" id="mistakeHomeButton">看看错题小本本</button>
+        </div>
+        <div class="home-tip" id="homeTip"></div>
+        <div class="day-picker" id="dayPicker" aria-label="选择某一天练习"></div>
+      </section>
+      <section class="card chat" id="chat" aria-label="日常对话"></section>
+      <section class="card" id="lessonCard" aria-label="今日小题">
+        <div class="row lesson-head">
+          <div>
+            <h2 id="lessonTitle">Day 1</h2>
+            <p class="tiny" id="lessonPoint"></p>
+          </div>
+          <span class="pill" id="lessonTag">新题</span>
+        </div>
+        <p class="q-count" id="qCount"></p>
+        <p class="question" id="question"></p>
+        <div class="options" id="options"></div>
+        <div class="feedback" id="feedback"></div>
+        <div class="note" id="note"></div>
+        <p class="score" id="scoreLine"></p>
+        <button class="primary" id="nextButton" hidden>下一题</button>
+        <button class="secondary" id="pauseButton">今天先到这里</button>
+      </section>
+      <section class="card mistake-box" id="mistakeBox" aria-label="错题小本本">
+        <div class="row lesson-head">
+          <div>
+            <h2>错题小本本</h2>
+            <p class="tiny">错题不是黑历史，是下次见面会认出来的老熟人。</p>
+          </div>
+          <span class="pill" id="mistakeCount">0 题</span>
+        </div>
+        <div class="mistake-list" id="mistakeList"></div>
+        <button class="secondary" id="clearMistakesButton">清空错题小本本</button>
+      </section>
+      <section class="card certificate" id="certificate" aria-label="第七周毕业证书">
+        <div class="seal">W7</div>
+        <h2>第七周场景词汇完成</h2>
+        <p>这一周你把词汇放进了真实场景里：看病、购物、上课、住房、旅行和面试，都比孤零零背单词更容易留下印象。</p>
+        <p><strong>Small practice becomes real confidence, and today you kept going.</strong></p>
+        <button class="secondary" id="resetButton">从第1天重新开始</button>
+      </section>
+    </main>
+  </section>
+  <script>
+    const lessons = [
+      {
+            "title": "医院场景：症状与就诊",
+            "point": "少量回收 alleviate / aggravate，重点加速 clinic、physician、symptom、appointment、prescription 等。",
+            "tag": "场景词汇",
+            "chat": [
+                  [
+                        "me",
+                        "第七周开始啦，今天先去医院场景。"
+                  ],
+                  [
+                        "her",
+                        "英语看到我可能也需要看医生。"
+                  ],
+                  [
+                        "me",
+                        "那我先 make an appointment，给你的信心开一张 prescription。"
+                  ]
+            ],
+            "note": "今日小纸条：appointment = app + point，可以想成在日程 app 上点一个时间。和你复习这件事，也要预约在心上。",
+            "questions": [
+                  {
+                        "q": "小回收：alleviate a headache 更接近：",
+                        "options": [
+                              "预约头痛",
+                              "缓解头痛",
+                              "加重头痛"
+                        ],
+                        "answer": 1,
+                        "ok": "对。alleviate 是缓解、减轻。",
+                        "no": "选 B。alleviate a headache = 缓解头痛。"
+                  },
+                  {
+                        "q": "小回收：aggravate a symptom 是：",
+                        "options": [
+                              "使症状消失",
+                              "登记症状",
+                              "使症状加重"
+                        ],
+                        "answer": 2,
+                        "ok": "对。aggravate 是加重、恶化。",
+                        "no": "选 A。aggravate a symptom = 使症状加重。"
+                  },
+                  {
+                        "q": "clinic 的意思是：",
+                        "options": [
+                              "登机口",
+                              "便利店",
+                              "诊所"
+                        ],
+                        "answer": 2,
+                        "ok": "对。clinic = 诊所。",
+                        "no": "选 B。clinic 是诊所，不是商店。"
+                  },
+                  {
+                        "q": "physician 通常指：",
+                        "options": [
+                              "内科医生",
+                              "收银员",
+                              "房东"
+                        ],
+                        "answer": 0,
+                        "ok": "对。physician 常指内科医生。",
+                        "no": "选 A。physician = 内科医生。"
+                  },
+                  {
+                        "q": "symptom 的意思是：",
+                        "options": [
+                              "症状",
+                              "退税",
+                              "奖学金"
+                        ],
+                        "answer": 0,
+                        "ok": "对。symptom = 症状。记忆：sym- 像 signal，身体发出的信号。",
+                        "no": "选 B。symptom 是症状。"
+                  },
+                  {
+                        "q": "make an appointment 是：",
+                        "options": [
+                              "申请学位",
+                              "开药方",
+                              "预约"
+                        ],
+                        "answer": 2,
+                        "ok": "对。make an appointment = 预约。",
+                        "no": "选 B。make an appointment 是预约。"
+                  },
+                  {
+                        "q": "prescription 更接近：",
+                        "options": [
+                              "药方，处方",
+                              "购物清单",
+                              "课程安排"
+                        ],
+                        "answer": 0,
+                        "ok": "对。prescription = 处方。记忆：pre + script，医生预先写下来的用药说明。",
+                        "no": "选 A。prescription 是处方、药方。"
+                  },
+                  {
+                        "q": "feel dizzy 的意思是：",
+                        "options": [
+                              "觉得超重",
+                              "觉得通风",
+                              "觉得头晕"
+                        ],
+                        "answer": 2,
+                        "ok": "对。dizzy = 头晕的。",
+                        "no": "选 A。feel dizzy = 感到头晕。"
+                  }
+            ]
+      },
+      {
+            "title": "购物场景：价格与真假",
+            "point": "重点加速 bargain、discount、genuine、fake、cashier、receipt、refund、overpriced。",
+            "tag": "购物表达",
+            "chat": [
+                  [
+                        "me",
+                        "今天去购物场景。"
+                  ],
+                  [
+                        "her",
+                        "可以只买会的单词吗？"
+                  ],
+                  [
+                        "me",
+                        "可以，但 genuine progress 不打折。我的喜欢倒是 special offer，长期有效。"
+                  ]
+            ],
+            "note": "今日小纸条：genuine 是真的。记忆 genuine 里有 gen，可以想成 gene 基因，真东西有自己的基因。",
+            "questions": [
+                  {
+                        "q": "discount 的意思是：",
+                        "options": [
+                              "学分",
+                              "折扣",
+                              "症状"
+                        ],
+                        "answer": 1,
+                        "ok": "对。discount = 折扣。",
+                        "no": "选 A。discount 是折扣。"
+                  },
+                  {
+                        "q": "bargain 在购物里常指：",
+                        "options": [
+                              "假货",
+                              "便宜货；讨价还价",
+                              "走廊"
+                        ],
+                        "answer": 1,
+                        "ok": "对。bargain 可指便宜货，也可指讨价还价。",
+                        "no": "选 B。bargain 在购物场景里常和便宜、砍价有关。"
+                  },
+                  {
+                        "q": "genuine product 是：",
+                        "options": [
+                              "真正的产品，正品",
+                              "清仓产品",
+                              "假货"
+                        ],
+                        "answer": 0,
+                        "ok": "对。genuine = 真实的、真正的。",
+                        "no": "选 B。genuine product = 正品。"
+                  },
+                  {
+                        "q": "fake 的意思是：",
+                        "options": [
+                              "学费",
+                              "真实的",
+                              "假货；假的"
+                        ],
+                        "answer": 2,
+                        "ok": "对。fake = 假的，也可指假货。",
+                        "no": "选 B。fake 是假的、假货。"
+                  },
+                  {
+                        "q": "cashier 通常是：",
+                        "options": [
+                              "收银员",
+                              "眼科医生",
+                              "副院长"
+                        ],
+                        "answer": 0,
+                        "ok": "对。cashier = 收银员。",
+                        "no": "选 A。cashier 是收银员。"
+                  },
+                  {
+                        "q": "receipt 的意思是：",
+                        "options": [
+                              "处方",
+                              "住宿费",
+                              "收据"
+                        ],
+                        "answer": 2,
+                        "ok": "对。receipt = 收据。注意 p 不发音。",
+                        "no": "选 A。receipt 是收据。"
+                  },
+                  {
+                        "q": "refund 更接近：",
+                        "options": [
+                              "入住",
+                              "退钱，退款",
+                              "推荐"
+                        ],
+                        "answer": 1,
+                        "ok": "对。refund = 退款。re- 有返回感，fund 是钱。",
+                        "no": "选 A。refund = 退款。"
+                  },
+                  {
+                        "q": "It's a little overpriced. 的意思是：",
+                        "options": [
+                              "有点太贵了",
+                              "有点太冷了",
+                              "有点太近了"
+                        ],
+                        "answer": 0,
+                        "ok": "对。overpriced = 价格过高。",
+                        "no": "选 A。overpriced 是定价过高。"
+                  }
+            ]
+      },
+      {
+            "title": "校园场景：学位、课程与活动",
+            "point": "重点加速 tuition、credit、degree、diploma、curriculum、scholarship、extracurricular。",
+            "tag": "校园词汇",
+            "chat": [
+                  [
+                        "me",
+                        "今天回校园。"
+                  ],
+                  [
+                        "her",
+                        "校园词好多，像点名。"
+                  ],
+                  [
+                        "me",
+                        "那我替你点名：tuition、credit、degree。最后再偷偷点一个你。"
+                  ]
+            ],
+            "note": "今日小纸条：extracurricular 很长，拆成 extra + curricular，extra 是额外，curricular 和课程有关，所以是课外的。",
+            "questions": [
+                  {
+                        "q": "tuition 的意思是：",
+                        "options": [
+                              "收据",
+                              "牙痛",
+                              "学费"
+                        ],
+                        "answer": 2,
+                        "ok": "对。tuition = 学费。",
+                        "no": "选 A。tuition 是学费。"
+                  },
+                  {
+                        "q": "credit 在校园里常指：",
+                        "options": [
+                              "便利店",
+                              "海关",
+                              "学分"
+                        ],
+                        "answer": 2,
+                        "ok": "对。credit 可指学分，也有信用等意思。",
+                        "no": "选 B。credit 在课程语境中常指学分。"
+                  },
+                  {
+                        "q": "degree 的意思是：",
+                        "options": [
+                              "学位",
+                              "发票",
+                              "处方"
+                        ],
+                        "answer": 0,
+                        "ok": "对。degree = 学位。",
+                        "no": "选 A。degree 是学位。"
+                  },
+                  {
+                        "q": "diploma 更接近：",
+                        "options": [
+                              "航班",
+                              "症状",
+                              "毕业证书，文凭"
+                        ],
+                        "answer": 2,
+                        "ok": "对。diploma = 文凭、毕业证书。",
+                        "no": "选 A。diploma 是文凭或毕业证书。"
+                  },
+                  {
+                        "q": "undergraduate 指：",
+                        "options": [
+                              "房客",
+                              "研究生",
+                              "本科生"
+                        ],
+                        "answer": 2,
+                        "ok": "对。undergraduate = 本科生。",
+                        "no": "选 B。undergraduate 是本科生；postgraduate 是研究生。"
+                  },
+                  {
+                        "q": "postgraduate 指：",
+                        "options": [
+                              "本科生",
+                              "外科医生",
+                              "研究生"
+                        ],
+                        "answer": 2,
+                        "ok": "对。postgraduate = 研究生。",
+                        "no": "选 C。postgraduate 是研究生。"
+                  },
+                  {
+                        "q": "curriculum 的意思是：",
+                        "options": [
+                              "空房间",
+                              "折扣",
+                              "课程"
+                        ],
+                        "answer": 2,
+                        "ok": "对。curriculum = 课程。记忆：curr- 像 current，一门门课程往前流动。",
+                        "no": "选 A。curriculum 是课程。"
+                  },
+                  {
+                        "q": "scholarship 是：",
+                        "options": [
+                              "退税",
+                              "奖学金",
+                              "购物清单"
+                        ],
+                        "answer": 1,
+                        "ok": "对。scholarship = 奖学金。scholar 是学者、学生感。",
+                        "no": "选 A。scholarship 是奖学金。"
+                  },
+                  {
+                        "q": "extracurricular activities 是：",
+                        "options": [
+                              "必修课",
+                              "课外活动",
+                              "课程费用"
+                        ],
+                        "answer": 1,
+                        "ok": "对。extra + curricular = 课程之外的，也就是课外活动。",
+                        "no": "选 B。extracurricular activities = 课外活动。"
+                  }
+            ]
+      },
+      {
+            "title": "住房场景：房东、通风与社区",
+            "point": "重点加速 landlord、tenant、accommodate、residence、downtown、suburb、ventilation。",
+            "tag": "住房词汇",
+            "chat": [
+                  [
+                        "me",
+                        "今天看房。"
+                  ],
+                  [
+                        "her",
+                        "英语也有房源吗？"
+                  ],
+                  [
+                        "me",
+                        "有，我给你留了 spare room，里面住着今天刚学会的单词。"
+                  ]
+            ],
+            "note": "今日小纸条：accommodation 很长，抓住 accommodate 这个核心，和住宿有关。记忆：a + room + action，给人安排住处的动作。",
+            "questions": [
+                  {
+                        "q": "landlord / landlady 指：",
+                        "options": [
+                              "租客",
+                              "收银员",
+                              "房东"
+                        ],
+                        "answer": 2,
+                        "ok": "对。landlord 是男房东或泛指房东，landlady 是女房东。",
+                        "no": "选 A。landlord / landlady = 房东。"
+                  },
+                  {
+                        "q": "tenant 的意思是：",
+                        "options": [
+                              "牙医",
+                              "租客，房客",
+                              "校长"
+                        ],
+                        "answer": 1,
+                        "ok": "对。tenant = 租客、房客。",
+                        "no": "选 A。tenant 是租客。"
+                  },
+                  {
+                        "q": "accommodate 在住房语境中是：",
+                        "options": [
+                              "提供住宿",
+                              "开发票",
+                              "缓解疼痛"
+                        ],
+                        "answer": 0,
+                        "ok": "对。accommodate = 提供住宿、容纳。",
+                        "no": "选 A。accommodate 可表示提供住宿。"
+                  },
+                  {
+                        "q": "residence 的意思是：",
+                        "options": [
+                              "折扣；贴现",
+                              "面试；采访",
+                              "居住；住所"
+                        ],
+                        "answer": 2,
+                        "ok": "对。residence = 居住、住所。",
+                        "no": "选 A。residence 和居住、住所有关。"
+                  },
+                  {
+                        "q": "downtown 指：",
+                        "options": [
+                              "走廊",
+                              "市中心",
+                              "郊区"
+                        ],
+                        "answer": 1,
+                        "ok": "对。downtown = 市中心。",
+                        "no": "选 A。downtown 是市中心。"
+                  },
+                  {
+                        "q": "suburb 的意思是：",
+                        "options": [
+                              "郊区",
+                              "通风",
+                              "药方"
+                        ],
+                        "answer": 0,
+                        "ok": "对。suburb = 郊区。",
+                        "no": "选 A。suburb 是郊区。"
+                  },
+                  {
+                        "q": "ventilation 更接近：",
+                        "options": [
+                              "奖学金",
+                              "登机牌",
+                              "通风"
+                        ],
+                        "answer": 2,
+                        "ok": "对。ventilation = 通风。记忆：vent 像 air vent，通风口。",
+                        "no": "选 A。ventilation 是通风。"
+                  },
+                  {
+                        "q": "spare room 是：",
+                        "options": [
+                              "入境大厅",
+                              "空余房间",
+                              "豪华套间"
+                        ],
+                        "answer": 1,
+                        "ok": "对。spare room = 空房、备用房间。",
+                        "no": "选 A。spare room 是空余房间。"
+                  },
+                  {
+                        "q": "neighborhood 的意思是：",
+                        "options": [
+                              "社区，街坊",
+                              "课程安排",
+                              "付款方式"
+                        ],
+                        "answer": 0,
+                        "ok": "对。neighborhood = 社区、街坊。",
+                        "no": "选 A。neighborhood 是社区、街坊。"
+                  }
+            ]
+      },
+      {
+            "title": "旅行酒店：机场、行李与入住",
+            "point": "重点加速 terminal、departure、arrival、baggage、reservation、vacancy、voucher、occupancy。",
+            "tag": "旅行酒店",
+            "chat": [
+                  [
+                        "me",
+                        "今天去机场和酒店。"
+                  ],
+                  [
+                        "her",
+                        "我先 check in，英语能不能晚点登机？"
+                  ],
+                  [
+                        "me",
+                        "可以，但我的想念已经 departure，目的地是你这边。"
+                  ]
+            ],
+            "note": "今日小纸条：reservation = 预订。reserve 是预留，-ation 变名词。给房间能 reservation，给你的小复习也能预留一点点时间。",
+            "questions": [
+                  {
+                        "q": "terminal 在机场常指：",
+                        "options": [
+                              "奖学金",
+                              "假货",
+                              "航站楼；终点站"
+                        ],
+                        "answer": 2,
+                        "ok": "对。terminal 可指航站楼、终点站。",
+                        "no": "选 A。terminal 在机场是航站楼。"
+                  },
+                  {
+                        "q": "departure lobby 是：",
+                        "options": [
+                              "试衣间",
+                              "入境大厅",
+                              "出境大厅"
+                        ],
+                        "answer": 2,
+                        "ok": "对。departure 是离开、启程，departure lobby = 出境大厅。",
+                        "no": "选 B。departure lobby 是出境大厅。"
+                  },
+                  {
+                        "q": "arrival lobby 是：",
+                        "options": [
+                              "入境大厅",
+                              "出境大厅",
+                              "总台"
+                        ],
+                        "answer": 0,
+                        "ok": "对。arrival 是到达，arrival lobby = 入境大厅。",
+                        "no": "选 A。arrival lobby 是入境大厅。"
+                  },
+                  {
+                        "q": "baggage / luggage 的意思是：",
+                        "options": [
+                              "课程",
+                              "津贴",
+                              "行李"
+                        ],
+                        "answer": 2,
+                        "ok": "对。baggage 和 luggage 都可表示行李。",
+                        "no": "选 A。baggage / luggage = 行李。"
+                  },
+                  {
+                        "q": "carry-on baggage 是：",
+                        "options": [
+                              "行李领取处",
+                              "托运行李",
+                              "随身行李"
+                        ],
+                        "answer": 2,
+                        "ok": "对。carry-on baggage = 随身行李。",
+                        "no": "选 B。carry-on baggage 是随身行李。"
+                  },
+                  {
+                        "q": "reservation desk 是：",
+                        "options": [
+                              "预订处",
+                              "海关申报处",
+                              "收银台"
+                        ],
+                        "answer": 0,
+                        "ok": "对。reservation desk = 预订处。",
+                        "no": "选 A。reservation desk 是预订处。"
+                  },
+                  {
+                        "q": "vacancy 在酒店语境里是：",
+                        "options": [
+                              "牙痛",
+                              "清仓甩卖",
+                              "空房间"
+                        ],
+                        "answer": 2,
+                        "ok": "对。vacancy 可指空房、空缺。",
+                        "no": "选 A。vacancy 在酒店里常指空房。"
+                  },
+                  {
+                        "q": "voucher 的意思更接近：",
+                        "options": [
+                              "学分",
+                              "凭证，证件",
+                              "郊区"
+                        ],
+                        "answer": 1,
+                        "ok": "对。voucher = 凭证、票券。",
+                        "no": "选 A。voucher 是凭证。"
+                  },
+                  {
+                        "q": "occupancy 的意思是：",
+                        "options": [
+                              "占用，入住率",
+                              "退款",
+                              "处方"
+                        ],
+                        "answer": 0,
+                        "ok": "对。occupancy = 占用、入住率。记忆：occupy 是占用，occupancy 是名词。",
+                        "no": "选 A。occupancy 是占用或入住率。"
+                  }
+            ]
+      },
+      {
+            "title": "面试场景：申请、资格与工作",
+            "point": "少量回收 qualification / reference，重点加速 resume、position、representative、allowance、expense、vocational。",
+            "tag": "面试求职",
+            "chat": [
+                  [
+                        "me",
+                        "今天是面试场景。"
+                  ],
+                  [
+                        "her",
+                        "那我可以申请不做题吗？"
+                  ],
+                  [
+                        "me",
+                        "申请驳回。position 已经留好：你负责变强，我负责在旁边偏心。"
+                  ]
+            ],
+            "note": "今日小纸条：qualification = 资格。拆成 qualify + -cation，先达到条件，再拥有资格。你每天多做几题，就是在给自己攒 qualification。",
+            "questions": [
+                  {
+                        "q": "小回收：qualification 常指：",
+                        "options": [
+                              "药方",
+                              "通风",
+                              "资格，条件"
+                        ],
+                        "answer": 2,
+                        "ok": "对。qualification = 资格、条件。",
+                        "no": "选 A。qualification 是资格、条件。"
+                  },
+                  {
+                        "q": "小回收：reference 在求职里可指：",
+                        "options": [
+                              "空房间",
+                              "证明推荐人",
+                              "行李牌"
+                        ],
+                        "answer": 1,
+                        "ok": "对。reference 可指证明推荐人。",
+                        "no": "选 A。reference 在求职语境中可指证明推荐人。"
+                  },
+                  {
+                        "q": "resume 的意思是：",
+                        "options": [
+                              "简历",
+                              "退款",
+                              "处方"
+                        ],
+                        "answer": 0,
+                        "ok": "对。resume = 简历。",
+                        "no": "选 A。resume 是简历。"
+                  },
+                  {
+                        "q": "position 在求职语境中是：",
+                        "options": [
+                              "通道",
+                              "症状",
+                              "职位"
+                        ],
+                        "answer": 2,
+                        "ok": "对。position = 职位。",
+                        "no": "选 A。position 是职位。"
+                  },
+                  {
+                        "q": "apply for a job 是：",
+                        "options": [
+                              "预订工作",
+                              "申请工作",
+                              "拒绝工作"
+                        ],
+                        "answer": 1,
+                        "ok": "对。apply for = 申请。",
+                        "no": "选 A。apply for a job = 申请工作。"
+                  },
+                  {
+                        "q": "representative 的意思是：",
+                        "options": [
+                              "代表",
+                              "房东",
+                              "收据"
+                        ],
+                        "answer": 0,
+                        "ok": "对。representative = 代表。记忆：represent 是代表，-ative 常构成形容词或名词。",
+                        "no": "选 A。representative 是代表。"
+                  },
+                  {
+                        "q": "allowance 是：",
+                        "options": [
+                              "学位",
+                              "登机门",
+                              "津贴，补助"
+                        ],
+                        "answer": 2,
+                        "ok": "对。allowance = 津贴、补助。",
+                        "no": "选 A。allowance 是津贴、补助。"
+                  },
+                  {
+                        "q": "expense 的意思是：",
+                        "options": [
+                              "咳嗽",
+                              "费用，开支",
+                              "客座教授"
+                        ],
+                        "answer": 1,
+                        "ok": "对。expense = 费用、开支。",
+                        "no": "选 A。expense 是费用、开支。"
+                  },
+                  {
+                        "q": "vocational guidance 是：",
+                        "options": [
+                              "职业指导",
+                              "课程学分",
+                              "入住登记"
+                        ],
+                        "answer": 0,
+                        "ok": "对。vocational = 职业的，guidance = 指导。",
+                        "no": "选 A。vocational guidance = 职业指导。"
+                  }
+            ]
+      },
+      {
+            "title": "口语句型：感谢、道歉、邀请与点餐",
+            "point": "本周综合挑战：把场景词和常用句型合在一起，练真实对话里的选择。",
+            "tag": "口语综合",
+            "chat": [
+                  [
+                        "me",
+                        "最后一天，换成口语句型。"
+                  ],
+                  [
+                        "her",
+                        "这个实用一点。"
+                  ],
+                  [
+                        "me",
+                        "对，考试要会选，生活也要会说。比如 I can never thank you enough，我对你的小进步也是。"
+                  ]
+            ],
+            "note": "毕业小纸条：I can never thank you enough 是非常感谢。今天谢谢你又来了一次，也谢谢你没有把英语丢在半路。",
+            "questions": [
+                  {
+                        "q": "I really appreciate it. 表示：",
+                        "options": [
+                              "我真的很抱歉",
+                              "我真的很头晕",
+                              "我真的很感激"
+                        ],
+                        "answer": 2,
+                        "ok": "对。appreciate 在这里表示感激。",
+                        "no": "选 A。I really appreciate it. = 我真的很感激。"
+                  },
+                  {
+                        "q": "I'm terribly sorry. 更适合表达：",
+                        "options": [
+                              "付款",
+                              "邀请",
+                              "道歉"
+                        ],
+                        "answer": 2,
+                        "ok": "对。terribly sorry 是非常抱歉。",
+                        "no": "选 B。I'm terribly sorry. 是道歉。"
+                  },
+                  {
+                        "q": "I can't agree more. 的意思是：",
+                        "options": [
+                              "我非常同意",
+                              "我不能再来了",
+                              "我一点也不同意"
+                        ],
+                        "answer": 0,
+                        "ok": "对。这句话字面像不能同意更多，实际是非常同意。",
+                        "no": "选 A。I can't agree more. = 我非常同意。"
+                  },
+                  {
+                        "q": "By all means. 常表示：",
+                        "options": [
+                              "绝不可以",
+                              "请开发票",
+                              "当然可以"
+                        ],
+                        "answer": 2,
+                        "ok": "对。By all means. = 当然可以。",
+                        "no": "选 A。By all means. 表示当然可以。"
+                  },
+                  {
+                        "q": "Are you ready to order? 是在问：",
+                        "options": [
+                              "你准备申请了吗？",
+                              "你准备点餐了吗？",
+                              "你准备入住了吗？"
+                        ],
+                        "answer": 1,
+                        "ok": "对。order 在餐厅里常指点餐。",
+                        "no": "选 A。Are you ready to order? = 您要点餐了吗？"
+                  },
+                  {
+                        "q": "What do you recommend? 的意思是：",
+                        "options": [
+                              "你推荐什么？",
+                              "你付款了吗？",
+                              "你哪里不舒服？"
+                        ],
+                        "answer": 0,
+                        "ok": "对。recommend = 推荐。",
+                        "no": "选 A。What do you recommend? = 有什么推荐的？"
+                  },
+                  {
+                        "q": "Could you tell me where I can find a hospital? 是：",
+                        "options": [
+                              "预约医生",
+                              "购买药方",
+                              "问路到医院"
+                        ],
+                        "answer": 2,
+                        "ok": "对。这是问医院在哪里。",
+                        "no": "选 A。这句话是在问路。"
+                  },
+                  {
+                        "q": "How are you going to pay? Cash, check or charge? 是问：",
+                        "options": [
+                              "怎么申请",
+                              "怎么付款",
+                              "怎么入住"
+                        ],
+                        "answer": 1,
+                        "ok": "对。这是在询问付款方式。",
+                        "no": "选 A。这句话问的是付款方式。"
+                  },
+                  {
+                        "q": "Take these pills every four hours. 的意思是：",
+                        "options": [
+                              "这些药每四小时吃一次",
+                              "这些房间每四小时打扫一次",
+                              "这些课程每四小时考试一次"
+                        ],
+                        "answer": 0,
+                        "ok": "对。pill = 药片，every four hours = 每四小时。",
+                        "no": "选 A。Take these pills every four hours. = 这些药每四小时吃一次。"
+                  }
+            ]
+      }
+];
+
+    const storageKey = "tinyEnglishLoveReviewWeek7Progress";
+    let dayIndex = Number(localStorage.getItem(storageKey + ":day") || "0");
+    let questionIndex = Number(localStorage.getItem(storageKey + ":question") || "0");
+    let score = Number(localStorage.getItem(storageKey + ":score") || "0");
+    let mistakes = [];
+    try {
+      mistakes = JSON.parse(localStorage.getItem(storageKey + ":mistakes") || "[]");
+    } catch {
+      mistakes = [];
+    }
+    dayIndex = Number.isFinite(dayIndex) ? Math.max(0, Math.min(dayIndex, lessons.length)) : 0;
+    questionIndex = Number.isFinite(questionIndex) ? Math.max(0, questionIndex) : 0;
+    score = Number.isFinite(score) ? Math.max(0, score) : 0;
+    let answered = false;
+
+    const daysEl = document.querySelector("#days");
+    const progressText = document.querySelector("#progressText");
+    const progressBar = document.querySelector("#progressBar");
+    const statusPill = document.querySelector("#statusPill");
+    const homeCard = document.querySelector("#homeCard");
+    const homeSummary = document.querySelector("#homeSummary");
+    const homeTip = document.querySelector("#homeTip");
+    const continueButton = document.querySelector("#continueButton");
+    const miniSessionButton = document.querySelector("#miniSessionButton");
+    const mistakeHomeButton = document.querySelector("#mistakeHomeButton");
+    const dayPicker = document.querySelector("#dayPicker");
+    const chatEl = document.querySelector("#chat");
+    const lessonCard = document.querySelector("#lessonCard");
+    const lessonTitle = document.querySelector("#lessonTitle");
+    const lessonPoint = document.querySelector("#lessonPoint");
+    const lessonTag = document.querySelector("#lessonTag");
+    const qCount = document.querySelector("#qCount");
+    const question = document.querySelector("#question");
+    const optionsEl = document.querySelector("#options");
+    const feedback = document.querySelector("#feedback");
+    const note = document.querySelector("#note");
+    const scoreLine = document.querySelector("#scoreLine");
+    const nextButton = document.querySelector("#nextButton");
+    const pauseButton = document.querySelector("#pauseButton");
+    const mistakeBox = document.querySelector("#mistakeBox");
+    const mistakeCount = document.querySelector("#mistakeCount");
+    const mistakeList = document.querySelector("#mistakeList");
+    const clearMistakesButton = document.querySelector("#clearMistakesButton");
+    const certificate = document.querySelector("#certificate");
+    const resetButton = document.querySelector("#resetButton");
+    let sessionLimit = 0;
+    let sessionAnswered = 0;
+
+    function totalQuestionsBefore(day) {
+      return lessons.slice(0, day).reduce((sum, lesson) => sum + lesson.questions.length, 0);
+    }
+    function totalQuestions() {
+      return lessons.reduce((sum, lesson) => sum + lesson.questions.length, 0);
+    }
+    function save() {
+      localStorage.setItem(storageKey + ":day", String(dayIndex));
+      localStorage.setItem(storageKey + ":question", String(questionIndex));
+      localStorage.setItem(storageKey + ":score", String(score));
+      localStorage.setItem(storageKey + ":mistakes", JSON.stringify(mistakes));
+    }
+    function renderMistakes() {
+      mistakeCount.textContent = `${mistakes.length} 题`;
+      mistakeBox.classList.toggle("show", mistakes.length > 0);
+      mistakeList.innerHTML = "";
+      const recentMistakes = mistakes.slice(-8).reverse();
+      recentMistakes.forEach((item) => {
+        const row = document.createElement("div");
+        row.className = "mistake-item";
+        row.innerHTML = `
+          <strong>${item.day}｜${item.title}</strong><br>
+          ${item.question}<br>
+          你选：${item.chosen}<br>
+          正确：${item.correct}<br>
+          ${item.tip}
+        `;
+        mistakeList.appendChild(row);
+      });
+    }
+    function renderDays() {
+      daysEl.innerHTML = "";
+      lessons.forEach((_, index) => {
+        const day = document.createElement("div");
+        day.className = "day-dot";
+        if (index < dayIndex) day.classList.add("done");
+        if (index === dayIndex && dayIndex < lessons.length) day.classList.add("current");
+        day.textContent = index + 1;
+        daysEl.appendChild(day);
+      });
+    }
+    function updateProgress() {
+      const doneQuestions = dayIndex >= lessons.length ? totalQuestions() : totalQuestionsBefore(dayIndex) + questionIndex;
+      progressBar.style.width = `${Math.round(doneQuestions / totalQuestions() * 100)}%`;
+      progressText.textContent = dayIndex >= lessons.length ? "第七周完成" : `第 ${dayIndex + 1} / 7 天`;
+      statusPill.textContent = dayIndex >= lessons.length ? "已毕业" : "已保存进度";
+      return doneQuestions;
+    }
+    function renderDayPicker() {
+      dayPicker.innerHTML = "";
+      lessons.forEach((lesson, index) => {
+        const button = document.createElement("button");
+        button.className = "day-button";
+        if (index < dayIndex) button.classList.add("done");
+        if (index === dayIndex && dayIndex < lessons.length) button.classList.add("current");
+        const state = index < dayIndex ? "已完成" : index === dayIndex ? "从这里继续" : "未解锁";
+        button.innerHTML = `Day ${index + 1}<span>${lesson.title}｜${lesson.questions.length} 题｜${state}</span>`;
+        button.addEventListener("click", () => {
+          if (dayIndex >= lessons.length) {
+            showHome("这一周已经完成啦。想重刷的话，可以点证书里的重新开始。");
+            return;
+          }
+          if (index < dayIndex) {
+            showHome(`Day ${index + 1} 已经完成啦。想回看薄弱点，可以先看错题小本本。`);
+            return;
+          }
+          if (index > dayIndex) {
+            showHome(`先把 Day ${dayIndex + 1} 做完，再解锁 Day ${index + 1}。我会帮你把节奏守住。`);
+            return;
+          }
+          startQuiz(0);
+        });
+        dayPicker.appendChild(button);
+      });
+    }
+    function showHome(message = "") {
+      sessionLimit = 0;
+      sessionAnswered = 0;
+      answered = false;
+      renderDays();
+      renderMistakes();
+      renderDayPicker();
+      const doneQuestions = updateProgress();
+      homeCard.style.display = "";
+      chatEl.style.display = "none";
+      lessonCard.style.display = "none";
+      certificate.classList.toggle("show", dayIndex >= lessons.length);
+      homeSummary.textContent = dayIndex >= lessons.length
+        ? `第七周已经完成啦：本周答对 ${score} / ${totalQuestions()} 题。`
+        : `现在停在 Day ${dayIndex + 1}，第 ${questionIndex + 1} 题附近。本周已完成 ${doneQuestions} / ${totalQuestions()} 题。`;
+      homeTip.textContent = message || "不用一次性做完。今天学一点，明天还能从这里接着来。";
+      homeTip.classList.add("show");
+      continueButton.textContent = dayIndex >= lessons.length ? "本周已完成，看看证书" : "继续上次的小复习";
+      miniSessionButton.hidden = dayIndex >= lessons.length;
+      document.querySelector(".phone").scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+    function startQuiz(limit) {
+      if (dayIndex >= lessons.length) {
+        showHome("这一周已经完成啦。想重刷的话，可以点证书里的重新开始。");
+        return;
+      }
+      sessionLimit = limit;
+      sessionAnswered = 0;
+      homeCard.style.display = "none";
+      render();
+    }
+    function render() {
+      answered = false;
+      renderDays();
+      renderMistakes();
+      const doneQuestions = updateProgress();
+      if (dayIndex < lessons.length) statusPill.textContent = sessionLimit ? `轻量 ${sessionLimit} 题` : "今日待完成";
+      homeCard.style.display = "none";
+
+      if (dayIndex >= lessons.length) {
+        lessonCard.style.display = "none";
+        chatEl.style.display = "none";
+        certificate.classList.add("show");
+        return;
+      }
+
+      const lesson = lessons[dayIndex];
+      if (questionIndex >= lesson.questions.length) {
+        dayIndex += 1;
+        questionIndex = 0;
+        save();
+        render();
+        return;
+      }
+
+      const current = lesson.questions[questionIndex];
+      lessonCard.style.display = "";
+      chatEl.style.display = "";
+      certificate.classList.remove("show");
+      lessonTitle.textContent = `Day ${dayIndex + 1}｜${lesson.title}`;
+      lessonPoint.textContent = lesson.point;
+      lessonTag.textContent = lesson.tag;
+      qCount.textContent = `今日第 ${questionIndex + 1} / ${lesson.questions.length} 题`;
+      question.textContent = current.q;
+      feedback.className = "feedback";
+      feedback.textContent = "";
+      note.className = "note";
+      note.textContent = lesson.note;
+      nextButton.hidden = true;
+      nextButton.textContent = questionIndex === lesson.questions.length - 1 ? "完成今天的小复习" : "下一题";
+      scoreLine.textContent = `本周目前答对 ${score} / ${doneQuestions} 题`;
+
+      chatEl.innerHTML = "";
+      lesson.chat.forEach(([who, text], index) => {
+        const bubble = document.createElement("div");
+        bubble.className = `bubble ${who}`;
+        bubble.style.animationDelay = `${index * .08}s`;
+        bubble.textContent = text;
+        chatEl.appendChild(bubble);
+      });
+
+      optionsEl.innerHTML = "";
+      current.options.forEach((text, index) => {
+        const option = document.createElement("button");
+        option.className = "option";
+        option.textContent = `${String.fromCharCode(65 + index)}. ${text}`;
+        option.addEventListener("click", () => choose(index));
+        optionsEl.appendChild(option);
+      });
+    }
+    function choose(index) {
+      if (answered) return;
+      answered = true;
+      const current = lessons[dayIndex].questions[questionIndex];
+      if (index === current.answer) {
+        score += 1;
+      } else {
+        const key = `${dayIndex}-${questionIndex}`;
+        const chosen = `${String.fromCharCode(65 + index)}. ${current.options[index]}`;
+        const correct = `${String.fromCharCode(65 + current.answer)}. ${current.options[current.answer]}`;
+        mistakes = mistakes.filter((item) => item.key !== key);
+        mistakes.push({
+          key,
+          day: `Day ${dayIndex + 1}`,
+          title: lessons[dayIndex].title,
+          question: current.q,
+          chosen,
+          correct,
+          tip: current.no
+        });
+      }
+      [...optionsEl.querySelectorAll(".option")].forEach((button, buttonIndex) => {
+        if (buttonIndex === current.answer) button.classList.add("correct");
+        if (buttonIndex === index && index !== current.answer) button.classList.add("wrong");
+      });
+      feedback.textContent = index === current.answer ? current.ok : current.no;
+      feedback.classList.add("show");
+      note.classList.add("show");
+      nextButton.hidden = false;
+      statusPill.textContent = index === current.answer ? "答对啦" : "已复习";
+      scoreLine.textContent = `本周目前答对 ${score} / ${totalQuestionsBefore(dayIndex) + questionIndex + 1} 题`;
+      save();
+      renderMistakes();
+    }
+    nextButton.addEventListener("click", () => {
+      questionIndex += 1;
+      if (questionIndex >= lessons[dayIndex].questions.length) {
+        dayIndex += 1;
+        questionIndex = 0;
+      }
+      save();
+      if (sessionLimit) {
+        sessionAnswered += 1;
+        if (sessionAnswered >= sessionLimit && dayIndex < lessons.length) {
+          showHome(`今天 ${sessionLimit} 题完成啦。进度已经存好，下次点“继续上次的小复习”就接着来。`);
+          return;
+        }
+      }
+      render();
+      document.querySelector(".phone").scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+    pauseButton.addEventListener("click", () => {
+      save();
+      showHome("已保存到这里。今天先收工也很好，英语不是一口吞完的。");
+    });
+    resetButton.addEventListener("click", () => {
+      dayIndex = 0;
+      questionIndex = 0;
+      score = 0;
+      mistakes = [];
+      save();
+      showHome("已经从第 1 天重新开始。我们轻一点来，慢慢也会很远。");
+    });
+    clearMistakesButton.addEventListener("click", () => {
+      mistakes = [];
+      save();
+      renderMistakes();
+    });
+    continueButton.addEventListener("click", () => startQuiz(0));
+    miniSessionButton.addEventListener("click", () => startQuiz(5));
+    mistakeHomeButton.addEventListener("click", () => {
+      renderMistakes();
+      if (mistakes.length === 0) {
+        showHome("目前还没有错题，小本本空空的，心情亮亮的。");
+      } else {
+        mistakeBox.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    });
+    showHome();
+  </script>
+</body>
+</html>
