@@ -1,0 +1,1596 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>第十周：主体收官冲刺，备注：来自你的小可爱陪练</title>
+  <style>
+    :root {
+      --text: #2c2030;
+      --muted: #7f667d;
+      --pink: #ff6fae;
+      --pink-dark: #cf3f86;
+      --violet: #7565f7;
+      --apricot: #ffc977;
+      --line: rgba(246, 204, 226, .88);
+      --card: rgba(255,255,255,.82);
+      font-family: "Outfit", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+    * { box-sizing: border-box; }
+    html { overflow-x: hidden; }
+    body {
+      min-height: 100vh;
+      margin: 0;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 12% 5%, rgba(255, 111, 174, .34) 0 16%, transparent 31%),
+        radial-gradient(circle at 92% 10%, rgba(117, 101, 247, .28) 0 15%, transparent 30%),
+        radial-gradient(circle at 52% 92%, rgba(255, 201, 119, .34) 0 16%, transparent 34%),
+        linear-gradient(155deg, #fffaf6 0%, #fff0f8 46%, #f0edff 100%);
+      display: flex;
+      justify-content: center;
+      padding: 18px;
+      overflow-x: hidden;
+    }
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: .18;
+      background-image:
+        linear-gradient(rgba(255,255,255,.8) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.65) 1px, transparent 1px);
+      background-size: 38px 38px;
+      mask-image: radial-gradient(circle at 50% 16%, black, transparent 70%);
+    }
+    button { border: 0; font: inherit; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+    .phone {
+      position: relative;
+      width: min(430px, 100%);
+      min-height: calc(100vh - 36px);
+      overflow: hidden;
+      border-radius: 34px;
+      background: linear-gradient(180deg, rgba(255,255,255,.72), rgba(255,255,255,.46));
+      border: 1px solid rgba(255,255,255,.9);
+      box-shadow: 0 26px 70px rgba(129, 78, 128, .22);
+      backdrop-filter: blur(22px);
+    }
+    .phone::before {
+      content: "";
+      position: absolute;
+      inset: -80px -80px auto auto;
+      width: 210px;
+      height: 210px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255,111,174,.22), transparent 68%);
+      pointer-events: none;
+    }
+    header {
+      position: relative;
+      padding: 24px 22px 18px;
+      background:
+        linear-gradient(135deg, rgba(255,255,255,.96), rgba(255,255,255,.46)),
+        radial-gradient(circle at 92% 18%, rgba(255,111,174,.28), transparent 34%);
+      border-bottom: 1px solid rgba(255,255,255,.58);
+      overflow: hidden;
+    }
+    header::after {
+      content: "Love review";
+      position: absolute;
+      right: -18px;
+      bottom: 6px;
+      color: rgba(207,63,134,.08);
+      font-size: 42px;
+      font-weight: 950;
+      letter-spacing: -.06em;
+      pointer-events: none;
+    }
+    .kicker {
+      color: var(--pink-dark);
+      font-size: 12px;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      font-weight: 950;
+    }
+    h1 {
+      width: min(100%, 360px);
+      margin: 8px 0 10px;
+      font-size: clamp(28px, 7.6vw, 36px);
+      line-height: 1.08;
+      letter-spacing: -.045em;
+    }
+    .sub { position: relative; margin: 0; color: var(--muted); line-height: 1.58; font-size: 15px; }
+    main { padding: 0 16px 18px; display: grid; gap: 14px; }
+    .card {
+      position: relative;
+      background: var(--card);
+      border: 1px solid rgba(255,255,255,.92);
+      border-radius: 28px;
+      box-shadow: 0 16px 34px rgba(124,80,108,.13);
+      padding: 18px;
+      backdrop-filter: blur(18px);
+    }
+    .card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      pointer-events: none;
+      background: linear-gradient(135deg, rgba(255,255,255,.46), transparent 42%);
+    }
+    .row { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+    .pill {
+      color: var(--pink-dark);
+      background: linear-gradient(135deg, #ffe4f0, #efeaff);
+      border: 1px solid rgba(255,255,255,.72);
+      border-radius: 999px;
+      padding: 7px 11px;
+      font-size: 13px;
+      font-weight: 900;
+      white-space: nowrap;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.7);
+    }
+    .bar { height: 11px; border-radius: 999px; background: rgba(241,220,233,.92); overflow: hidden; margin-top: 11px; box-shadow: inset 0 1px 4px rgba(83,52,80,.08); }
+    .bar span {
+      display: block;
+      width: 0%;
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, var(--pink), var(--violet), var(--apricot));
+      transition: width .32s ease;
+    }
+    .days { display: grid; grid-template-columns: repeat(7, 1fr); gap: 7px; margin-top: 14px; }
+    .day-dot {
+      min-height: 42px;
+      display: grid;
+      place-items: center;
+      border-radius: 16px;
+      background: rgba(255,255,255,.78);
+      border: 1px solid var(--line);
+      color: var(--muted);
+      font-weight: 950;
+      box-shadow: 0 6px 14px rgba(139,86,118,.06);
+    }
+    .day-dot.done { color: white; background: linear-gradient(135deg, var(--pink), var(--violet)); border-color: transparent; }
+    .day-dot.current { color: var(--pink-dark); outline: 3px solid rgba(255,111,174,.2); background: #fff; }
+    .home-card { background: linear-gradient(155deg, rgba(255,255,255,.9), rgba(255,244,250,.76)); }
+    .home-card h2 { margin-bottom: 8px; }
+    .home-actions { display: grid; gap: 10px; margin-top: 14px; }
+    .home-tip {
+      display: none;
+      margin-top: 12px;
+      padding: 12px 14px;
+      border-radius: 18px;
+      background: linear-gradient(135deg, #fff0f7, #f5f0ff);
+      color: #6c405a;
+      line-height: 1.55;
+      font-size: 14px;
+      border: 1px solid rgba(255,255,255,.72);
+    }
+    .home-tip.show { display: block; }
+    .day-picker {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 9px;
+      margin-top: 14px;
+    }
+    .day-button {
+      min-height: 50px;
+      padding: 11px;
+      border-radius: 17px;
+      background: rgba(255,255,255,.82);
+      border: 1px solid var(--line);
+      color: var(--text);
+      font-weight: 900;
+      text-align: left;
+      box-shadow: 0 8px 18px rgba(139,86,118,.07);
+      transition: transform .22s ease, box-shadow .22s ease, border-color .22s ease;
+    }
+    .day-button:active, .option:active, .primary:active, .secondary:active { transform: scale(.985); }
+    .day-button span { display: block; margin-top: 3px; color: var(--muted); font-size: 12px; font-weight: 700; line-height: 1.35; }
+    .day-button.done { color: white; background: linear-gradient(135deg, var(--pink), var(--violet)); border-color: transparent; }
+    .day-button.done span { color: rgba(255,255,255,.82); }
+    .day-button.current { color: var(--pink-dark); outline: 3px solid rgba(255,111,174,.18); border-color: rgba(255,111,174,.42); }
+    .chat { display: flex; flex-direction: column; gap: 10px; }
+    .bubble {
+      max-width: 88%;
+      padding: 12px 14px;
+      border-radius: 20px;
+      line-height: 1.55;
+      font-size: 15px;
+      white-space: pre-line;
+      animation: floatIn .25s ease both;
+      box-shadow: 0 10px 20px rgba(139,86,118,.08);
+    }
+    .bubble.me {
+      align-self: flex-end;
+      color: white;
+      background: linear-gradient(135deg, var(--pink), var(--violet));
+      border-bottom-right-radius: 8px;
+    }
+    .bubble.her { align-self: flex-start; background: white; border: 1px solid var(--line); border-bottom-left-radius: 8px; }
+    @keyframes floatIn { from { transform: translateY(8px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+    h2 { margin: 0 0 5px; font-size: 22px; letter-spacing: -.02em; }
+    .tiny { margin: 0; color: var(--muted); line-height: 1.5; font-size: 13px; }
+    .lesson-head { align-items: flex-start; margin-bottom: 12px; }
+    .q-count { margin: 10px 0 0; color: var(--muted); font-weight: 900; font-size: 14px; }
+    .question { margin: 10px 0 12px; line-height: 1.62; color: #5d425f; font-weight: 850; }
+    .options { display: grid; gap: 10px; }
+    .option {
+      width: 100%;
+      min-height: 52px;
+      text-align: left;
+      padding: 13px 14px;
+      border-radius: 18px;
+      background: rgba(255,255,255,.95);
+      color: var(--text);
+      border: 1px solid var(--line);
+      box-shadow: 0 9px 18px rgba(139,86,118,.08);
+      transition: transform .22s ease, box-shadow .22s ease, border-color .22s ease;
+    }
+    .option:hover, .day-button:hover { transform: translateY(-1px); box-shadow: 0 12px 24px rgba(139,86,118,.12); }
+    .option.correct { border-color: rgba(33,168,120,.55); background: #effcf7; color: #106947; }
+    .option.wrong { border-color: rgba(228,90,104,.5); background: #fff1f3; color: #923340; }
+    .feedback, .note {
+      display: none;
+      margin-top: 14px;
+      padding: 14px;
+      border-radius: 20px;
+      line-height: 1.6;
+    }
+    .feedback { background: linear-gradient(135deg, #fff0f7, #f7f1ff); color: #6c405a; }
+    .note { background: #fffaf0; border: 1px dashed #efbd72; color: #755321; }
+    .show { display: block; }
+    .primary, .secondary {
+      width: 100%;
+      min-height: 52px;
+      margin-top: 14px;
+      border-radius: 18px;
+      font-weight: 950;
+      transition: transform .22s ease, box-shadow .22s ease;
+    }
+    .primary { color: white; background: linear-gradient(135deg, #302431, var(--violet) 58%, var(--pink)); box-shadow: 0 16px 28px rgba(117,101,247,.24); }
+    .secondary { color: var(--pink-dark); background: linear-gradient(135deg, #ffe4f0, #f3efff); border: 1px solid rgba(255,255,255,.72); }
+    .primary:hover, .secondary:hover { transform: translateY(-1px); }
+    .score { margin: 12px 0 0; color: var(--muted); line-height: 1.5; font-size: 14px; }
+    .mistake-box {
+      display: none;
+      background: linear-gradient(155deg, #fffaf0, #fff5df);
+      border: 1px dashed #efbd72;
+    }
+    .mistake-box.show { display: block; }
+    .mistake-list { display: grid; gap: 10px; margin-top: 12px; }
+    .mistake-item {
+      padding: 12px;
+      border-radius: 18px;
+      background: rgba(255,255,255,.82);
+      border: 1px solid #f1d8a7;
+      line-height: 1.55;
+      color: #755321;
+      font-size: 14px;
+      box-shadow: 0 8px 16px rgba(117,83,33,.07);
+    }
+    .mistake-item strong { color: #5f3f13; }
+    .certificate {
+      display: none;
+      text-align: center;
+      background: linear-gradient(155deg, #fff8e8, #ffeaf5);
+      border: 1px solid #f1c98d;
+    }
+    .certificate.show { display: block; }
+    .seal {
+      width: 74px;
+      height: 74px;
+      margin: 4px auto 12px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      color: white;
+      background: linear-gradient(135deg, #f4b84f, #ff6fae, #7565f7);
+      font-size: 28px;
+      font-weight: 950;
+      box-shadow: 0 14px 30px rgba(255,111,174,.24);
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }
+    }
+
+  </style>
+</head>
+<body>
+  <section class="phone" aria-label="第十周英语小复习手机网页App">
+    <header>
+      <div class="kicker">Week 10 · Final Sprint, Soft Landing</div>
+      <h1>第十周：主体收官冲刺</h1>
+      <p class="sub">备注：来自你的小可爱陪练</p>
+      <p class="sub">这周是主体收官周：常考词组、阅读理解方法、完形高频词组和语法句法一起收住。每次可以只做 5 题，答错仍然会进“错题小本本”。做完这一周，资料主体内容就算过完，后面只需要总复习和模拟巩固。</p>
+    </header>
+    <main>
+      <section class="card" aria-label="学习进度">
+        <div class="row">
+          <strong id="progressText">第 1 / 7 天</strong>
+          <span class="pill" id="statusPill">今日待完成</span>
+        </div>
+        <div class="bar"><span id="progressBar"></span></div>
+        <div class="days" id="days"></div>
+      </section>
+      <section class="card home-card" id="homeCard" aria-label="分段学习入口">
+        <h2>今天想怎么复习？</h2>
+        <p class="tiny" id="homeSummary">已经帮你保存进度，下次打开可以继续。</p>
+        <div class="home-actions">
+          <button class="primary" id="continueButton">继续上次的小复习</button>
+          <button class="secondary" id="miniSessionButton">今天先做 5 题</button>
+          <button class="secondary" id="mistakeHomeButton">看看错题小本本</button>
+        </div>
+        <div class="home-tip" id="homeTip"></div>
+        <div class="day-picker" id="dayPicker" aria-label="选择某一天练习"></div>
+      </section>
+      <section class="card chat" id="chat" aria-label="日常对话"></section>
+      <section class="card" id="lessonCard" aria-label="今日小题">
+        <div class="row lesson-head">
+          <div>
+            <h2 id="lessonTitle">Day 1</h2>
+            <p class="tiny" id="lessonPoint"></p>
+          </div>
+          <span class="pill" id="lessonTag">新题</span>
+        </div>
+        <p class="q-count" id="qCount"></p>
+        <p class="question" id="question"></p>
+        <div class="options" id="options"></div>
+        <div class="feedback" id="feedback"></div>
+        <div class="note" id="note"></div>
+        <p class="score" id="scoreLine"></p>
+        <button class="primary" id="nextButton" hidden>下一题</button>
+        <button class="secondary" id="pauseButton">今天先到这里</button>
+      </section>
+      <section class="card mistake-box" id="mistakeBox" aria-label="错题小本本">
+        <div class="row lesson-head">
+          <div>
+            <h2>错题小本本</h2>
+            <p class="tiny">错题不是黑历史，是下次见面会认出来的老熟人。</p>
+          </div>
+          <span class="pill" id="mistakeCount">0 题</span>
+        </div>
+        <div class="mistake-list" id="mistakeList"></div>
+        <button class="secondary" id="clearMistakesButton">清空错题小本本</button>
+      </section>
+      <section class="card certificate" id="certificate" aria-label="第十周毕业证书">
+        <div class="seal">W10</div>
+        <h2>第十周主体收官完成</h2>
+        <p>这一周你把常考词组、阅读方法、完形短语和语法句法一起收住了。主体内容到这里已经过完，接下来适合做总复习、错题回炉和模拟挑战。</p>
+        <p><strong>Small daily practice became a full review journey, and you really made it.</strong></p>
+        <button class="secondary" id="resetButton">从第1天重新开始</button>
+      </section>
+    </main>
+  </section>
+  <script>
+    const lessons = [
+      {
+            "title": "常考词组上：别被长得像骗了",
+            "point": "收住 before long / long before、catch up with / keep up with、go over / go through、look into / see through、call for / call up 等高频词组。",
+            "tag": "词组收官",
+            "chat": [
+                  [
+                        "me",
+                        "第10周开始，今天先把词组辨析收一波。"
+                  ],
+                  [
+                        "her",
+                        "词组总是长得像亲戚，容易认错。"
+                  ],
+                  [
+                        "me",
+                        "那我今天当你的词组门牌号。你负责认路，我负责给你一点甜。"
+                  ]
+            ],
+            "note": "记忆小纸条：go over 像“走到上面再看一遍”，所以常是复习、检查；go through 像“从头穿过去”，所以常是经历、仔细查看。",
+            "questions": [
+                  {
+                        "q": "catch up with 的意思是：",
+                        "options": [
+                              "赶上",
+                              "看穿",
+                              "保持同步不落后"
+                        ],
+                        "answer": 0,
+                        "ok": "对。catch up with = 赶上。",
+                        "no": "正确答案是“赶上”。catch 有抓住感，catch up with 就是追上。"
+                  },
+                  {
+                        "q": "keep up with 更强调：",
+                        "options": [
+                              "跟上，不落后",
+                              "闯入",
+                              "很久以前"
+                        ],
+                        "answer": 0,
+                        "ok": "对。keep up with = 跟上，不落后。",
+                        "no": "正确答案是“跟上，不落后”。keep 有保持感，keep up with 是持续跟上。"
+                  },
+                  {
+                        "q": "go over the notes 是：",
+                        "options": [
+                              "复习笔记",
+                              "经历笔记",
+                              "出版笔记"
+                        ],
+                        "answer": 0,
+                        "ok": "对。go over 可表示复习、检查。",
+                        "no": "正确答案是“复习笔记”。go over 常用于 review/check。"
+                  },
+                  {
+                        "q": "go through a hard time 是：",
+                        "options": [
+                              "复习艰难时期",
+                              "求助艰难时期",
+                              "经历艰难时期"
+                        ],
+                        "answer": 2,
+                        "ok": "对。go through 可表示经历。",
+                        "no": "正确答案是“经历艰难时期”。go through 像从困难中穿过去。"
+                  },
+                  {
+                        "q": "look into the case 是：",
+                        "options": [
+                              "盼望案件",
+                              "调查案件",
+                              "尊敬案件"
+                        ],
+                        "answer": 1,
+                        "ok": "对。look into = 调查，深入了解。",
+                        "no": "正确答案是“调查案件”。into 有往里看的感觉。"
+                  },
+                  {
+                        "q": "see through his excuse 是：",
+                        "options": [
+                              "看穿他的借口",
+                              "复习他的借口",
+                              "调查他的借口"
+                        ],
+                        "answer": 0,
+                        "ok": "对。see through = 看穿，识破。",
+                        "no": "正确答案是“看穿他的借口”。through 是看透。"
+                  },
+                  {
+                        "q": "call for much patience 是：",
+                        "options": [
+                              "打电话回忆耐心",
+                              "取消很多耐心",
+                              "需要很多耐心"
+                        ],
+                        "answer": 2,
+                        "ok": "对。call for 可表示需要、要求。",
+                        "no": "正确答案是“需要很多耐心”。Success calls for hard work 也是这个意思。"
+                  },
+                  {
+                        "q": "call up a friend 是：",
+                        "options": [
+                              "放弃朋友",
+                              "给朋友打电话",
+                              "要求朋友"
+                        ],
+                        "answer": 1,
+                        "ok": "对。call up 可表示打电话、召集。",
+                        "no": "正确答案是“给朋友打电话”。call up 也可表示召集。"
+                  },
+                  {
+                        "q": "work out a plan 是：",
+                        "options": [
+                              "想出/制定计划",
+                              "看穿计划",
+                              "发生计划"
+                        ],
+                        "answer": 0,
+                        "ok": "对。work out = 想出，解决，制定出。",
+                        "no": "正确答案是“想出/制定计划”。work out 强调经过努力得出。"
+                  },
+                  {
+                        "q": "figure out the answer 是：",
+                        "options": [
+                              "算出、弄明白答案",
+                              "打断答案",
+                              "保持答案"
+                        ],
+                        "answer": 0,
+                        "ok": "对。figure out = 弄明白，想出。",
+                        "no": "正确答案是“算出、弄明白答案”。figure 可联想到算、想。"
+                  }
+            ]
+      },
+      {
+            "title": "常考词组下：动作词组收口袋",
+            "point": "集中区分 cut back / cut down、give up / give in、hold on to、turn to / turn into、so that / so...that 等。",
+            "tag": "词组辨析",
+            "chat": [
+                  [
+                        "me",
+                        "今天继续词组下半场。"
+                  ],
+                  [
+                        "her",
+                        "下半场会不会更难？"
+                  ],
+                  [
+                        "me",
+                        "难一点点，但我站你这边。你每答对一题，我心里就 turn into 小烟花。"
+                  ]
+            ],
+            "note": "记忆小纸条：give up 是“放弃”，give in 是“让步、屈服”。up 像把东西交出去，in 像退进去。",
+            "questions": [
+                  {
+                        "q": "cut down smoking 是：",
+                        "options": [
+                              "出版吸烟",
+                              "插嘴吸烟",
+                              "减少吸烟"
+                        ],
+                        "answer": 2,
+                        "ok": "对。cut down = 削减、减少。",
+                        "no": "正确答案是“减少吸烟”。cut down 常接数量、开支、次数。"
+                  },
+                  {
+                        "q": "cut back spending 更接近：",
+                        "options": [
+                              "增加花费",
+                              "闯入开支",
+                              "削减开支"
+                        ],
+                        "answer": 2,
+                        "ok": "对。cut back = 削减，缩减。",
+                        "no": "正确答案是“削减开支”。cut back 常强调把规模收回来。"
+                  },
+                  {
+                        "q": "give up the plan 是：",
+                        "options": [
+                              "分发计划",
+                              "屈服计划",
+                              "放弃计划"
+                        ],
+                        "answer": 2,
+                        "ok": "对。give up = 放弃。",
+                        "no": "正确答案是“放弃计划”。give up 后可接名词或 doing。"
+                  },
+                  {
+                        "q": "give in in the argument 是：",
+                        "options": [
+                              "在争论中让步",
+                              "在争论中放出气味",
+                              "在争论中复习"
+                        ],
+                        "answer": 0,
+                        "ok": "对。give in = 让步，屈服。",
+                        "no": "正确答案是“在争论中让步”。in 有退让进去的感觉。"
+                  },
+                  {
+                        "q": "hold on to the rope 是：",
+                        "options": [
+                              "抓住绳子不放",
+                              "看不起绳子",
+                              "松开绳子"
+                        ],
+                        "answer": 0,
+                        "ok": "对。hold on to = 紧紧抓住，坚持。",
+                        "no": "正确答案是“抓住绳子不放”。hold 是抓住，on to 是不松手。"
+                  },
+                  {
+                        "q": "turn to me for help 是：",
+                        "options": [
+                              "把我变成帮助",
+                              "拒绝我帮助",
+                              "向我求助"
+                        ],
+                        "answer": 2,
+                        "ok": "对。turn to sb. = 向某人求助。",
+                        "no": "正确答案是“向我求助”。turn to 有转向某人的意思。"
+                  },
+                  {
+                        "q": "turn into a habit 是：",
+                        "options": [
+                              "打断习惯",
+                              "变成习惯",
+                              "求助习惯"
+                        ],
+                        "answer": 1,
+                        "ok": "对。turn into = 变成。",
+                        "no": "正确答案是“变成习惯”。into 指进入另一种状态。"
+                  },
+                  {
+                        "q": "so that 引导的从句常表示：",
+                        "options": [
+                              "很久以前",
+                              "目的或结果",
+                              "过于……以至于"
+                        ],
+                        "answer": 1,
+                        "ok": "对。so that 可表示目的或结果。",
+                        "no": "正确答案是“目的或结果”。如 I study hard so that I can pass。"
+                  },
+                  {
+                        "q": "so...that... 常表示：",
+                        "options": [
+                              "如此……以至于……",
+                              "向……求助",
+                              "为了……"
+                        ],
+                        "answer": 0,
+                        "ok": "对。so...that... = 如此……以至于……。",
+                        "no": "正确答案是“如此……以至于……”。中间常放形容词或副词。"
+                  },
+                  {
+                        "q": "come to 在 When it comes to grammar 中是：",
+                        "options": [
+                              "苏醒",
+                              "谈到，涉及",
+                              "出版"
+                        ],
+                        "answer": 1,
+                        "ok": "对。when it comes to = 谈到，涉及。",
+                        "no": "正确答案是“谈到，涉及”。come to 不只表示苏醒，也可表示涉及。"
+                  }
+            ]
+      },
+      {
+            "title": "阅读理解：先看题，再找证据",
+            "point": "掌握主旨题、细节题、推断题、词义题的基本判断方法，练习在原文中找依据。",
+            "tag": "阅读方法",
+            "chat": [
+                  [
+                        "me",
+                        "今天不是硬背，是学会读题。"
+                  ],
+                  [
+                        "her",
+                        "阅读理解最怕看完还不知道问什么。"
+                  ],
+                  [
+                        "me",
+                        "那就先看问题。你找证据，我给你做小路灯。"
+                  ]
+            ],
+            "note": "记忆小纸条：阅读题不要凭感觉恋爱脑作答，先判断题型，再回原文找证据。主旨看整体，细节找定位，推断看暗示，词义看上下文。",
+            "questions": [
+                  {
+                        "q": "main idea question 主要考：",
+                        "options": [
+                              "某个单词拼写",
+                              "某个数字",
+                              "文章主旨"
+                        ],
+                        "answer": 2,
+                        "ok": "对。main idea = 主旨大意。",
+                        "no": "正确答案是“文章主旨”。main idea 问的是整体中心。"
+                  },
+                  {
+                        "q": "detail question 最应该先做的是：",
+                        "options": [
+                              "凭第一感觉选",
+                              "回原文定位相关信息",
+                              "只看标题"
+                        ],
+                        "answer": 1,
+                        "ok": "对。细节题要回原文定位。",
+                        "no": "正确答案是“回原文定位相关信息”。细节题少靠猜，多找证据。"
+                  },
+                  {
+                        "q": "infer / imply 类题目通常考：",
+                        "options": [
+                              "单词发音",
+                              "根据原文合理推断",
+                              "原文直接照抄"
+                        ],
+                        "answer": 1,
+                        "ok": "对。infer/imply 考合理推断。",
+                        "no": "正确答案是“根据原文合理推断”。不能脱离原文乱想。"
+                  },
+                  {
+                        "q": "词义猜测题最重要的线索通常来自：",
+                        "options": [
+                              "题号顺序",
+                              "选项长度",
+                              "上下文"
+                        ],
+                        "answer": 2,
+                        "ok": "对。上下文是词义题的关键。",
+                        "no": "正确答案是“上下文”。尤其注意同义解释、反义转折和例子。"
+                  },
+                  {
+                        "q": "遇到 however / but，后面内容常常表示：",
+                        "options": [
+                              "无关内容",
+                              "重复前文",
+                              "转折重点"
+                        ],
+                        "answer": 2,
+                        "ok": "对。转折词后常是重点。",
+                        "no": "正确答案是“转折重点”。however/but 后的信息常影响答案。"
+                  },
+                  {
+                        "q": "选项里出现 absolute words，如 always / never，要：",
+                        "options": [
+                              "直接选",
+                              "直接排除所有长选项",
+                              "格外谨慎"
+                        ],
+                        "answer": 2,
+                        "ok": "对。绝对化词要谨慎。",
+                        "no": "正确答案是“格外谨慎”。always/never 太绝对，常容易设陷阱。"
+                  },
+                  {
+                        "q": "作者态度题常问：",
+                        "options": [
+                              "某个词的复数",
+                              "某个句子的语法成分",
+                              "作者对某事的看法"
+                        ],
+                        "answer": 2,
+                        "ok": "对。态度题考作者立场。",
+                        "no": "正确答案是“作者对某事的看法”。注意 positive/negative/neutral。"
+                  },
+                  {
+                        "q": "best title 题通常要选：",
+                        "options": [
+                              "覆盖全文中心的标题",
+                              "只覆盖一个例子的标题",
+                              "最夸张的标题"
+                        ],
+                        "answer": 0,
+                        "ok": "对。标题要能概括全文中心。",
+                        "no": "正确答案是“覆盖全文中心的标题”。不要被局部细节带跑。"
+                  },
+                  {
+                        "q": "阅读时看到 for example，后面多半是：",
+                        "options": [
+                              "举例说明前文观点",
+                              "转折否定前文",
+                              "结论句一定在后面"
+                        ],
+                        "answer": 0,
+                        "ok": "对。for example 后常是例子。",
+                        "no": "正确答案是“举例说明前文观点”。例子服务于观点。"
+                  },
+                  {
+                        "q": "做阅读题时比较稳的顺序是：",
+                        "options": [
+                              "只读第一句就选",
+                              "先看选项长度，再猜答案",
+                              "先看题干，再定位原文，再比选项"
+                        ],
+                        "answer": 2,
+                        "ok": "对。题干定位加证据最稳。",
+                        "no": "正确答案是“先看题干，再定位原文，再比选项”。这比纯凭感觉可靠。"
+                  }
+            ]
+      },
+      {
+            "title": "完形填空词组：动词短语大集合",
+            "point": "用完形常见短语做集中识别：bring、call、come、cut、get、give、go、keep、look、put、take 等。",
+            "tag": "完形词组",
+            "chat": [
+                  [
+                        "me",
+                        "今天进入完形词组。"
+                  ],
+                  [
+                        "her",
+                        "好多动词后面换个介词就换意思。"
+                  ],
+                  [
+                        "me",
+                        "对，所以介词像小尾巴。尾巴一换，性格就变。你别怕，我陪你认。"
+                  ]
+            ],
+            "note": "记忆小纸条：短语动词要整体记。比如 bring about 是“带来、造成”，bring up 是“养育、提出”，不是把每个词硬拆。",
+            "questions": [
+                  {
+                        "q": "bring about changes 是：",
+                        "options": [
+                              "养育变化",
+                              "取消变化",
+                              "带来变化"
+                        ],
+                        "answer": 2,
+                        "ok": "对。bring about = 带来，造成。",
+                        "no": "正确答案是“带来变化”。about 有促成结果的感觉。"
+                  },
+                  {
+                        "q": "bring up a child 是：",
+                        "options": [
+                              "养育孩子",
+                              "熄灭孩子",
+                              "打倒孩子"
+                        ],
+                        "answer": 0,
+                        "ok": "对。bring up = 抚养，养育；也可表示提出。",
+                        "no": "正确答案是“养育孩子”。bring up 也常见“提出话题”。"
+                  },
+                  {
+                        "q": "call off the meeting 是：",
+                        "options": [
+                              "拜访会议",
+                              "召集会议",
+                              "取消会议"
+                        ],
+                        "answer": 2,
+                        "ok": "对。call off = 取消。",
+                        "no": "正确答案是“取消会议”。off 有停止、取消的感觉。"
+                  },
+                  {
+                        "q": "come up with an idea 是：",
+                        "options": [
+                              "看不起想法",
+                              "提出想法",
+                              "放弃想法"
+                        ],
+                        "answer": 1,
+                        "ok": "对。come up with = 提出，想出。",
+                        "no": "正确答案是“提出想法”。常接 idea/solution/plan。"
+                  },
+                  {
+                        "q": "get down to work 是：",
+                        "options": [
+                              "开始认真工作",
+                              "尊敬工作",
+                              "逃避工作"
+                        ],
+                        "answer": 0,
+                        "ok": "对。get down to = 开始认真做。",
+                        "no": "正确答案是“开始认真工作”。to 后常接名词或 doing。"
+                  },
+                  {
+                        "q": "get over the difficulty 是：",
+                        "options": [
+                              "分发困难",
+                              "克服困难",
+                              "推迟困难"
+                        ],
+                        "answer": 1,
+                        "ok": "对。get over = 克服。",
+                        "no": "正确答案是“克服困难”。over 有越过去的感觉。"
+                  },
+                  {
+                        "q": "give away the secret 是：",
+                        "options": [
+                              "坚持秘密",
+                              "泄露秘密",
+                              "归还秘密"
+                        ],
+                        "answer": 1,
+                        "ok": "对。give away = 泄露；也可表示赠送。",
+                        "no": "正确答案是“泄露秘密”。secret 常和 give away 搭配。"
+                  },
+                  {
+                        "q": "go through the report 是：",
+                        "options": [
+                              "支持报告",
+                              "仔细查看报告",
+                              "逃离报告"
+                        ],
+                        "answer": 1,
+                        "ok": "对。go through 可表示详细检查。",
+                        "no": "正确答案是“仔细查看报告”。go through 也可表示经历。"
+                  },
+                  {
+                        "q": "keep up with the class 是：",
+                        "options": [
+                              "压低班级",
+                              "跟上班级进度",
+                              "躲开班级"
+                        ],
+                        "answer": 1,
+                        "ok": "对。keep up with = 跟上。",
+                        "no": "正确答案是“跟上班级进度”。keep pace with 也有相近意思。"
+                  },
+                  {
+                        "q": "put off the trip 是：",
+                        "options": [
+                              "扑灭旅行",
+                              "实施旅行",
+                              "推迟旅行"
+                        ],
+                        "answer": 2,
+                        "ok": "对。put off = 推迟。",
+                        "no": "正确答案是“推迟旅行”。off 有延后、离开的感觉。"
+                  }
+            ]
+      },
+      {
+            "title": "语法上：名词、动词和非谓语",
+            "point": "收住名词单复数、动词时态语态、to do / doing / done 的基本判断。",
+            "tag": "语法基础",
+            "chat": [
+                  [
+                        "me",
+                        "今天开始语法收官。"
+                  ],
+                  [
+                        "her",
+                        "语法会不会很枯燥？"
+                  ],
+                  [
+                        "me",
+                        "不会，我把它切小块。你不用一口吞下整本语法书，只要每天咬一小口。"
+                  ]
+            ],
+            "note": "记忆小纸条：非谓语先看主动还是被动，再看时间关系。to do 常有将来或目的感，doing 常有主动或进行感，done 常有被动或完成感。",
+            "questions": [
+                  {
+                        "q": "名词在句中最常见的作用不包括：",
+                        "options": [
+                              "宾语",
+                              "时态",
+                              "主语"
+                        ],
+                        "answer": 1,
+                        "ok": "对。时态属于动词范畴，不是名词作用。",
+                        "no": "正确答案是“时态”。名词可作主语、宾语、表语等。"
+                  },
+                  {
+                        "q": "many 后面通常接：",
+                        "options": [
+                              "不可数名词",
+                              "动词原形",
+                              "可数名词复数"
+                        ],
+                        "answer": 2,
+                        "ok": "对。many + 可数名词复数。",
+                        "no": "正确答案是“可数名词复数”。much 才常接不可数名词。"
+                  },
+                  {
+                        "q": "much information 中 information 是：",
+                        "options": [
+                              "可数名词复数",
+                              "不可数名词",
+                              "动词"
+                        ],
+                        "answer": 1,
+                        "ok": "对。information 是不可数名词。",
+                        "no": "正确答案是“不可数名词”。不能说 informations。"
+                  },
+                  {
+                        "q": "动词第三人称单数常用于：",
+                        "options": [
+                              "所有过去时",
+                              "主语是 he/she/it 且一般现在时",
+                              "所有复数主语"
+                        ],
+                        "answer": 1,
+                        "ok": "对。he works / she studies。",
+                        "no": "正确答案是“主语是 he/she/it 且一般现在时”。"
+                  },
+                  {
+                        "q": "被动语态的基本结构是：",
+                        "options": [
+                              "be + done",
+                              "to + doing",
+                              "have + do"
+                        ],
+                        "answer": 0,
+                        "ok": "对。被动语态基本结构是 be + 过去分词。",
+                        "no": "正确答案是“be + done”。如 The book was written。"
+                  },
+                  {
+                        "q": "I want to pass the exam 中 to pass 表示：",
+                        "options": [
+                              "名词复数",
+                              "目的或想要做的动作",
+                              "被动完成"
+                        ],
+                        "answer": 1,
+                        "ok": "对。to do 常表示目的或将要做的动作。",
+                        "no": "正确答案是“目的或想要做的动作”。want 后常接 to do。"
+                  },
+                  {
+                        "q": "enjoy 后面常接：",
+                        "options": [
+                              "doing",
+                              "to do",
+                              "done by"
+                        ],
+                        "answer": 0,
+                        "ok": "对。enjoy doing。",
+                        "no": "正确答案是“doing”。如 enjoy reading。"
+                  },
+                  {
+                        "q": "a broken window 中 broken 表示：",
+                        "options": [
+                              "被动或完成含义",
+                              "正在打破",
+                              "将要打破"
+                        ],
+                        "answer": 0,
+                        "ok": "对。broken 有被动/完成意味。",
+                        "no": "正确答案是“被动或完成含义”。窗户是被打破的。"
+                  },
+                  {
+                        "q": "The girl standing there is my friend 中 standing there 修饰：",
+                        "options": [
+                              "is",
+                              "my friend",
+                              "the girl"
+                        ],
+                        "answer": 2,
+                        "ok": "对。standing there 修饰 the girl。",
+                        "no": "正确答案是“the girl”。现在分词短语作后置定语。"
+                  },
+                  {
+                        "q": "to improve English 可以表示：",
+                        "options": [
+                              "已经被提高的英语",
+                              "为了提高英语",
+                              "正在提高的人"
+                        ],
+                        "answer": 1,
+                        "ok": "对。to do 可表示目的。",
+                        "no": "正确答案是“为了提高英语”。to improve 有目的感。"
+                  }
+            ]
+      },
+      {
+            "title": "语法下：形容词、副词和从句",
+            "point": "区分形容词副词、比较级最高级，并掌握状语从句、名词性从句、定语从句的识别方法。",
+            "tag": "句法收束",
+            "chat": [
+                  [
+                        "me",
+                        "今天是语法下半场，从词到句子。"
+                  ],
+                  [
+                        "her",
+                        "从句听起来就很绕。"
+                  ],
+                  [
+                        "me",
+                        "从句其实像小房间。你先找门牌：when、because、that、which。找到了就不迷路。"
+                  ]
+            ],
+            "note": "记忆小纸条：形容词多修饰名词，副词多修饰动词、形容词或整个句子。从句先看连接词，再看它在主句里承担什么作用。",
+            "questions": [
+                  {
+                        "q": "形容词通常修饰：",
+                        "options": [
+                              "名词",
+                              "动词时态",
+                              "介词"
+                        ],
+                        "answer": 0,
+                        "ok": "对。形容词常修饰名词。",
+                        "no": "正确答案是“名词”。如 a useful book。"
+                  },
+                  {
+                        "q": "副词 usually 通常修饰：",
+                        "options": [
+                              "动词或整个句子",
+                              "名词复数",
+                              "冠词"
+                        ],
+                        "answer": 0,
+                        "ok": "对。副词可修饰动词或句子。",
+                        "no": "正确答案是“动词或整个句子”。如 usually goes。"
+                  },
+                  {
+                        "q": "more carefully 是：",
+                        "options": [
+                              "名词复数",
+                              "副词比较级",
+                              "被动语态"
+                        ],
+                        "answer": 1,
+                        "ok": "对。carefully 的比较级常用 more carefully。",
+                        "no": "正确答案是“副词比较级”。多音节副词常用 more。"
+                  },
+                  {
+                        "q": "the most important 表示：",
+                        "options": [
+                              "最高级",
+                              "过去式",
+                              "不定式"
+                        ],
+                        "answer": 0,
+                        "ok": "对。the most important 是最高级。",
+                        "no": "正确答案是“最高级”。most + 多音节形容词常构成最高级。"
+                  },
+                  {
+                        "q": "because 引导的通常是：",
+                        "options": [
+                              "宾语从句",
+                              "原因状语从句",
+                              "定语从句"
+                        ],
+                        "answer": 1,
+                        "ok": "对。because 引导原因状语从句。",
+                        "no": "正确答案是“原因状语从句”。because 回答 why。"
+                  },
+                  {
+                        "q": "when 引导时间信息时，常是：",
+                        "options": [
+                              "主语从句",
+                              "同位语",
+                              "时间状语从句"
+                        ],
+                        "answer": 2,
+                        "ok": "对。when 可引导时间状语从句。",
+                        "no": "正确答案是“时间状语从句”。when 常回答什么时候。"
+                  },
+                  {
+                        "q": "I know that he is right 中 that he is right 是：",
+                        "options": [
+                              "定语从句",
+                              "时间状语从句",
+                              "宾语从句"
+                        ],
+                        "answer": 2,
+                        "ok": "对。它作 know 的宾语。",
+                        "no": "正确答案是“宾语从句”。know 后接一个完整句子作宾语。"
+                  },
+                  {
+                        "q": "The book that you gave me is useful 中 that 引导：",
+                        "options": [
+                              "定语从句",
+                              "原因状语从句",
+                              "主语从句"
+                        ],
+                        "answer": 0,
+                        "ok": "对。that you gave me 修饰 book。",
+                        "no": "正确答案是“定语从句”。它修饰前面的 the book。"
+                  },
+                  {
+                        "q": "which 在定语从句中通常指代：",
+                        "options": [
+                              "时间副词",
+                              "人",
+                              "物"
+                        ],
+                        "answer": 2,
+                        "ok": "对。which 常指物。",
+                        "no": "正确答案是“物”。指人常用 who/whom/that。"
+                  },
+                  {
+                        "q": "who 在定语从句中通常指代：",
+                        "options": [
+                              "物",
+                              "原因",
+                              "人"
+                        ],
+                        "answer": 2,
+                        "ok": "对。who 常指人。",
+                        "no": "正确答案是“人”。如 the man who helped me。"
+                  }
+            ]
+      },
+      {
+            "title": "主体收官：混合挑战和错题回炉",
+            "point": "把词组、阅读、完形和语法放在一起做一次综合挑战，完成后主体内容就算过完。",
+            "tag": "收官挑战",
+            "chat": [
+                  [
+                        "me",
+                        "最后一天，主体收官挑战来了。"
+                  ],
+                  [
+                        "her",
+                        "做完就算过完主体了吗？"
+                  ],
+                  [
+                        "me",
+                        "对。后面如果再做，就是总复习和模拟。你已经不是刚开始那个迷路的人啦。"
+                  ]
+            ],
+            "note": "收官小纸条：主体内容到这里就过完了。之后最该做的不是无限加新内容，而是错题回炉、混合模拟和熟词复现。你这份坚持，真的很 valuable。",
+            "questions": [
+                  {
+                        "q": "by all means 最接近：",
+                        "options": [
+                              "当然可以；务必",
+                              "偶然地",
+                              "很久以前"
+                        ],
+                        "answer": 0,
+                        "ok": "对。by all means 可表示当然可以、务必。",
+                        "no": "正确答案是“当然可以；务必”。注意不要和 by no means 混。"
+                  },
+                  {
+                        "q": "by no means 的意思是：",
+                        "options": [
+                              "不久以后",
+                              "顺便问一下",
+                              "绝不"
+                        ],
+                        "answer": 2,
+                        "ok": "对。by no means = 绝不。",
+                        "no": "正确答案是“绝不”。no means 带否定。"
+                  },
+                  {
+                        "q": "look forward to 后面常接：",
+                        "options": [
+                              "doing 或名词",
+                              "过去分词作谓语",
+                              "动词原形"
+                        ],
+                        "answer": 0,
+                        "ok": "对。look forward to doing。",
+                        "no": "正确答案是“doing 或名词”。这里 to 是介词。"
+                  },
+                  {
+                        "q": "put up with noise 是：",
+                        "options": [
+                              "推迟噪音",
+                              "忍受噪音",
+                              "张贴噪音"
+                        ],
+                        "answer": 1,
+                        "ok": "对。put up with = 忍受。",
+                        "no": "正确答案是“忍受噪音”。with 后接忍受的对象。"
+                  },
+                  {
+                        "q": "take place 的意思是：",
+                        "options": [
+                              "乘车",
+                              "代替",
+                              "发生"
+                        ],
+                        "answer": 2,
+                        "ok": "对。take place = 发生。",
+                        "no": "正确答案是“发生”。take the place of 才是代替。"
+                  },
+                  {
+                        "q": "take the place of sb. 是：",
+                        "options": [
+                              "照顾某人",
+                              "代替某人",
+                              "发生某人"
+                        ],
+                        "answer": 1,
+                        "ok": "对。take the place of = 代替。",
+                        "no": "正确答案是“代替某人”。place 在这里是位置。"
+                  },
+                  {
+                        "q": "阅读题问 The passage is mainly about...，这是：",
+                        "options": [
+                              "主旨题",
+                              "语法题",
+                              "细节题"
+                        ],
+                        "answer": 0,
+                        "ok": "对。这是主旨题。",
+                        "no": "正确答案是“主旨题”。mainly about 问文章主要讲什么。"
+                  },
+                  {
+                        "q": "完形中遇到固定搭配，最稳的做法是：",
+                        "options": [
+                              "只看选项首字母",
+                              "选最长的",
+                              "看空前空后搭配"
+                        ],
+                        "answer": 2,
+                        "ok": "对。固定搭配要看前后。",
+                        "no": "正确答案是“看空前空后搭配”。完形很看语境和搭配。"
+                  },
+                  {
+                        "q": "The reason why he left was unclear 中 why 引导：",
+                        "options": [
+                              "定语从句",
+                              "副词比较级",
+                              "被动语态"
+                        ],
+                        "answer": 0,
+                        "ok": "对。why 引导定语从句，修饰 reason。",
+                        "no": "正确答案是“定语从句”。the reason why 是常见结构。"
+                  },
+                  {
+                        "q": "It is worthwhile reviewing mistakes 的意思是：",
+                        "options": [
+                              "错题很偶然",
+                              "复盘错题是值得的",
+                              "错题无法复习"
+                        ],
+                        "answer": 1,
+                        "ok": "对。worthwhile = 值得花时间的。",
+                        "no": "正确答案是“复盘错题是值得的”。这也正是错题小本本的意义。"
+                  }
+            ]
+      }
+];
+
+    const storageKey = "tinyEnglishLoveReviewWeek10Progress";
+    let dayIndex = Number(localStorage.getItem(storageKey + ":day") || "0");
+    let questionIndex = Number(localStorage.getItem(storageKey + ":question") || "0");
+    let score = Number(localStorage.getItem(storageKey + ":score") || "0");
+    let mistakes = [];
+    try {
+      mistakes = JSON.parse(localStorage.getItem(storageKey + ":mistakes") || "[]");
+    } catch {
+      mistakes = [];
+    }
+    dayIndex = Number.isFinite(dayIndex) ? Math.max(0, Math.min(dayIndex, lessons.length)) : 0;
+    questionIndex = Number.isFinite(questionIndex) ? Math.max(0, questionIndex) : 0;
+    if (dayIndex < lessons.length && questionIndex >= lessons[dayIndex].questions.length) questionIndex = 0;
+    score = Number.isFinite(score) ? Math.max(0, score) : 0;
+    let answered = false;
+
+    const daysEl = document.querySelector("#days");
+    const progressText = document.querySelector("#progressText");
+    const progressBar = document.querySelector("#progressBar");
+    const statusPill = document.querySelector("#statusPill");
+    const homeCard = document.querySelector("#homeCard");
+    const homeSummary = document.querySelector("#homeSummary");
+    const homeTip = document.querySelector("#homeTip");
+    const continueButton = document.querySelector("#continueButton");
+    const miniSessionButton = document.querySelector("#miniSessionButton");
+    const mistakeHomeButton = document.querySelector("#mistakeHomeButton");
+    const dayPicker = document.querySelector("#dayPicker");
+    const chatEl = document.querySelector("#chat");
+    const lessonCard = document.querySelector("#lessonCard");
+    const lessonTitle = document.querySelector("#lessonTitle");
+    const lessonPoint = document.querySelector("#lessonPoint");
+    const lessonTag = document.querySelector("#lessonTag");
+    const qCount = document.querySelector("#qCount");
+    const question = document.querySelector("#question");
+    const optionsEl = document.querySelector("#options");
+    const feedback = document.querySelector("#feedback");
+    const note = document.querySelector("#note");
+    const scoreLine = document.querySelector("#scoreLine");
+    const nextButton = document.querySelector("#nextButton");
+    const pauseButton = document.querySelector("#pauseButton");
+    const mistakeBox = document.querySelector("#mistakeBox");
+    const mistakeCount = document.querySelector("#mistakeCount");
+    const mistakeList = document.querySelector("#mistakeList");
+    const clearMistakesButton = document.querySelector("#clearMistakesButton");
+    const certificate = document.querySelector("#certificate");
+    const resetButton = document.querySelector("#resetButton");
+    let sessionLimit = 0;
+    let sessionAnswered = 0;
+
+    function totalQuestionsBefore(day) {
+      return lessons.slice(0, day).reduce((sum, lesson) => sum + lesson.questions.length, 0);
+    }
+    function totalQuestions() {
+      return lessons.reduce((sum, lesson) => sum + lesson.questions.length, 0);
+    }
+    function save() {
+      localStorage.setItem(storageKey + ":day", String(dayIndex));
+      localStorage.setItem(storageKey + ":question", String(questionIndex));
+      localStorage.setItem(storageKey + ":score", String(score));
+      localStorage.setItem(storageKey + ":mistakes", JSON.stringify(mistakes));
+    }
+    function renderMistakes() {
+      mistakeCount.textContent = `${mistakes.length} 题`;
+      mistakeBox.classList.toggle("show", mistakes.length > 0);
+      mistakeList.innerHTML = "";
+      const recentMistakes = mistakes.slice(-8).reverse();
+      recentMistakes.forEach((item) => {
+        const row = document.createElement("div");
+        row.className = "mistake-item";
+        row.innerHTML = `
+          <strong>${item.day}｜${item.title}</strong><br>
+          ${item.question}<br>
+          你选：${item.chosen}<br>
+          正确：${item.correct}<br>
+          ${item.tip}
+        `;
+        mistakeList.appendChild(row);
+      });
+    }
+    function renderDays() {
+      daysEl.innerHTML = "";
+      lessons.forEach((_, index) => {
+        const day = document.createElement("div");
+        day.className = "day-dot";
+        if (index < dayIndex) day.classList.add("done");
+        if (index === dayIndex && dayIndex < lessons.length) day.classList.add("current");
+        day.textContent = index + 1;
+        daysEl.appendChild(day);
+      });
+    }
+    function updateProgress() {
+      const doneQuestions = dayIndex >= lessons.length ? totalQuestions() : totalQuestionsBefore(dayIndex) + questionIndex;
+      progressBar.style.width = `${Math.round(doneQuestions / totalQuestions() * 100)}%`;
+      progressText.textContent = dayIndex >= lessons.length ? "第十周完成" : `第 ${dayIndex + 1} / 7 天`;
+      statusPill.textContent = dayIndex >= lessons.length ? "已毕业" : "已保存进度";
+      return doneQuestions;
+    }
+    function renderDayPicker() {
+      dayPicker.innerHTML = "";
+      lessons.forEach((lesson, index) => {
+        const button = document.createElement("button");
+        button.className = "day-button";
+        if (index < dayIndex) button.classList.add("done");
+        if (index === dayIndex && dayIndex < lessons.length) button.classList.add("current");
+        const state = index < dayIndex ? "已完成" : index === dayIndex ? "从这里继续" : "未解锁";
+        button.innerHTML = `Day ${index + 1}<span>${lesson.title}｜${lesson.questions.length} 题｜${state}</span>`;
+        button.addEventListener("click", () => {
+          if (dayIndex >= lessons.length) {
+            showHome("这一周已经完成啦。想重刷的话，可以点证书里的重新开始。");
+            return;
+          }
+          if (index < dayIndex) {
+            showHome(`Day ${index + 1} 已经完成啦。想回看薄弱点，可以先看错题小本本。`);
+            return;
+          }
+          if (index > dayIndex) {
+            showHome(`先把 Day ${dayIndex + 1} 做完，再解锁 Day ${index + 1}。我会帮你把节奏守住。`);
+            return;
+          }
+          startQuiz(0);
+        });
+        dayPicker.appendChild(button);
+      });
+    }
+    function showHome(message = "") {
+      sessionLimit = 0;
+      sessionAnswered = 0;
+      answered = false;
+      renderDays();
+      renderMistakes();
+      renderDayPicker();
+      homeCard.style.display = "";
+      if (dayIndex >= lessons.length) {
+        chatEl.style.display = "none";
+        lessonCard.style.display = "none";
+        certificate.classList.add("show");
+      } else {
+        certificate.classList.remove("show");
+        render(true);
+        homeCard.style.display = "";
+      }
+      const doneQuestions = updateProgress();
+      homeSummary.textContent = dayIndex >= lessons.length
+        ? `第十周主体已经收官啦：本周答对 ${score} / ${totalQuestions()} 题。`
+        : `下面已经显示当前题目。现在停在 Day ${dayIndex + 1}，第 ${questionIndex + 1} 题，本周已完成 ${doneQuestions} / ${totalQuestions()} 题。`;
+      homeTip.textContent = message || "不用一次性做完。今天学一点，明天还能从这里接着来。";
+      homeTip.classList.add("show");
+      continueButton.textContent = dayIndex >= lessons.length ? "本周已完成，看看证书" : questionIndex === 0 && dayIndex === 0 ? "开始第 1 题" : "继续上次的小复习";
+      miniSessionButton.hidden = dayIndex >= lessons.length;
+      document.querySelector(".phone").scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+    function startQuiz(limit) {
+      if (dayIndex >= lessons.length) {
+        showHome("这一周已经完成啦。想重刷的话，可以点证书里的重新开始。");
+        return;
+      }
+      sessionLimit = limit;
+      sessionAnswered = 0;
+      homeCard.style.display = "none";
+      render();
+    }
+    function render(keepHome = false) {
+      answered = false;
+      renderDays();
+      renderMistakes();
+      const doneQuestions = updateProgress();
+      if (dayIndex < lessons.length) statusPill.textContent = sessionLimit ? `轻量 ${sessionLimit} 题` : "今日待完成";
+      if (!keepHome) homeCard.style.display = "none";
+
+      if (dayIndex >= lessons.length) {
+        lessonCard.style.display = "none";
+        chatEl.style.display = "none";
+        certificate.classList.add("show");
+        return;
+      }
+
+      const lesson = lessons[dayIndex];
+      if (questionIndex >= lesson.questions.length) {
+        dayIndex += 1;
+        questionIndex = 0;
+        save();
+        render();
+        return;
+      }
+
+      const current = lesson.questions[questionIndex];
+      lessonCard.style.display = "";
+      chatEl.style.display = "";
+      certificate.classList.remove("show");
+      lessonTitle.textContent = `Day ${dayIndex + 1}｜${lesson.title}`;
+      lessonPoint.textContent = lesson.point;
+      lessonTag.textContent = lesson.tag;
+      qCount.textContent = `今日第 ${questionIndex + 1} / ${lesson.questions.length} 题`;
+      question.textContent = current.q;
+      feedback.className = "feedback";
+      feedback.textContent = "";
+      note.className = "note";
+      note.textContent = lesson.note;
+      nextButton.hidden = true;
+      nextButton.textContent = questionIndex === lesson.questions.length - 1 ? "完成今天的小复习" : "下一题";
+      scoreLine.textContent = `本周目前答对 ${score} / ${doneQuestions} 题`;
+
+      chatEl.innerHTML = "";
+      lesson.chat.forEach(([who, text], index) => {
+        const bubble = document.createElement("div");
+        bubble.className = `bubble ${who}`;
+        bubble.style.animationDelay = `${index * .08}s`;
+        bubble.textContent = text;
+        chatEl.appendChild(bubble);
+      });
+
+      optionsEl.innerHTML = "";
+      current.options.forEach((text, index) => {
+        const option = document.createElement("button");
+        option.className = "option";
+        option.textContent = `${String.fromCharCode(65 + index)}. ${text}`;
+        option.addEventListener("click", () => choose(index));
+        optionsEl.appendChild(option);
+      });
+    }
+    function choose(index) {
+      if (answered) return;
+      answered = true;
+      const current = lessons[dayIndex].questions[questionIndex];
+      if (index === current.answer) {
+        score += 1;
+      } else {
+        const key = `${dayIndex}-${questionIndex}`;
+        const chosen = `${String.fromCharCode(65 + index)}. ${current.options[index]}`;
+        const correct = `${String.fromCharCode(65 + current.answer)}. ${current.options[current.answer]}`;
+        mistakes = mistakes.filter((item) => item.key !== key);
+        mistakes.push({
+          key,
+          day: `Day ${dayIndex + 1}`,
+          title: lessons[dayIndex].title,
+          question: current.q,
+          chosen,
+          correct,
+          tip: current.no
+        });
+      }
+      [...optionsEl.querySelectorAll(".option")].forEach((button, buttonIndex) => {
+        if (buttonIndex === current.answer) button.classList.add("correct");
+        if (buttonIndex === index && index !== current.answer) button.classList.add("wrong");
+      });
+      feedback.textContent = index === current.answer ? current.ok : current.no;
+      feedback.classList.add("show");
+      note.classList.add("show");
+      nextButton.hidden = false;
+      statusPill.textContent = index === current.answer ? "答对啦" : "已复习";
+      scoreLine.textContent = `本周目前答对 ${score} / ${totalQuestionsBefore(dayIndex) + questionIndex + 1} 题`;
+      save();
+      renderMistakes();
+    }
+    nextButton.addEventListener("click", () => {
+      questionIndex += 1;
+      if (questionIndex >= lessons[dayIndex].questions.length) {
+        dayIndex += 1;
+        questionIndex = 0;
+      }
+      save();
+      if (sessionLimit) {
+        sessionAnswered += 1;
+        if (sessionAnswered >= sessionLimit && dayIndex < lessons.length) {
+          showHome(`今天 ${sessionLimit} 题完成啦。进度已经存好，下次点“继续上次的小复习”就接着来。`);
+          return;
+        }
+      }
+      render();
+      document.querySelector(".phone").scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+    pauseButton.addEventListener("click", () => {
+      save();
+      showHome("已保存到这里。今天先收工也很好，英语不是一口吞完的。");
+    });
+    resetButton.addEventListener("click", () => {
+      dayIndex = 0;
+      questionIndex = 0;
+      score = 0;
+      mistakes = [];
+      save();
+      showHome("已经从第 1 天重新开始。我们轻一点来，慢慢也会很远。");
+    });
+    clearMistakesButton.addEventListener("click", () => {
+      mistakes = [];
+      save();
+      renderMistakes();
+    });
+    continueButton.addEventListener("click", () => startQuiz(0));
+    miniSessionButton.addEventListener("click", () => startQuiz(5));
+    mistakeHomeButton.addEventListener("click", () => {
+      renderMistakes();
+      if (mistakes.length === 0) {
+        showHome("目前还没有错题，小本本空空的，心情亮亮的。");
+      } else {
+        mistakeBox.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    });
+    showHome();
+  </script>
+</body>
+</html>
