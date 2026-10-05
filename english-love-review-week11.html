@@ -1,0 +1,841 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>第十一周：高频词汇230上半场，备注：来自你的小可爱陪练</title>
+  <style>
+    :root {
+      --text: #2c2030;
+      --muted: #7f667d;
+      --pink: #ff6fae;
+      --pink-dark: #cf3f86;
+      --violet: #7565f7;
+      --apricot: #ffc977;
+      --line: rgba(246, 204, 226, .88);
+      --card: rgba(255,255,255,.82);
+      font-family: "Outfit", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+    * { box-sizing: border-box; }
+    html { overflow-x: hidden; }
+    body {
+      min-height: 100vh;
+      margin: 0;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 12% 5%, rgba(255, 111, 174, .34) 0 16%, transparent 31%),
+        radial-gradient(circle at 92% 10%, rgba(117, 101, 247, .28) 0 15%, transparent 30%),
+        radial-gradient(circle at 52% 92%, rgba(255, 201, 119, .34) 0 16%, transparent 34%),
+        linear-gradient(155deg, #fffaf6 0%, #fff0f8 46%, #f0edff 100%);
+      display: flex;
+      justify-content: center;
+      padding: 18px;
+      overflow-x: hidden;
+    }
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: .18;
+      background-image:
+        linear-gradient(rgba(255,255,255,.8) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.65) 1px, transparent 1px);
+      background-size: 38px 38px;
+      mask-image: radial-gradient(circle at 50% 16%, black, transparent 70%);
+    }
+    button { border: 0; font: inherit; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+    .phone {
+      position: relative;
+      width: min(430px, 100%);
+      min-height: calc(100vh - 36px);
+      overflow: hidden;
+      border-radius: 34px;
+      background: linear-gradient(180deg, rgba(255,255,255,.72), rgba(255,255,255,.46));
+      border: 1px solid rgba(255,255,255,.9);
+      box-shadow: 0 26px 70px rgba(129, 78, 128, .22);
+      backdrop-filter: blur(22px);
+    }
+    .phone::before {
+      content: "";
+      position: absolute;
+      inset: -80px -80px auto auto;
+      width: 210px;
+      height: 210px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255,111,174,.22), transparent 68%);
+      pointer-events: none;
+    }
+    header {
+      position: relative;
+      padding: 24px 22px 18px;
+      background:
+        linear-gradient(135deg, rgba(255,255,255,.96), rgba(255,255,255,.46)),
+        radial-gradient(circle at 92% 18%, rgba(255,111,174,.28), transparent 34%);
+      border-bottom: 1px solid rgba(255,255,255,.58);
+      overflow: hidden;
+    }
+    header::after {
+      content: "Love review";
+      position: absolute;
+      right: -18px;
+      bottom: 6px;
+      color: rgba(207,63,134,.08);
+      font-size: 42px;
+      font-weight: 950;
+      letter-spacing: -.06em;
+      pointer-events: none;
+    }
+    .kicker {
+      color: var(--pink-dark);
+      font-size: 12px;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      font-weight: 950;
+    }
+    h1 {
+      width: min(100%, 360px);
+      margin: 8px 0 10px;
+      font-size: clamp(28px, 7.6vw, 36px);
+      line-height: 1.08;
+      letter-spacing: -.045em;
+    }
+    .sub { position: relative; margin: 0; color: var(--muted); line-height: 1.58; font-size: 15px; }
+    main { padding: 0 16px 18px; display: grid; gap: 14px; }
+    .card {
+      position: relative;
+      background: var(--card);
+      border: 1px solid rgba(255,255,255,.92);
+      border-radius: 28px;
+      box-shadow: 0 16px 34px rgba(124,80,108,.13);
+      padding: 18px;
+      backdrop-filter: blur(18px);
+    }
+    .card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      pointer-events: none;
+      background: linear-gradient(135deg, rgba(255,255,255,.46), transparent 42%);
+    }
+    .row { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+    .pill {
+      color: var(--pink-dark);
+      background: linear-gradient(135deg, #ffe4f0, #efeaff);
+      border: 1px solid rgba(255,255,255,.72);
+      border-radius: 999px;
+      padding: 7px 11px;
+      font-size: 13px;
+      font-weight: 900;
+      white-space: nowrap;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.7);
+    }
+    .bar { height: 11px; border-radius: 999px; background: rgba(241,220,233,.92); overflow: hidden; margin-top: 11px; box-shadow: inset 0 1px 4px rgba(83,52,80,.08); }
+    .bar span {
+      display: block;
+      width: 0%;
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, var(--pink), var(--violet), var(--apricot));
+      transition: width .32s ease;
+    }
+    .days { display: grid; grid-template-columns: repeat(7, 1fr); gap: 7px; margin-top: 14px; }
+    .day-dot {
+      min-height: 42px;
+      display: grid;
+      place-items: center;
+      border-radius: 16px;
+      background: rgba(255,255,255,.78);
+      border: 1px solid var(--line);
+      color: var(--muted);
+      font-weight: 950;
+      box-shadow: 0 6px 14px rgba(139,86,118,.06);
+    }
+    .day-dot.done { color: white; background: linear-gradient(135deg, var(--pink), var(--violet)); border-color: transparent; }
+    .day-dot.current { color: var(--pink-dark); outline: 3px solid rgba(255,111,174,.2); background: #fff; }
+    .home-card { background: linear-gradient(155deg, rgba(255,255,255,.9), rgba(255,244,250,.76)); }
+    .home-card h2 { margin-bottom: 8px; }
+    .home-actions { display: grid; gap: 10px; margin-top: 14px; }
+    .home-tip {
+      display: none;
+      margin-top: 12px;
+      padding: 12px 14px;
+      border-radius: 18px;
+      background: linear-gradient(135deg, #fff0f7, #f5f0ff);
+      color: #6c405a;
+      line-height: 1.55;
+      font-size: 14px;
+      border: 1px solid rgba(255,255,255,.72);
+    }
+    .home-tip.show { display: block; }
+    .day-picker {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 9px;
+      margin-top: 14px;
+    }
+    .day-button {
+      min-height: 50px;
+      padding: 11px;
+      border-radius: 17px;
+      background: rgba(255,255,255,.82);
+      border: 1px solid var(--line);
+      color: var(--text);
+      font-weight: 900;
+      text-align: left;
+      box-shadow: 0 8px 18px rgba(139,86,118,.07);
+      transition: transform .22s ease, box-shadow .22s ease, border-color .22s ease;
+    }
+    .day-button:active, .option:active, .primary:active, .secondary:active { transform: scale(.985); }
+    .day-button span { display: block; margin-top: 3px; color: var(--muted); font-size: 12px; font-weight: 700; line-height: 1.35; }
+    .day-button.done { color: white; background: linear-gradient(135deg, var(--pink), var(--violet)); border-color: transparent; }
+    .day-button.done span { color: rgba(255,255,255,.82); }
+    .day-button.current { color: var(--pink-dark); outline: 3px solid rgba(255,111,174,.18); border-color: rgba(255,111,174,.42); }
+    .chat { display: flex; flex-direction: column; gap: 10px; }
+    .bubble {
+      max-width: 88%;
+      padding: 12px 14px;
+      border-radius: 20px;
+      line-height: 1.55;
+      font-size: 15px;
+      white-space: pre-line;
+      animation: floatIn .25s ease both;
+      box-shadow: 0 10px 20px rgba(139,86,118,.08);
+    }
+    .bubble.me {
+      align-self: flex-end;
+      color: white;
+      background: linear-gradient(135deg, var(--pink), var(--violet));
+      border-bottom-right-radius: 8px;
+    }
+    .bubble.her { align-self: flex-start; background: white; border: 1px solid var(--line); border-bottom-left-radius: 8px; }
+    @keyframes floatIn { from { transform: translateY(8px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+    h2 { margin: 0 0 5px; font-size: 22px; letter-spacing: -.02em; }
+    .tiny { margin: 0; color: var(--muted); line-height: 1.5; font-size: 13px; }
+    .lesson-head { align-items: flex-start; margin-bottom: 12px; }
+    .q-count { margin: 10px 0 0; color: var(--muted); font-weight: 900; font-size: 14px; }
+    .question { margin: 10px 0 12px; line-height: 1.62; color: #5d425f; font-weight: 850; }
+    .options { display: grid; gap: 10px; }
+    .option {
+      width: 100%;
+      min-height: 52px;
+      text-align: left;
+      padding: 13px 14px;
+      border-radius: 18px;
+      background: rgba(255,255,255,.95);
+      color: var(--text);
+      border: 1px solid var(--line);
+      box-shadow: 0 9px 18px rgba(139,86,118,.08);
+      transition: transform .22s ease, box-shadow .22s ease, border-color .22s ease;
+    }
+    .option:hover, .day-button:hover { transform: translateY(-1px); box-shadow: 0 12px 24px rgba(139,86,118,.12); }
+    .option.correct { border-color: rgba(33,168,120,.55); background: #effcf7; color: #106947; }
+    .option.wrong { border-color: rgba(228,90,104,.5); background: #fff1f3; color: #923340; }
+    .feedback, .note {
+      display: none;
+      margin-top: 14px;
+      padding: 14px;
+      border-radius: 20px;
+      line-height: 1.6;
+    }
+    .feedback { background: linear-gradient(135deg, #fff0f7, #f7f1ff); color: #6c405a; }
+    .note { background: #fffaf0; border: 1px dashed #efbd72; color: #755321; }
+    .show { display: block; }
+    .primary, .secondary {
+      width: 100%;
+      min-height: 52px;
+      margin-top: 14px;
+      border-radius: 18px;
+      font-weight: 950;
+      transition: transform .22s ease, box-shadow .22s ease;
+    }
+    .primary { color: white; background: linear-gradient(135deg, #302431, var(--violet) 58%, var(--pink)); box-shadow: 0 16px 28px rgba(117,101,247,.24); }
+    .secondary { color: var(--pink-dark); background: linear-gradient(135deg, #ffe4f0, #f3efff); border: 1px solid rgba(255,255,255,.72); }
+    .primary:hover, .secondary:hover { transform: translateY(-1px); }
+    .score { margin: 12px 0 0; color: var(--muted); line-height: 1.5; font-size: 14px; }
+    .mistake-box {
+      display: none;
+      background: linear-gradient(155deg, #fffaf0, #fff5df);
+      border: 1px dashed #efbd72;
+    }
+    .mistake-box.show { display: block; }
+    .mistake-list { display: grid; gap: 10px; margin-top: 12px; }
+    .mistake-item {
+      padding: 12px;
+      border-radius: 18px;
+      background: rgba(255,255,255,.82);
+      border: 1px solid #f1d8a7;
+      line-height: 1.55;
+      color: #755321;
+      font-size: 14px;
+      box-shadow: 0 8px 16px rgba(117,83,33,.07);
+    }
+    .mistake-item strong { color: #5f3f13; }
+    .certificate {
+      display: none;
+      text-align: center;
+      background: linear-gradient(155deg, #fff8e8, #ffeaf5);
+      border: 1px solid #f1c98d;
+    }
+    .certificate.show { display: block; }
+    .seal {
+      width: 74px;
+      height: 74px;
+      margin: 4px auto 12px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      color: white;
+      background: linear-gradient(135deg, #f4b84f, #ff6fae, #7565f7);
+      font-size: 28px;
+      font-weight: 950;
+      box-shadow: 0 14px 30px rgba(255,111,174,.24);
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }
+    }
+
+  </style>
+</head>
+<body>
+  <section class="phone" aria-label="第十一周英语小复习手机网页App">
+    <header>
+      <div class="kicker">Week 11 · High-Frequency Words</div>
+      <h1>第十一周：高频词汇230上半场</h1>
+      <p class="sub">备注：来自你的小可爱陪练</p>
+      <p class="sub">这周正式进入高频词汇 230 上半场：以考试、研究、身心、环境、变化和常见动词为主。每天 10 题，新学为主；每次也可以只做 5 题，进度自动保存，答错仍然会进入“错题小本本”。</p>
+    </header>
+    <main>
+      <section class="card" aria-label="学习进度">
+        <div class="row">
+          <strong id="progressText">第 1 / 7 天</strong>
+          <span class="pill" id="statusPill">今日待完成</span>
+        </div>
+        <div class="bar"><span id="progressBar"></span></div>
+        <div class="days" id="days"></div>
+      </section>
+      <section class="card home-card" id="homeCard" aria-label="分段学习入口">
+        <h2>今天想怎么复习？</h2>
+        <p class="tiny" id="homeSummary">已经帮你保存进度，下次打开可以继续。</p>
+        <div class="home-actions">
+          <button class="primary" id="continueButton">继续上次的小复习</button>
+          <button class="secondary" id="miniSessionButton">今天先做 5 题</button>
+          <button class="secondary" id="mistakeHomeButton">看看错题小本本</button>
+        </div>
+        <div class="home-tip" id="homeTip"></div>
+        <div class="day-picker" id="dayPicker" aria-label="选择某一天练习"></div>
+      </section>
+      <section class="card chat" id="chat" aria-label="日常对话"></section>
+      <section class="card" id="lessonCard" aria-label="今日小题">
+        <div class="row lesson-head">
+          <div>
+            <h2 id="lessonTitle">Day 1</h2>
+            <p class="tiny" id="lessonPoint"></p>
+          </div>
+          <span class="pill" id="lessonTag">新题</span>
+        </div>
+        <p class="q-count" id="qCount"></p>
+        <p class="question" id="question"></p>
+        <div class="options" id="options"></div>
+        <div class="feedback" id="feedback"></div>
+        <div class="note" id="note"></div>
+        <p class="score" id="scoreLine"></p>
+        <button class="primary" id="nextButton" hidden>下一题</button>
+        <button class="secondary" id="pauseButton">今天先到这里</button>
+      </section>
+      <section class="card mistake-box" id="mistakeBox" aria-label="错题小本本">
+        <div class="row lesson-head">
+          <div>
+            <h2>错题小本本</h2>
+            <p class="tiny">错题不是黑历史，是下次见面会认出来的老熟人。</p>
+          </div>
+          <span class="pill" id="mistakeCount">0 题</span>
+        </div>
+        <div class="mistake-list" id="mistakeList"></div>
+        <button class="secondary" id="clearMistakesButton">清空错题小本本</button>
+      </section>
+      <section class="card certificate" id="certificate" aria-label="第十一周毕业证书">
+        <div class="seal">W11</div>
+        <h2>第十一周高频词上半场完成</h2>
+        <p>这一周你完成了高频词汇 230 的上半场，已经能在常见句子里识别并使用 70 个核心词。下一周继续下半场，并把本周错题带回语境复习。</p>
+        <p><strong>Seventy useful words are now closer to you, one small answer at a time.</strong></p>
+        <button class="secondary" id="resetButton">从第1天重新开始</button>
+      </section>
+    </main>
+  </section>
+  <script>
+    const makeQuestion = (q, options, answer, tip) => ({
+      q,
+      options,
+      answer,
+      ok: `对。${tip}`,
+      no: `正确答案是“${options[answer]}”。${tip}`
+    });
+
+    const lessons = [
+      {
+        title: "读题基本功：把信息说清楚",
+        point: "掌握 result、statement、paragraph、means、purpose、knowledge、research、factor、individual、applicant。",
+        tag: "高频词起步",
+        chat: [
+          ["me", "第11周开始，我们从最常见的高频词下手。"],
+          ["her", "这么多词，会不会背着背着就混了？"],
+          ["me", "不会，你负责把词放进脑海，我负责把你放在心上。今天只认十个。"]
+        ],
+        note: "长词记忆：individual = in + divid + ual，可联想“不能再分开的一个人”，所以是“个人、个体”；applicant 里有 apply，申请的人就是 applicant。",
+        questions: [
+          makeQuestion("The experiment produced an unexpected _____.（实验产生了意外的结果。）", ["result", "paragraph", "applicant"], 0, "result = 结果；常见搭配是 achieve/get a result。"),
+          makeQuestion("The witness made a clear _____ to the police.（证人向警方作了清楚的陈述。）", ["statement", "purpose", "factor"], 0, "statement = 陈述、声明。"),
+          makeQuestion("Each _____ should begin with a topic sentence.", ["means", "research", "paragraph"], 2, "paragraph = 段落；topic sentence 是主题句。"),
+          makeQuestion("Email is an effective _____ of communication.", ["结果", "手段、方法", "申请者"], 1, "means 作名词时表示“手段、方法”，单复数形式相同。"),
+          makeQuestion("The main _____ of this meeting is to solve the problem.", ["知识", "因素", "目的"], 2, "purpose = 目的；on purpose 表示“故意地”。"),
+          makeQuestion("Knowledge 的正确含义是：", ["知识、学问", "段落", "声明"], 0, "knowledge = 知识；k 不发音，可记作 know + ledge。"),
+          makeQuestion("Scientists are doing _____ on climate change.", ["面试", "研究", "财产"], 1, "research = 研究；do/conduct research 都表示“开展研究”。"),
+          makeQuestion("Cost is an important _____ in our decision.", ["答案", "水平", "因素"], 2, "factor = 因素；an important factor 是常见搭配。"),
+          makeQuestion("Every _____ has the right to express an opinion.", ["个人、个体", "段落", "申请"], 0, "individual 可作名词“个人”，也可作形容词“个人的”。"),
+          makeQuestion("All job _____ must complete this form.", ["研究者", "申请者", "面试"], 1, "applicant = 申请者；apply 是申请，application 是申请。")
+        ]
+      },
+      {
+        title: "身心与能力：别让熟词装陌生",
+        point: "掌握 mental、physical、ability、patient、common、material、type、level、minute、live 的常见义和一词多义。",
+        tag: "熟词多义",
+        chat: [
+          ["me", "今天的词一半管身体，一半管能力。"],
+          ["her", "那我的英语能力归谁管？"],
+          ["me", "归你努力，也归我惦记。你每进步一点，我都比成绩先发现。"]
+        ],
+        note: "记忆小纸条：physical 联想 PE 体育课，表示“身体的、物理的”；patient 既是“病人”，也是“耐心的”，对病人要有耐心，两个意思一起记。",
+        questions: [
+          makeQuestion("Reading is good exercise for your _____ health.", ["身体的", "传统的", "精神的、心智的"], 2, "mental = 精神的、心智的；mental health = 心理健康。"),
+          makeQuestion("Regular exercise improves _____ fitness.", ["精神的", "核能的", "身体的"], 2, "physical = 身体的；physical fitness = 身体素质。"),
+          makeQuestion("She has the _____ to solve difficult problems.", ["能力", "材料", "文化"], 0, "ability = 能力；have the ability to do sth.。"),
+          makeQuestion("You need to be _____ with beginners.", ["普通的", "有耐心的", "迟到的"], 1, "patient 作形容词表示“有耐心的”；be patient with sb.。"),
+          makeQuestion("It is _____ for students to feel nervous before an exam.", ["有害的", "个人的", "常见的、普遍的"], 2, "common = 常见的、普遍的。"),
+          makeQuestion("Wood is a natural building _____.", ["材料", "类型", "水平"], 0, "material = 材料，也可表示资料。"),
+          makeQuestion("What _____ of music do you prefer?", ["分钟", "类型", "细胞"], 1, "type = 类型；a type of... 表示“一种……”。"),
+          makeQuestion("Her English has reached a high _____.", ["手段", "病人", "水平"], 2, "level = 水平、等级。"),
+          makeQuestion("Please wait a _____.", ["分钟、片刻", "会议", "材料"], 0, "minute = 分钟，也可表示“片刻”；会议记录常用复数 minutes。"),
+          makeQuestion("The match will be shown _____ on television.", ["居住", "现场直播地", "最后地"], 1, "live 作副词可表示“现场直播地”，读作 /laɪv/。")
+        ]
+      },
+      {
+        title: "环境主题词：阅读里经常碰面",
+        point: "掌握 global、climate、drought、emission、harmful、prevent、environment、fuel、effect、product。",
+        tag: "环境阅读",
+        chat: [
+          ["me", "今天是一组环境主题词，阅读理解很爱考。"],
+          ["her", "全球、气候、排放，听起来很严肃。"],
+          ["me", "话题可以严肃，我对你的偏心不用。你是我唯一不想减少的 emission。"]
+        ],
+        note: "长词记忆：environment 可拆成 environ（围绕）+ ment（名词后缀），就是“周围的环境”；emission 来自 emit（发出）+ sion，表示“排放、发出物”。",
+        questions: [
+          makeQuestion("Climate change is a _____ problem.", ["全球的", "个人的", "传统的"], 0, "global = 全球的；global problem = 全球性问题。"),
+          makeQuestion("The region has a warm and wet _____.", ["气候", "产品", "燃料"], 0, "climate = 气候，指一个地区长期的天气特点。"),
+          makeQuestion("A long period without rain may cause a _____.", ["结果", "压力", "干旱"], 2, "drought = 干旱；注意拼写中有 ou，但读音较短。"),
+          makeQuestion("The factory must reduce carbon _____.", ["段落", "排放", "能力"], 1, "emission = 排放、排放物；carbon emissions 常用复数。"),
+          makeQuestion("Too much smoke is _____ to health.", ["现代的", "有限的", "有害的"], 2, "harmful = 有害的；be harmful to...。"),
+          makeQuestion("Wearing a mask can help _____ infection.", ["预防、防止", "提供", "摧毁"], 0, "prevent = 防止；prevent sb. from doing sth.。"),
+          makeQuestion("We should protect the natural _____.", ["投资", "环境", "声明"], 1, "environment = 环境；protect the environment 是高频搭配。"),
+          makeQuestion("Coal was once the main _____ for heating.", ["目的", "研究", "燃料"], 2, "fuel = 燃料，也可作动词表示“刺激、推动”。"),
+          makeQuestion("The new rule had a positive _____ on safety.", ["影响、效果", "产品", "资料"], 0, "effect = 影响、效果；have an effect on...。"),
+          makeQuestion("This company sells electronic _____.", ["措施", "产品", "气候"], 1, "product = 产品；produce 是生产，production 是生产过程。")
+        ]
+      },
+      {
+        title: "学习与进步：把抽象词变具体",
+        point: "掌握 importance、international、main、pressure、scientific、serious、complete、confidence、effort、government。",
+        tag: "抽象高频词",
+        chat: [
+          ["me", "今天的词看起来长，其实都有熟悉的小零件。"],
+          ["her", "比如 international？"],
+          ["me", "inter 是在彼此之间，national 是国家的。至于我和你之间，是不用翻译也懂的偏爱。"]
+        ],
+        note: "长词记忆：international = inter（之间）+ nation（国家）+ al；confidence 里有 confident，-ence 把形容词变成名词“信心”。",
+        questions: [
+          makeQuestion("We understand the _____ of daily practice.", ["重要性", "政府", "压力"], 0, "importance = 重要性；the importance of...。"),
+          makeQuestion("English is widely used in _____ communication.", ["科学的", "个人的", "国际的"], 2, "international = 国际的。"),
+          makeQuestion("The _____ reason for the delay was bad weather.", ["有限的", "完整的", "主要的"], 2, "main = 主要的、最重要的。"),
+          makeQuestion("Students often feel _____ before important exams.", ["信心", "压力", "努力"], 1, "pressure = 压力；under pressure 表示“在压力下”。"),
+          makeQuestion("The claim must be supported by _____ evidence.", ["传统的", "普遍的", "科学的"], 2, "scientific = 科学的；science 是科学，scientist 是科学家。"),
+          makeQuestion("Air pollution is a _____ problem.", ["严重的", "最近的", "平均的"], 0, "serious = 严重的，也可表示认真的。"),
+          makeQuestion("Please _____ the form before Friday.", ["保持", "完成", "估计"], 1, "complete 作动词表示“完成”，作形容词表示“完整的”。"),
+          makeQuestion("Practice can build your _____.", ["研究", "投资", "信心"], 2, "confidence = 信心；build confidence = 建立信心。"),
+          makeQuestion("Success requires time and _____.", ["努力", "气候", "流量"], 0, "effort = 努力；make an effort to do sth.。"),
+          makeQuestion("The _____ introduced a new education policy.", ["研究者", "政府", "申请者"], 1, "government = 政府；可联想 govern（治理）+ ment。")
+        ]
+      },
+      {
+        title: "变化与判断：新闻句子不再怕",
+        point: "掌握 current、drop、estimate、expect、investment、lead、limited、remain、save、set。",
+        tag: "新闻高频词",
+        chat: [
+          ["me", "今天练新闻和说明文里最常见的变化词。"],
+          ["her", "变化这么多，怎么记得住？"],
+          ["me", "别的会变，给你留的复习进度不会丢；我对你的 current attention 也持续在线。"]
+        ],
+        note: "记忆小纸条：estimate = 估计，expect = 预期；前者强调大致算一算，后者强调相信某事将发生。investment 来自 invest（投资）+ ment。",
+        questions: [
+          makeQuestion("The _____ situation is better than last year.", ["当前的", "有害的", "传统的"], 0, "current = 当前的；也可作名词表示水流、电流。"),
+          makeQuestion("Temperatures may _____ sharply at night.", ["下降", "领导", "停留"], 0, "drop = 下降、落下。"),
+          makeQuestion("Experts _____ the cost at two million dollars.", ["完成", "保存", "估计"], 2, "estimate = 估计、估价。"),
+          makeQuestion("We _____ the results to arrive tomorrow.", ["限制", "预期", "出售"], 1, "expect = 期待、预期；expect sb. to do sth.。"),
+          makeQuestion("Education is a long-term _____.", ["声明", "材料", "投资"], 2, "investment = 投资；long-term investment = 长期投资。"),
+          makeQuestion("Poor sleep can _____ to low efficiency.", ["导致", "节省", "继续"], 0, "lead to = 导致；to 后接名词或动名词。"),
+          makeQuestion("Tickets are _____, so book early.", ["全球的", "有限的", "认真的"], 1, "limited = 有限的；limited time/space。"),
+          makeQuestion("Only a few questions _____ unanswered.", ["出售", "下降", "仍然、保持"], 2, "remain = 仍然、保持；remain unanswered = 仍未回答。"),
+          makeQuestion("Turning off lights can _____ energy.", ["节省", "引导", "设置"], 0, "save = 节省，也可表示拯救、储蓄。"),
+          makeQuestion("They _____ a clear goal for the new term.", ["留下", "设定", "传播"], 1, "set a goal = 设定目标；set 的过去式仍是 set。")
+        ]
+      },
+      {
+        title: "动作词辨析：一句话抓住用法",
+        point: "掌握 capable、continue、imply、involve、likely、measure、relate、tend、available、avoid。",
+        tag: "动词辨析",
+        chat: [
+          ["me", "今天的重点是动作词，放进句子里才算真的认识。"],
+          ["her", "那我做错了怎么办？"],
+          ["me", "错题会进小本本，你不会进我的黑名单。你在我这里永远 available。"]
+        ],
+        note: "长词记忆：available 可联想 avail（有用）+ able（能够），即“能够被使用的”；involve 像把人卷进来，表示“涉及、使参与”。",
+        questions: [
+          makeQuestion("She is _____ of working independently.", ["能够的、有能力的", "可能的", "有限的"], 0, "capable = 有能力的；be capable of doing sth.。"),
+          makeQuestion("Please _____ reading after the break.", ["避免", "继续", "暗示"], 1, "continue = 继续；continue doing/to do 均可。"),
+          makeQuestion("His words _____ that he disagrees.", ["测量", "关联", "暗示"], 2, "imply = 暗示；句子的主语常是 words/results。"),
+          makeQuestion("The job will _____ frequent travel.", ["倾向于", "涉及、包含", "节省"], 1, "involve = 涉及、包含；involve doing sth.。"),
+          makeQuestion("It is _____ to rain this afternoon.", ["可利用的", "有能力的", "很可能的"], 2, "likely = 很可能的；be likely to do sth.。"),
+          makeQuestion("We need to _____ the room before buying furniture.", ["测量", "避免", "联系"], 0, "measure = 测量，也可作名词表示“措施”。"),
+          makeQuestion("The report _____ air pollution to traffic growth.", ["避免", "把……联系起来", "照料"], 1, "relate A to B = 把 A 与 B 联系起来。"),
+          makeQuestion("People _____ to remember stories better than numbers.", ["继续", "暗示", "往往、倾向于"], 2, "tend to do sth. = 往往、倾向于做某事。"),
+          makeQuestion("The doctor is not _____ this morning.", ["有空的、可获得的", "严重的", "普通的"], 0, "available = 可获得的、有空的。"),
+          makeQuestion("Try to _____ checking your phone while studying.", ["涉及", "避免", "保持"], 1, "avoid doing sth. = 避免做某事，后接动名词。")
+        ]
+      },
+      {
+        title: "综合回收：把高频词用起来",
+        point: "综合掌握 behavior、comprehension、electronic、majority、occur、record、refer、regard、section、suggest。",
+        tag: "本周回收",
+        chat: [
+          ["me", "最后一天，把本周的新词放进完整语境。"],
+          ["her", "做完是不是就能休息了？"],
+          ["me", "当然。你负责完成最后十题，我负责把‘辛苦了’说得比标准答案还认真。"]
+        ],
+        note: "长词记忆：comprehension = comprehend（理解）+ sion；majority = major（主要的）+ ity，主要的一方通常就是“大多数”。",
+        questions: [
+          makeQuestion("Parents can influence children's _____.", ["行为", "理解", "趋势"], 0, "behavior = 行为、表现；英式拼写也写作 behaviour。"),
+          makeQuestion("This passage tests reading _____.", ["记录", "理解力", "零售"], 1, "comprehension = 理解、领悟；reading comprehension = 阅读理解。"),
+          makeQuestion("Please turn off all _____ devices during the exam.", ["自然的", "个人的", "电子的"], 2, "electronic = 电子的；electronic device = 电子设备。"),
+          makeQuestion("The _____ of students supported the plan.", ["因素", "大多数", "物种"], 1, "majority = 大多数；the majority of...。"),
+          makeQuestion("The accident _____ late at night.", ["暗示", "记录", "发生"], 2, "occur = 发生；过去式是 occurred，双写 r。"),
+          makeQuestion("The device can _____ your voice.", ["记录、录下", "提到", "密封"], 0, "record 作动词表示“记录、录下”，重音通常在第二音节。"),
+          makeQuestion("Please _____ to page 20 for more details.", ["看作", "参考、查阅", "建议"], 1, "refer to = 参考、提到、涉及。"),
+          makeQuestion("Many people _____ sleep as a waste of time.", ["发生", "查阅", "把……看作"], 2, "regard A as B = 把 A 看作 B。"),
+          makeQuestion("Read the final _____ of the report.", ["部分、章节", "趋势", "行为"], 0, "section = 部分、章节，也可表示科室。"),
+          makeQuestion("The results _____ that the method is effective.", ["避免", "表明、暗示", "限制"], 1, "suggest 除“建议”外，还常表示“表明、暗示”。")
+        ]
+      }
+    ];
+
+    const storageKey = "tinyEnglishLoveReviewWeek11Progress";
+    let dayIndex = Number(localStorage.getItem(storageKey + ":day") || "0");
+    let questionIndex = Number(localStorage.getItem(storageKey + ":question") || "0");
+    let score = Number(localStorage.getItem(storageKey + ":score") || "0");
+    let mistakes = [];
+    try {
+      mistakes = JSON.parse(localStorage.getItem(storageKey + ":mistakes") || "[]");
+    } catch {
+      mistakes = [];
+    }
+    dayIndex = Number.isFinite(dayIndex) ? Math.max(0, Math.min(dayIndex, lessons.length)) : 0;
+    questionIndex = Number.isFinite(questionIndex) ? Math.max(0, questionIndex) : 0;
+    if (dayIndex < lessons.length && questionIndex >= lessons[dayIndex].questions.length) questionIndex = 0;
+    score = Number.isFinite(score) ? Math.max(0, score) : 0;
+    let answered = false;
+
+    const daysEl = document.querySelector("#days");
+    const progressText = document.querySelector("#progressText");
+    const progressBar = document.querySelector("#progressBar");
+    const statusPill = document.querySelector("#statusPill");
+    const homeCard = document.querySelector("#homeCard");
+    const homeSummary = document.querySelector("#homeSummary");
+    const homeTip = document.querySelector("#homeTip");
+    const continueButton = document.querySelector("#continueButton");
+    const miniSessionButton = document.querySelector("#miniSessionButton");
+    const mistakeHomeButton = document.querySelector("#mistakeHomeButton");
+    const dayPicker = document.querySelector("#dayPicker");
+    const chatEl = document.querySelector("#chat");
+    const lessonCard = document.querySelector("#lessonCard");
+    const lessonTitle = document.querySelector("#lessonTitle");
+    const lessonPoint = document.querySelector("#lessonPoint");
+    const lessonTag = document.querySelector("#lessonTag");
+    const qCount = document.querySelector("#qCount");
+    const question = document.querySelector("#question");
+    const optionsEl = document.querySelector("#options");
+    const feedback = document.querySelector("#feedback");
+    const note = document.querySelector("#note");
+    const scoreLine = document.querySelector("#scoreLine");
+    const nextButton = document.querySelector("#nextButton");
+    const pauseButton = document.querySelector("#pauseButton");
+    const mistakeBox = document.querySelector("#mistakeBox");
+    const mistakeCount = document.querySelector("#mistakeCount");
+    const mistakeList = document.querySelector("#mistakeList");
+    const clearMistakesButton = document.querySelector("#clearMistakesButton");
+    const certificate = document.querySelector("#certificate");
+    const resetButton = document.querySelector("#resetButton");
+    let sessionLimit = 0;
+    let sessionAnswered = 0;
+
+    function totalQuestionsBefore(day) {
+      return lessons.slice(0, day).reduce((sum, lesson) => sum + lesson.questions.length, 0);
+    }
+    function totalQuestions() {
+      return lessons.reduce((sum, lesson) => sum + lesson.questions.length, 0);
+    }
+    function save() {
+      localStorage.setItem(storageKey + ":day", String(dayIndex));
+      localStorage.setItem(storageKey + ":question", String(questionIndex));
+      localStorage.setItem(storageKey + ":score", String(score));
+      localStorage.setItem(storageKey + ":mistakes", JSON.stringify(mistakes));
+    }
+    function renderMistakes() {
+      mistakeCount.textContent = `${mistakes.length} 题`;
+      mistakeBox.classList.toggle("show", mistakes.length > 0);
+      mistakeList.innerHTML = "";
+      const recentMistakes = mistakes.slice(-8).reverse();
+      recentMistakes.forEach((item) => {
+        const row = document.createElement("div");
+        row.className = "mistake-item";
+        row.innerHTML = `
+          <strong>${item.day}｜${item.title}</strong><br>
+          ${item.question}<br>
+          你选：${item.chosen}<br>
+          正确：${item.correct}<br>
+          ${item.tip}
+        `;
+        mistakeList.appendChild(row);
+      });
+    }
+    function renderDays() {
+      daysEl.innerHTML = "";
+      lessons.forEach((_, index) => {
+        const day = document.createElement("div");
+        day.className = "day-dot";
+        if (index < dayIndex) day.classList.add("done");
+        if (index === dayIndex && dayIndex < lessons.length) day.classList.add("current");
+        day.textContent = index + 1;
+        daysEl.appendChild(day);
+      });
+    }
+    function updateProgress() {
+      const doneQuestions = dayIndex >= lessons.length ? totalQuestions() : totalQuestionsBefore(dayIndex) + questionIndex;
+      progressBar.style.width = `${Math.round(doneQuestions / totalQuestions() * 100)}%`;
+      progressText.textContent = dayIndex >= lessons.length ? "第十一周完成" : `第 ${dayIndex + 1} / 7 天`;
+      statusPill.textContent = dayIndex >= lessons.length ? "已毕业" : "已保存进度";
+      return doneQuestions;
+    }
+    function renderDayPicker() {
+      dayPicker.innerHTML = "";
+      lessons.forEach((lesson, index) => {
+        const button = document.createElement("button");
+        button.className = "day-button";
+        if (index < dayIndex) button.classList.add("done");
+        if (index === dayIndex && dayIndex < lessons.length) button.classList.add("current");
+        const state = index < dayIndex ? "已完成" : index === dayIndex ? "从这里继续" : "未解锁";
+        button.innerHTML = `Day ${index + 1}<span>${lesson.title}｜${lesson.questions.length} 题｜${state}</span>`;
+        button.addEventListener("click", () => {
+          if (dayIndex >= lessons.length) {
+            showHome("这一周已经完成啦。想重刷的话，可以点证书里的重新开始。");
+            return;
+          }
+          if (index < dayIndex) {
+            showHome(`Day ${index + 1} 已经完成啦。想回看薄弱点，可以先看错题小本本。`);
+            return;
+          }
+          if (index > dayIndex) {
+            showHome(`先把 Day ${dayIndex + 1} 做完，再解锁 Day ${index + 1}。我会帮你把节奏守住。`);
+            return;
+          }
+          startQuiz(0);
+        });
+        dayPicker.appendChild(button);
+      });
+    }
+    function showHome(message = "") {
+      sessionLimit = 0;
+      sessionAnswered = 0;
+      answered = false;
+      renderDays();
+      renderMistakes();
+      renderDayPicker();
+      homeCard.style.display = "";
+      if (dayIndex >= lessons.length) {
+        chatEl.style.display = "none";
+        lessonCard.style.display = "none";
+        certificate.classList.add("show");
+      } else {
+        certificate.classList.remove("show");
+        render(true);
+        homeCard.style.display = "";
+      }
+      const doneQuestions = updateProgress();
+      homeSummary.textContent = dayIndex >= lessons.length
+        ? `第十一周高频词上半场已经完成啦：本周答对 ${score} / ${totalQuestions()} 题。`
+        : `下面已经显示当前题目。现在停在 Day ${dayIndex + 1}，第 ${questionIndex + 1} 题，本周已完成 ${doneQuestions} / ${totalQuestions()} 题。`;
+      homeTip.textContent = message || "不用一次性做完。今天学一点，明天还能从这里接着来。";
+      homeTip.classList.add("show");
+      continueButton.textContent = dayIndex >= lessons.length ? "本周已完成，看看证书" : questionIndex === 0 && dayIndex === 0 ? "开始第 1 题" : "继续上次的小复习";
+      miniSessionButton.hidden = dayIndex >= lessons.length;
+      document.querySelector(".phone").scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+    function startQuiz(limit) {
+      if (dayIndex >= lessons.length) {
+        showHome("这一周已经完成啦。想重刷的话，可以点证书里的重新开始。");
+        return;
+      }
+      sessionLimit = limit;
+      sessionAnswered = 0;
+      homeCard.style.display = "none";
+      render();
+    }
+    function render(keepHome = false) {
+      answered = false;
+      renderDays();
+      renderMistakes();
+      const doneQuestions = updateProgress();
+      if (dayIndex < lessons.length) statusPill.textContent = sessionLimit ? `轻量 ${sessionLimit} 题` : "今日待完成";
+      if (!keepHome) homeCard.style.display = "none";
+
+      if (dayIndex >= lessons.length) {
+        lessonCard.style.display = "none";
+        chatEl.style.display = "none";
+        certificate.classList.add("show");
+        return;
+      }
+
+      const lesson = lessons[dayIndex];
+      if (questionIndex >= lesson.questions.length) {
+        dayIndex += 1;
+        questionIndex = 0;
+        save();
+        render();
+        return;
+      }
+
+      const current = lesson.questions[questionIndex];
+      lessonCard.style.display = "";
+      chatEl.style.display = "";
+      certificate.classList.remove("show");
+      lessonTitle.textContent = `Day ${dayIndex + 1}｜${lesson.title}`;
+      lessonPoint.textContent = lesson.point;
+      lessonTag.textContent = lesson.tag;
+      qCount.textContent = `今日第 ${questionIndex + 1} / ${lesson.questions.length} 题`;
+      question.textContent = current.q;
+      feedback.className = "feedback";
+      feedback.textContent = "";
+      note.className = "note";
+      note.textContent = lesson.note;
+      nextButton.hidden = true;
+      nextButton.textContent = questionIndex === lesson.questions.length - 1 ? "完成今天的小复习" : "下一题";
+      scoreLine.textContent = `本周目前答对 ${score} / ${doneQuestions} 题`;
+
+      chatEl.innerHTML = "";
+      lesson.chat.forEach(([who, text], index) => {
+        const bubble = document.createElement("div");
+        bubble.className = `bubble ${who}`;
+        bubble.style.animationDelay = `${index * .08}s`;
+        bubble.textContent = text;
+        chatEl.appendChild(bubble);
+      });
+
+      optionsEl.innerHTML = "";
+      current.options.forEach((text, index) => {
+        const option = document.createElement("button");
+        option.className = "option";
+        option.textContent = `${String.fromCharCode(65 + index)}. ${text}`;
+        option.addEventListener("click", () => choose(index));
+        optionsEl.appendChild(option);
+      });
+    }
+    function choose(index) {
+      if (answered) return;
+      answered = true;
+      const current = lessons[dayIndex].questions[questionIndex];
+      if (index === current.answer) {
+        score += 1;
+      } else {
+        const key = `${dayIndex}-${questionIndex}`;
+        const chosen = `${String.fromCharCode(65 + index)}. ${current.options[index]}`;
+        const correct = `${String.fromCharCode(65 + current.answer)}. ${current.options[current.answer]}`;
+        mistakes = mistakes.filter((item) => item.key !== key);
+        mistakes.push({
+          key,
+          day: `Day ${dayIndex + 1}`,
+          title: lessons[dayIndex].title,
+          question: current.q,
+          chosen,
+          correct,
+          tip: current.no
+        });
+      }
+      [...optionsEl.querySelectorAll(".option")].forEach((button, buttonIndex) => {
+        if (buttonIndex === current.answer) button.classList.add("correct");
+        if (buttonIndex === index && index !== current.answer) button.classList.add("wrong");
+      });
+      feedback.textContent = index === current.answer ? current.ok : current.no;
+      feedback.classList.add("show");
+      note.classList.add("show");
+      nextButton.hidden = false;
+      statusPill.textContent = index === current.answer ? "答对啦" : "已复习";
+      scoreLine.textContent = `本周目前答对 ${score} / ${totalQuestionsBefore(dayIndex) + questionIndex + 1} 题`;
+      save();
+      renderMistakes();
+    }
+    nextButton.addEventListener("click", () => {
+      questionIndex += 1;
+      if (questionIndex >= lessons[dayIndex].questions.length) {
+        dayIndex += 1;
+        questionIndex = 0;
+      }
+      save();
+      if (sessionLimit) {
+        sessionAnswered += 1;
+        if (sessionAnswered >= sessionLimit && dayIndex < lessons.length) {
+          showHome(`今天 ${sessionLimit} 题完成啦。进度已经存好，下次点“继续上次的小复习”就接着来。`);
+          return;
+        }
+      }
+      render();
+      document.querySelector(".phone").scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+    pauseButton.addEventListener("click", () => {
+      save();
+      showHome("已保存到这里。今天先收工也很好，英语不是一口吞完的。");
+    });
+    resetButton.addEventListener("click", () => {
+      dayIndex = 0;
+      questionIndex = 0;
+      score = 0;
+      mistakes = [];
+      save();
+      showHome("已经从第 1 天重新开始。我们轻一点来，慢慢也会很远。");
+    });
+    clearMistakesButton.addEventListener("click", () => {
+      mistakes = [];
+      save();
+      renderMistakes();
+    });
+    continueButton.addEventListener("click", () => startQuiz(0));
+    miniSessionButton.addEventListener("click", () => startQuiz(5));
+    mistakeHomeButton.addEventListener("click", () => {
+      renderMistakes();
+      if (mistakes.length === 0) {
+        showHome("目前还没有错题，小本本空空的，心情亮亮的。");
+      } else {
+        mistakeBox.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    });
+    showHome();
+  </script>
+</body>
+</html>
