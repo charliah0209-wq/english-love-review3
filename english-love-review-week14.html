@@ -1,0 +1,841 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>第十四周：巩固与实战提升，备注：来自你的小可爱陪练</title>
+  <style>
+    :root {
+      --text: #2c2030;
+      --muted: #7f667d;
+      --pink: #ff6fae;
+      --pink-dark: #cf3f86;
+      --violet: #7565f7;
+      --apricot: #ffc977;
+      --line: rgba(246, 204, 226, .88);
+      --card: rgba(255,255,255,.82);
+      font-family: "Outfit", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+    * { box-sizing: border-box; }
+    html { overflow-x: hidden; }
+    body {
+      min-height: 100vh;
+      margin: 0;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 12% 5%, rgba(255, 111, 174, .34) 0 16%, transparent 31%),
+        radial-gradient(circle at 92% 10%, rgba(117, 101, 247, .28) 0 15%, transparent 30%),
+        radial-gradient(circle at 52% 92%, rgba(255, 201, 119, .34) 0 16%, transparent 34%),
+        linear-gradient(155deg, #fffaf6 0%, #fff0f8 46%, #f0edff 100%);
+      display: flex;
+      justify-content: center;
+      padding: 18px;
+      overflow-x: hidden;
+    }
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: .18;
+      background-image:
+        linear-gradient(rgba(255,255,255,.8) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.65) 1px, transparent 1px);
+      background-size: 38px 38px;
+      mask-image: radial-gradient(circle at 50% 16%, black, transparent 70%);
+    }
+    button { border: 0; font: inherit; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+    .phone {
+      position: relative;
+      width: min(430px, 100%);
+      min-height: calc(100vh - 36px);
+      overflow: hidden;
+      border-radius: 34px;
+      background: linear-gradient(180deg, rgba(255,255,255,.72), rgba(255,255,255,.46));
+      border: 1px solid rgba(255,255,255,.9);
+      box-shadow: 0 26px 70px rgba(129, 78, 128, .22);
+      backdrop-filter: blur(22px);
+    }
+    .phone::before {
+      content: "";
+      position: absolute;
+      inset: -80px -80px auto auto;
+      width: 210px;
+      height: 210px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255,111,174,.22), transparent 68%);
+      pointer-events: none;
+    }
+    header {
+      position: relative;
+      padding: 24px 22px 18px;
+      background:
+        linear-gradient(135deg, rgba(255,255,255,.96), rgba(255,255,255,.46)),
+        radial-gradient(circle at 92% 18%, rgba(255,111,174,.28), transparent 34%);
+      border-bottom: 1px solid rgba(255,255,255,.58);
+      overflow: hidden;
+    }
+    header::after {
+      content: "Love review";
+      position: absolute;
+      right: -18px;
+      bottom: 6px;
+      color: rgba(207,63,134,.08);
+      font-size: 42px;
+      font-weight: 950;
+      letter-spacing: -.06em;
+      pointer-events: none;
+    }
+    .kicker {
+      color: var(--pink-dark);
+      font-size: 12px;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      font-weight: 950;
+    }
+    h1 {
+      width: min(100%, 360px);
+      margin: 8px 0 10px;
+      font-size: clamp(28px, 7.6vw, 36px);
+      line-height: 1.08;
+      letter-spacing: -.045em;
+    }
+    .sub { position: relative; margin: 0; color: var(--muted); line-height: 1.58; font-size: 15px; }
+    main { padding: 0 16px 18px; display: grid; gap: 14px; }
+    .card {
+      position: relative;
+      background: var(--card);
+      border: 1px solid rgba(255,255,255,.92);
+      border-radius: 28px;
+      box-shadow: 0 16px 34px rgba(124,80,108,.13);
+      padding: 18px;
+      backdrop-filter: blur(18px);
+    }
+    .card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      pointer-events: none;
+      background: linear-gradient(135deg, rgba(255,255,255,.46), transparent 42%);
+    }
+    .row { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+    .pill {
+      color: var(--pink-dark);
+      background: linear-gradient(135deg, #ffe4f0, #efeaff);
+      border: 1px solid rgba(255,255,255,.72);
+      border-radius: 999px;
+      padding: 7px 11px;
+      font-size: 13px;
+      font-weight: 900;
+      white-space: nowrap;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.7);
+    }
+    .bar { height: 11px; border-radius: 999px; background: rgba(241,220,233,.92); overflow: hidden; margin-top: 11px; box-shadow: inset 0 1px 4px rgba(83,52,80,.08); }
+    .bar span {
+      display: block;
+      width: 0%;
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, var(--pink), var(--violet), var(--apricot));
+      transition: width .32s ease;
+    }
+    .days { display: grid; grid-template-columns: repeat(7, 1fr); gap: 7px; margin-top: 14px; }
+    .day-dot {
+      min-height: 42px;
+      display: grid;
+      place-items: center;
+      border-radius: 16px;
+      background: rgba(255,255,255,.78);
+      border: 1px solid var(--line);
+      color: var(--muted);
+      font-weight: 950;
+      box-shadow: 0 6px 14px rgba(139,86,118,.06);
+    }
+    .day-dot.done { color: white; background: linear-gradient(135deg, var(--pink), var(--violet)); border-color: transparent; }
+    .day-dot.current { color: var(--pink-dark); outline: 3px solid rgba(255,111,174,.2); background: #fff; }
+    .home-card { background: linear-gradient(155deg, rgba(255,255,255,.9), rgba(255,244,250,.76)); }
+    .home-card h2 { margin-bottom: 8px; }
+    .home-actions { display: grid; gap: 10px; margin-top: 14px; }
+    .home-tip {
+      display: none;
+      margin-top: 12px;
+      padding: 12px 14px;
+      border-radius: 18px;
+      background: linear-gradient(135deg, #fff0f7, #f5f0ff);
+      color: #6c405a;
+      line-height: 1.55;
+      font-size: 14px;
+      border: 1px solid rgba(255,255,255,.72);
+    }
+    .home-tip.show { display: block; }
+    .day-picker {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 9px;
+      margin-top: 14px;
+    }
+    .day-button {
+      min-height: 50px;
+      padding: 11px;
+      border-radius: 17px;
+      background: rgba(255,255,255,.82);
+      border: 1px solid var(--line);
+      color: var(--text);
+      font-weight: 900;
+      text-align: left;
+      box-shadow: 0 8px 18px rgba(139,86,118,.07);
+      transition: transform .22s ease, box-shadow .22s ease, border-color .22s ease;
+    }
+    .day-button:active, .option:active, .primary:active, .secondary:active { transform: scale(.985); }
+    .day-button span { display: block; margin-top: 3px; color: var(--muted); font-size: 12px; font-weight: 700; line-height: 1.35; }
+    .day-button.done { color: white; background: linear-gradient(135deg, var(--pink), var(--violet)); border-color: transparent; }
+    .day-button.done span { color: rgba(255,255,255,.82); }
+    .day-button.current { color: var(--pink-dark); outline: 3px solid rgba(255,111,174,.18); border-color: rgba(255,111,174,.42); }
+    .chat { display: flex; flex-direction: column; gap: 10px; }
+    .bubble {
+      max-width: 88%;
+      padding: 12px 14px;
+      border-radius: 20px;
+      line-height: 1.55;
+      font-size: 15px;
+      white-space: pre-line;
+      animation: floatIn .25s ease both;
+      box-shadow: 0 10px 20px rgba(139,86,118,.08);
+    }
+    .bubble.me {
+      align-self: flex-end;
+      color: white;
+      background: linear-gradient(135deg, var(--pink), var(--violet));
+      border-bottom-right-radius: 8px;
+    }
+    .bubble.her { align-self: flex-start; background: white; border: 1px solid var(--line); border-bottom-left-radius: 8px; }
+    @keyframes floatIn { from { transform: translateY(8px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+    h2 { margin: 0 0 5px; font-size: 22px; letter-spacing: -.02em; }
+    .tiny { margin: 0; color: var(--muted); line-height: 1.5; font-size: 13px; }
+    .lesson-head { align-items: flex-start; margin-bottom: 12px; }
+    .q-count { margin: 10px 0 0; color: var(--muted); font-weight: 900; font-size: 14px; }
+    .question { margin: 10px 0 12px; line-height: 1.62; color: #5d425f; font-weight: 850; }
+    .options { display: grid; gap: 10px; }
+    .option {
+      width: 100%;
+      min-height: 52px;
+      text-align: left;
+      padding: 13px 14px;
+      border-radius: 18px;
+      background: rgba(255,255,255,.95);
+      color: var(--text);
+      border: 1px solid var(--line);
+      box-shadow: 0 9px 18px rgba(139,86,118,.08);
+      transition: transform .22s ease, box-shadow .22s ease, border-color .22s ease;
+    }
+    .option:hover, .day-button:hover { transform: translateY(-1px); box-shadow: 0 12px 24px rgba(139,86,118,.12); }
+    .option.correct { border-color: rgba(33,168,120,.55); background: #effcf7; color: #106947; }
+    .option.wrong { border-color: rgba(228,90,104,.5); background: #fff1f3; color: #923340; }
+    .feedback, .note {
+      display: none;
+      margin-top: 14px;
+      padding: 14px;
+      border-radius: 20px;
+      line-height: 1.6;
+    }
+    .feedback { background: linear-gradient(135deg, #fff0f7, #f7f1ff); color: #6c405a; }
+    .note { background: #fffaf0; border: 1px dashed #efbd72; color: #755321; }
+    .show { display: block; }
+    .primary, .secondary {
+      width: 100%;
+      min-height: 52px;
+      margin-top: 14px;
+      border-radius: 18px;
+      font-weight: 950;
+      transition: transform .22s ease, box-shadow .22s ease;
+    }
+    .primary { color: white; background: linear-gradient(135deg, #302431, var(--violet) 58%, var(--pink)); box-shadow: 0 16px 28px rgba(117,101,247,.24); }
+    .secondary { color: var(--pink-dark); background: linear-gradient(135deg, #ffe4f0, #f3efff); border: 1px solid rgba(255,255,255,.72); }
+    .primary:hover, .secondary:hover { transform: translateY(-1px); }
+    .score { margin: 12px 0 0; color: var(--muted); line-height: 1.5; font-size: 14px; }
+    .mistake-box {
+      display: none;
+      background: linear-gradient(155deg, #fffaf0, #fff5df);
+      border: 1px dashed #efbd72;
+    }
+    .mistake-box.show { display: block; }
+    .mistake-list { display: grid; gap: 10px; margin-top: 12px; }
+    .mistake-item {
+      padding: 12px;
+      border-radius: 18px;
+      background: rgba(255,255,255,.82);
+      border: 1px solid #f1d8a7;
+      line-height: 1.55;
+      color: #755321;
+      font-size: 14px;
+      box-shadow: 0 8px 16px rgba(117,83,33,.07);
+    }
+    .mistake-item strong { color: #5f3f13; }
+    .certificate {
+      display: none;
+      text-align: center;
+      background: linear-gradient(155deg, #fff8e8, #ffeaf5);
+      border: 1px solid #f1c98d;
+    }
+    .certificate.show { display: block; }
+    .seal {
+      width: 74px;
+      height: 74px;
+      margin: 4px auto 12px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      color: white;
+      background: linear-gradient(135deg, #f4b84f, #ff6fae, #7565f7);
+      font-size: 28px;
+      font-weight: 950;
+      box-shadow: 0 14px 30px rgba(255,111,174,.24);
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }
+    }
+
+  </style>
+</head>
+<body>
+  <section class="phone" aria-label="第十四周英语小复习手机网页App">
+    <header>
+      <div class="kicker">Week 14 · Practice & Progress</div>
+      <h1>第十四周：巩固与实战提升</h1>
+      <p class="sub">备注：来自你的小可爱陪练</p>
+      <p class="sub">这周进入巩固与实战提升：固定搭配、词形语法、逻辑完形、实用短阅读、易混精辨和综合模拟一起完成。每天 10 题；每次也可以只做 5 题，进度自动保存，答错继续进入“错题小本本”。</p>
+    </header>
+    <main>
+      <section class="card" aria-label="学习进度">
+        <div class="row">
+          <strong id="progressText">第 1 / 7 天</strong>
+          <span class="pill" id="statusPill">今日待完成</span>
+        </div>
+        <div class="bar"><span id="progressBar"></span></div>
+        <div class="days" id="days"></div>
+      </section>
+      <section class="card home-card" id="homeCard" aria-label="分段学习入口">
+        <h2>今天想怎么复习？</h2>
+        <p class="tiny" id="homeSummary">已经帮你保存进度，下次打开可以继续。</p>
+        <div class="home-actions">
+          <button class="primary" id="continueButton">继续上次的小复习</button>
+          <button class="secondary" id="miniSessionButton">今天先做 5 题</button>
+          <button class="secondary" id="mistakeHomeButton">看看错题小本本</button>
+        </div>
+        <div class="home-tip" id="homeTip"></div>
+        <div class="day-picker" id="dayPicker" aria-label="选择某一天练习"></div>
+      </section>
+      <section class="card chat" id="chat" aria-label="日常对话"></section>
+      <section class="card" id="lessonCard" aria-label="今日小题">
+        <div class="row lesson-head">
+          <div>
+            <h2 id="lessonTitle">Day 1</h2>
+            <p class="tiny" id="lessonPoint"></p>
+          </div>
+          <span class="pill" id="lessonTag">新题</span>
+        </div>
+        <p class="q-count" id="qCount"></p>
+        <p class="question" id="question"></p>
+        <div class="options" id="options"></div>
+        <div class="feedback" id="feedback"></div>
+        <div class="note" id="note"></div>
+        <p class="score" id="scoreLine"></p>
+        <button class="primary" id="nextButton" hidden>下一题</button>
+        <button class="secondary" id="pauseButton">今天先到这里</button>
+      </section>
+      <section class="card mistake-box" id="mistakeBox" aria-label="错题小本本">
+        <div class="row lesson-head">
+          <div>
+            <h2>错题小本本</h2>
+            <p class="tiny">错题不是黑历史，是下次见面会认出来的老熟人。</p>
+          </div>
+          <span class="pill" id="mistakeCount">0 题</span>
+        </div>
+        <div class="mistake-list" id="mistakeList"></div>
+        <button class="secondary" id="clearMistakesButton">清空错题小本本</button>
+      </section>
+      <section class="card certificate" id="certificate" aria-label="第十四周毕业证书">
+        <div class="seal">W14</div>
+        <h2>第十四周实战提升完成</h2>
+        <p>这一周你完成了搭配、语法、完形、两组短阅读、易混词和综合模拟。接下来按错因回看错题，并在间隔几天后重新测试薄弱题型。</p>
+        <p><strong>Practice became progress, and every careful answer counted.</strong></p>
+        <button class="secondary" id="resetButton">从第1天重新开始</button>
+      </section>
+    </main>
+  </section>
+  <script>
+    const makeQuestion = (q, options, answer, tip) => ({
+      q,
+      options,
+      answer,
+      ok: `对。${tip}`,
+      no: `正确答案是“${options[answer]}”。${tip}`
+    });
+
+    const lessons = [
+      {
+        title: "搭配升级：认识词还要会牵手",
+        point: "集中练习固定搭配、介词选择和常见动词组合，让高频词真正进入句子。",
+        tag: "搭配实战",
+        chat: [
+          ["me", "第14周从搭配开始，单词也有自己固定的伙伴。"],
+          ["her", "搭错了会怎么样？"],
+          ["me", "搭错词可以改。至于最佳搭档这题，我早就选你了。"]
+        ],
+        note: "搭配小纸条：be aware of、be capable of、be harmful to、be responsible for、have an impact on。介词不是装饰，要和整个词组一起记。",
+        questions: [
+          makeQuestion("Students should be aware _____ the risks of sharing personal information.", ["of", "for", "with"], 0, "be aware of = 意识到。"),
+          makeQuestion("She is capable _____ managing several tasks at once.", ["to", "of", "for"], 1, "be capable of doing sth. = 有能力做某事。"),
+          makeQuestion("Excessive noise can be harmful _____ mental health.", ["with", "for", "to"], 2, "be harmful to = 对……有害。"),
+          makeQuestion("The committee is responsible _____ reviewing the applications.", ["for", "of", "to"], 0, "be responsible for doing sth.。"),
+          makeQuestion("The new transport system had a positive impact _____ local business.", ["at", "on", "from"], 1, "have an impact on = 对……产生影响。"),
+          makeQuestion("The findings are closely related _____ earlier research.", ["with", "for", "to"], 2, "be related to = 与……有关。"),
+          makeQuestion("The doctor advised him to cut down _____ sugar.", ["on", "at", "with"], 0, "cut down on = 减少。"),
+          makeQuestion("We should take advantage _____ the available resources.", ["from", "of", "to"], 1, "take advantage of = 利用。"),
+          makeQuestion("The final decision depends _____ the survey results.", ["for", "with", "on"], 2, "depend on = 取决于、依赖于。"),
+          makeQuestion("The report calls _____ immediate action.", ["for", "up", "off"], 0, "call for = 需要、要求。")
+        ]
+      },
+      {
+        title: "词形与语法：位置决定身份",
+        point: "通过句子位置判断名词、动词、形容词和副词，并复习主谓一致和非谓语结构。",
+        tag: "词形语法",
+        chat: [
+          ["me", "今天看词形，站在不同位置，单词就换身份。"],
+          ["her", "那我在你这里是什么身份？"],
+          ["me", "不是名词也不是形容词，是每个句子的重点。"]
+        ],
+        note: "词形小纸条：名词常跟在冠词、形容词后；形容词常修饰名词或跟在系动词后；副词常修饰动词或整个句子。先判断空格需要什么词性。",
+        questions: [
+          makeQuestion("The project was completed _____ and within budget.", ["success", "successfully", "successful"], 1, "修饰 completed 需要副词 successfully。"),
+          makeQuestion("The rapid _____ of technology has changed education.", ["develop", "developing", "development"], 2, "the rapid 后需要名词 development。"),
+          makeQuestion("Each of the participants _____ a certificate.", ["receives", "receive", "receiving"], 0, "each of...作主语时谓语通常用单数。"),
+          makeQuestion("The instructions were not clear enough _____ beginners to follow.", ["of", "for", "with"], 1, "形容词 + enough for sb. to do sth.。"),
+          makeQuestion("_____ regularly helps improve long-term memory.", ["Reviewed", "To reviewed", "Reviewing"], 2, "动名词 Reviewing 作主语。"),
+          makeQuestion("Neither the manager nor the assistants _____ available yesterday.", ["were", "was", "is"], 0, "就近原则，assistants 为复数，所以用 were。"),
+          makeQuestion("The study provides a _____ explanation of the change.", ["logic", "logical", "logically"], 1, "修饰名词 explanation 需要形容词 logical。"),
+          makeQuestion("The problem is too complex _____ in a few minutes.", ["solving", "solved", "to solve"], 2, "too...to do = 太……而不能……。"),
+          makeQuestion("A number of useful suggestions _____ collected.", ["were", "was", "has"], 0, "a number of + 复数名词，谓语用复数。"),
+          makeQuestion("She avoided _____ a conclusion before checking the data.", ["to make", "making", "made"], 1, "avoid doing sth. = 避免做某事。")
+        ]
+      },
+      {
+        title: "逻辑完形：连接词就是路标",
+        point: "根据转折、因果、让步、递进和条件关系完成微型完形。",
+        tag: "逻辑完形",
+        chat: [
+          ["me", "今天的连接词都是路标，告诉你句子往哪边走。"],
+          ["her", "万一我看错路标呢？"],
+          ["me", "那就停一下重新读。学习可以绕路，我陪你就不算走错。"]
+        ],
+        note: "逻辑小纸条：however 表转折，therefore 表结果，moreover 表递进，otherwise 表“否则”，although 后接完整句，despite 后接名词或动名词。",
+        questions: [
+          makeQuestion("The method is inexpensive; _____, it may not be suitable for every case.", ["therefore", "moreover", "however"], 2, "前后意义相反，使用 however。"),
+          makeQuestion("The evidence was incomplete. _____, the team delayed its decision.", ["Therefore", "Meanwhile", "Instead"], 0, "证据不完整导致推迟决定，使用 Therefore。"),
+          makeQuestion("The device is light and easy to use. _____, it requires very little energy.", ["Otherwise", "Moreover", "Although"], 1, "后句补充另一优点，使用 Moreover。"),
+          makeQuestion("You should back up the file; _____, you may lose your work.", ["however", "therefore", "otherwise"], 2, "otherwise = 否则。"),
+          makeQuestion("_____ the weather was poor, the event attracted many visitors.", ["Although", "Despite", "Because of"], 0, "后面是完整句，使用 Although。"),
+          makeQuestion("The task was completed on time _____ several unexpected difficulties.", ["although", "despite", "because"], 1, "后接名词短语，使用 despite。"),
+          makeQuestion("The cost was higher than expected, _____ the quality was excellent.", ["so", "because", "but"], 2, "价格高与质量好构成转折。"),
+          makeQuestion("The sample was too small; _____, the results should be interpreted carefully.", ["therefore", "nevertheless", "similarly"], 0, "样本小，所以结果需谨慎解释。"),
+          makeQuestion("The plan will work _____ everyone follows the same procedure.", ["unless", "if", "though"], 1, "if 引导条件：如果大家遵循同一流程。"),
+          makeQuestion("The company improved training _____ reduce safety risks.", ["because", "so that", "in order to"], 2, "in order to 后接动词原形，表示目的。")
+        ]
+      },
+      {
+        title: "短阅读一：先找主旨和证据",
+        point: "阅读五段生活与学习材料，每段完成一道细节题和一道推断或主旨题。",
+        tag: "阅读实战",
+        chat: [
+          ["me", "阅读题不猜作者心情，只找原文证据。"],
+          ["her", "你的心情也要证据吗？"],
+          ["me", "不用找，答案写在每周准时出现的新题里。"]
+        ],
+        note: "阅读小纸条：主旨题关注反复出现的对象和最后结论；细节题用题干关键词定位；推断必须能从原文推出，不能只因为“听起来合理”。",
+        questions: [
+          makeQuestion("材料：A university replaced printed notices with a mobile app. Within one semester, missed registration deadlines fell by 40%. 主要变化是：", ["数字通知减少了错过截止日期的情况", "学生不再需要注册", "学校取消了纸质课程"], 0, "原文数据说明移动通知改善了截止日期提醒。"),
+          makeQuestion("根据上面的材料，最合理的推断是：", ["所有学生都喜欢手机", "及时通知有助于学生按时行动", "纸张成本增加了"], 1, "错过截止日期减少，支持及时通知有效。"),
+          makeQuestion("材料：Leo studied for three hours without a break, but remembered less than when he used three shorter sessions. 这段材料支持：", ["学习时间越长越好", "短时学习没有作用", "分段学习可能更有效"], 2, "较短的三次学习反而记得更多。"),
+          makeQuestion("上文中的 session 最接近：", ["一段学习时间", "考试成绩", "课程证书"], 0, "session 在此表示一段学习或活动时间。"),
+          makeQuestion("材料：The café reduced food waste by offering smaller portions and allowing free refills. 顾客仍可吃饱的原因是：", ["价格下降", "可以免费续添", "食物种类增加"], 1, "free refills 使顾客可按需续添。"),
+          makeQuestion("这项措施的主要目标是：", ["增加座位", "缩短营业时间", "减少食物浪费"], 2, "第一句直接说明 reduced food waste。"),
+          makeQuestion("材料：Employees who walked outdoors at lunchtime reported better concentration in the afternoon. 明确报告的结果是：", ["下午注意力更好", "午休时间更长", "工作量减少"], 0, "原文明确说 better concentration。"),
+          makeQuestion("这项观察最适合支持哪项建议？", ["取消午休", "午间进行适度户外活动", "下午不安排任务"], 1, "户外步行与下午注意力改善相关。"),
+          makeQuestion("材料：The museum's audio guide uses simple language and offers transcripts for visitors with hearing difficulties. 该服务体现了：", ["票价上涨", "展品减少", "提高信息可及性"], 2, "简单语言和文字稿让更多人能够获取信息。"),
+          makeQuestion("transcript 在这里最可能是：", ["文字稿", "路线图", "纪念品"], 0, "音频对应的 transcript 是文字稿。")
+        ]
+      },
+      {
+        title: "短阅读二：实用信息与观点判断",
+        point: "练习通知、实验摘要、服务说明和观点段落中的条件、目的与作者态度。",
+        tag: "阅读进阶",
+        chat: [
+          ["me", "今天的阅读更像考试里的通知和观点段。"],
+          ["her", "作者态度怎么判断？"],
+          ["me", "看他用什么词。至于我的态度，关键词一直是 supportive。"]
+        ],
+        note: "阅读小纸条：含条件的通知要圈出 must、only、unless、at least；作者态度看评价词，不凭主题猜；实验摘要要分清研究发现和作者建议。",
+        questions: [
+          makeQuestion("通知：Workshop places are free, but registration must be completed by noon on Friday. 参加者必须：", ["现场付款", "周五中午前登记", "带打印门票"], 1, "must be completed by noon on Friday 是明确条件。"),
+          makeQuestion("通知中的 but 强调：", ["活动已经取消", "登记时间延后", "免费参加仍需提前登记"], 2, "but 引出免费之外仍需满足的条件。"),
+          makeQuestion("摘要：Two groups used the same textbook, but one group discussed each chapter before testing. That group scored higher. 唯一明确不同的是：", ["是否进行章节讨论", "教材难度", "测试时间"], 0, "原文只说明一组在测试前讨论章节。"),
+          makeQuestion("研究结果表明讨论可能：", ["减少教材内容", "帮助理解和成绩表现", "使测试更容易"], 1, "讨论组成绩更高，支持讨论可能有帮助。"),
+          makeQuestion("说明：Refunds are available only when cancellations are made at least 24 hours in advance. 哪种情况可以退款？", ["活动开始后取消", "提前12小时取消", "至少提前24小时取消"], 2, "only when 和 at least 24 hours 给出明确条件。"),
+          makeQuestion("观点：Technology should support teachers rather than replace them. 作者认为技术应当：", ["辅助教师", "完全取代教师", "只用于考试"], 0, "support rather than replace = 辅助而非取代。"),
+          makeQuestion("作者对技术的态度最接近：", ["完全反对", "有条件地支持", "毫不关心"], 1, "作者支持技术，但限定其应发挥辅助作用。"),
+          makeQuestion("材料：After lighting was improved, evening use of the park increased, yet residents still requested more security patrols. 可以推断：", ["居民不再去公园", "照明没有变化", "照明改善但安全担忧仍存在"], 2, "使用增加但仍要求巡逻，说明担忧未完全消失。"),
+          makeQuestion("上文中的 yet 表示：", ["转折", "原因", "时间顺序"], 0, "yet 在此连接两个存在反差的事实。"),
+          makeQuestion("材料：The author describes the proposal as practical but incomplete. 作者的评价是：", ["完全赞成", "部分肯定同时指出不足", "彻底否定"], 1, "practical 是肯定，incomplete 指出不足。")
+        ]
+      },
+      {
+        title: "精细辨析：排除最像的干扰项",
+        point: "辨析 affect/effect、economic/economical、personal/personnel、adapt/adopt、rise/raise 等高频干扰项。",
+        tag: "易混精辨",
+        chat: [
+          ["me", "今天的错误选项会装得很像正确答案。"],
+          ["her", "那我要盯仔细一点。"],
+          ["me", "盯题就好，别盯我太久。我怕这周的土味情话先超纲。"]
+        ],
+        note: "辨析小纸条：economic = 经济的，economical = 节省的；personal = 个人的，personnel = 全体人员；affect 常作动词，effect 常作名词。",
+        questions: [
+          makeQuestion("Rising fuel prices may _____ travel decisions.", ["effect", "result", "affect"], 2, "may 后需要动词，affect = 影响。"),
+          makeQuestion("This small car is very _____ to run.", ["economical", "economic", "economy"], 0, "economical = 节省的、经济实惠的。"),
+          makeQuestion("All hospital _____ must wear identification cards.", ["personal", "personnel", "personality"], 1, "personnel = 全体工作人员。"),
+          makeQuestion("The novel was _____ for television.", ["adopted", "adjusted", "adapted"], 2, "adapt...for... = 把……改编为……。"),
+          makeQuestion("The company plans to _____ salaries next year.", ["raise", "rise", "arise"], 0, "raise 是及物动词，后面可直接接 salaries。"),
+          makeQuestion("Several unexpected problems _____ during the project.", ["raised", "arose", "risen"], 1, "arise = 出现、产生；过去式 arose。"),
+          makeQuestion("Please _____ that all doors are locked.", ["insure", "assure", "ensure"], 2, "ensure = 确保；ensure that...。"),
+          makeQuestion("The new rule will _____ everyone, not just new employees.", ["affect", "effect", "effective"], 0, "will 后接动词 affect。"),
+          makeQuestion("The two reports are similar _____ several important respects.", ["at", "in", "on"], 1, "in several respects = 在几个方面。"),
+          makeQuestion("There were _____ people at the event than expected.", ["less", "little", "fewer"], 2, "people 是可数名词复数，使用 fewer。")
+        ]
+      },
+      {
+        title: "综合模拟：带着方法完成收官",
+        point: "综合检验搭配、语法、完形、阅读和词义辨析，完成第十四周实战提升。",
+        tag: "综合模拟",
+        chat: [
+          ["me", "最后十题，先找依据，再做选择。"],
+          ["her", "如果分数不够漂亮呢？"],
+          ["me", "分数负责告诉我们下一步，不能负责定义你。你认真答题的样子已经很好看。"]
+        ],
+        note: "收官小纸条：错题按原因分类，比只记答案更有效。可分为词义不熟、搭配错误、语法判断、逻辑关系和阅读定位五类。",
+        questions: [
+          makeQuestion("The results remained unchanged _____ repeated testing.", ["despite", "because", "unless"], 0, "despite 后接名词或动名词，表示尽管。"),
+          makeQuestion("The researcher spoke slowly so that everyone _____ follow the explanation.", ["must", "could", "should have"], 1, "so that 引导目的，过去语境中常用 could。"),
+          makeQuestion("The information is useful, but its source is not clearly _____.", ["mention", "mentioning", "identified"], 2, "被动语态需要过去分词 identified。"),
+          makeQuestion("Only after checking the figures _____ the team discover the error.", ["did", "was", "has"], 0, "Only + 状语置于句首，主句部分倒装：did...discover。"),
+          makeQuestion("The training aims to _____ employees with practical skills.", ["provide", "equip", "offer to"], 1, "equip sb. with sth. = 使某人具备某物。"),
+          makeQuestion("材料：Usage rose after the service became free, but satisfaction scores did not change. 可以确定：", ["满意度下降", "服务质量提高", "使用量增加但满意度未变"], 2, "原文直接给出 usage rose 和 satisfaction did not change。"),
+          makeQuestion("The proposal deserves careful _____.", ["consideration", "consider", "considerable"], 0, "deserve 后此处需要名词 consideration。"),
+          makeQuestion("If demand continues to grow, additional staff may be _____.", ["necessary for", "required", "requiring"], 1, "staff may be required = 可能需要增加人员。"),
+          makeQuestion("The word 'issue' in 'address the issue' means _____.", ["发行", "发布", "问题"], 2, "address an issue = 处理一个问题。"),
+          makeQuestion("完成本周后，最合理的复习方式是：", ["按错因回看错题并间隔重测", "只记住答案字母", "每天从第一题全部重做"], 0, "按错因复盘并间隔重测更有针对性。")
+        ]
+      }
+    ];
+
+    const storageKey = "tinyEnglishLoveReviewWeek14Progress";
+    let dayIndex = Number(localStorage.getItem(storageKey + ":day") || "0");
+    let questionIndex = Number(localStorage.getItem(storageKey + ":question") || "0");
+    let score = Number(localStorage.getItem(storageKey + ":score") || "0");
+    let mistakes = [];
+    try {
+      mistakes = JSON.parse(localStorage.getItem(storageKey + ":mistakes") || "[]");
+    } catch {
+      mistakes = [];
+    }
+    dayIndex = Number.isFinite(dayIndex) ? Math.max(0, Math.min(dayIndex, lessons.length)) : 0;
+    questionIndex = Number.isFinite(questionIndex) ? Math.max(0, questionIndex) : 0;
+    if (dayIndex < lessons.length && questionIndex >= lessons[dayIndex].questions.length) questionIndex = 0;
+    score = Number.isFinite(score) ? Math.max(0, score) : 0;
+    let answered = false;
+
+    const daysEl = document.querySelector("#days");
+    const progressText = document.querySelector("#progressText");
+    const progressBar = document.querySelector("#progressBar");
+    const statusPill = document.querySelector("#statusPill");
+    const homeCard = document.querySelector("#homeCard");
+    const homeSummary = document.querySelector("#homeSummary");
+    const homeTip = document.querySelector("#homeTip");
+    const continueButton = document.querySelector("#continueButton");
+    const miniSessionButton = document.querySelector("#miniSessionButton");
+    const mistakeHomeButton = document.querySelector("#mistakeHomeButton");
+    const dayPicker = document.querySelector("#dayPicker");
+    const chatEl = document.querySelector("#chat");
+    const lessonCard = document.querySelector("#lessonCard");
+    const lessonTitle = document.querySelector("#lessonTitle");
+    const lessonPoint = document.querySelector("#lessonPoint");
+    const lessonTag = document.querySelector("#lessonTag");
+    const qCount = document.querySelector("#qCount");
+    const question = document.querySelector("#question");
+    const optionsEl = document.querySelector("#options");
+    const feedback = document.querySelector("#feedback");
+    const note = document.querySelector("#note");
+    const scoreLine = document.querySelector("#scoreLine");
+    const nextButton = document.querySelector("#nextButton");
+    const pauseButton = document.querySelector("#pauseButton");
+    const mistakeBox = document.querySelector("#mistakeBox");
+    const mistakeCount = document.querySelector("#mistakeCount");
+    const mistakeList = document.querySelector("#mistakeList");
+    const clearMistakesButton = document.querySelector("#clearMistakesButton");
+    const certificate = document.querySelector("#certificate");
+    const resetButton = document.querySelector("#resetButton");
+    let sessionLimit = 0;
+    let sessionAnswered = 0;
+
+    function totalQuestionsBefore(day) {
+      return lessons.slice(0, day).reduce((sum, lesson) => sum + lesson.questions.length, 0);
+    }
+    function totalQuestions() {
+      return lessons.reduce((sum, lesson) => sum + lesson.questions.length, 0);
+    }
+    function save() {
+      localStorage.setItem(storageKey + ":day", String(dayIndex));
+      localStorage.setItem(storageKey + ":question", String(questionIndex));
+      localStorage.setItem(storageKey + ":score", String(score));
+      localStorage.setItem(storageKey + ":mistakes", JSON.stringify(mistakes));
+    }
+    function renderMistakes() {
+      mistakeCount.textContent = `${mistakes.length} 题`;
+      mistakeBox.classList.toggle("show", mistakes.length > 0);
+      mistakeList.innerHTML = "";
+      const recentMistakes = mistakes.slice(-8).reverse();
+      recentMistakes.forEach((item) => {
+        const row = document.createElement("div");
+        row.className = "mistake-item";
+        row.innerHTML = `
+          <strong>${item.day}｜${item.title}</strong><br>
+          ${item.question}<br>
+          你选：${item.chosen}<br>
+          正确：${item.correct}<br>
+          ${item.tip}
+        `;
+        mistakeList.appendChild(row);
+      });
+    }
+    function renderDays() {
+      daysEl.innerHTML = "";
+      lessons.forEach((_, index) => {
+        const day = document.createElement("div");
+        day.className = "day-dot";
+        if (index < dayIndex) day.classList.add("done");
+        if (index === dayIndex && dayIndex < lessons.length) day.classList.add("current");
+        day.textContent = index + 1;
+        daysEl.appendChild(day);
+      });
+    }
+    function updateProgress() {
+      const doneQuestions = dayIndex >= lessons.length ? totalQuestions() : totalQuestionsBefore(dayIndex) + questionIndex;
+      progressBar.style.width = `${Math.round(doneQuestions / totalQuestions() * 100)}%`;
+      progressText.textContent = dayIndex >= lessons.length ? "第十四周完成" : `第 ${dayIndex + 1} / 7 天`;
+      statusPill.textContent = dayIndex >= lessons.length ? "已毕业" : "已保存进度";
+      return doneQuestions;
+    }
+    function renderDayPicker() {
+      dayPicker.innerHTML = "";
+      lessons.forEach((lesson, index) => {
+        const button = document.createElement("button");
+        button.className = "day-button";
+        if (index < dayIndex) button.classList.add("done");
+        if (index === dayIndex && dayIndex < lessons.length) button.classList.add("current");
+        const state = index < dayIndex ? "已完成" : index === dayIndex ? "从这里继续" : "未解锁";
+        button.innerHTML = `Day ${index + 1}<span>${lesson.title}｜${lesson.questions.length} 题｜${state}</span>`;
+        button.addEventListener("click", () => {
+          if (dayIndex >= lessons.length) {
+            showHome("这一周已经完成啦。想重刷的话，可以点证书里的重新开始。");
+            return;
+          }
+          if (index < dayIndex) {
+            showHome(`Day ${index + 1} 已经完成啦。想回看薄弱点，可以先看错题小本本。`);
+            return;
+          }
+          if (index > dayIndex) {
+            showHome(`先把 Day ${dayIndex + 1} 做完，再解锁 Day ${index + 1}。我会帮你把节奏守住。`);
+            return;
+          }
+          startQuiz(0);
+        });
+        dayPicker.appendChild(button);
+      });
+    }
+    function showHome(message = "") {
+      sessionLimit = 0;
+      sessionAnswered = 0;
+      answered = false;
+      renderDays();
+      renderMistakes();
+      renderDayPicker();
+      homeCard.style.display = "";
+      if (dayIndex >= lessons.length) {
+        chatEl.style.display = "none";
+        lessonCard.style.display = "none";
+        certificate.classList.add("show");
+      } else {
+        certificate.classList.remove("show");
+        render(true);
+        homeCard.style.display = "";
+      }
+      const doneQuestions = updateProgress();
+      homeSummary.textContent = dayIndex >= lessons.length
+        ? `第十四周实战提升已经完成啦：本周答对 ${score} / ${totalQuestions()} 题。`
+        : `下面已经显示当前题目。现在停在 Day ${dayIndex + 1}，第 ${questionIndex + 1} 题，本周已完成 ${doneQuestions} / ${totalQuestions()} 题。`;
+      homeTip.textContent = message || "不用一次性做完。今天学一点，明天还能从这里接着来。";
+      homeTip.classList.add("show");
+      continueButton.textContent = dayIndex >= lessons.length ? "本周已完成，看看证书" : questionIndex === 0 && dayIndex === 0 ? "开始第 1 题" : "继续上次的小复习";
+      miniSessionButton.hidden = dayIndex >= lessons.length;
+      document.querySelector(".phone").scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+    function startQuiz(limit) {
+      if (dayIndex >= lessons.length) {
+        showHome("这一周已经完成啦。想重刷的话，可以点证书里的重新开始。");
+        return;
+      }
+      sessionLimit = limit;
+      sessionAnswered = 0;
+      homeCard.style.display = "none";
+      render();
+    }
+    function render(keepHome = false) {
+      answered = false;
+      renderDays();
+      renderMistakes();
+      const doneQuestions = updateProgress();
+      if (dayIndex < lessons.length) statusPill.textContent = sessionLimit ? `轻量 ${sessionLimit} 题` : "今日待完成";
+      if (!keepHome) homeCard.style.display = "none";
+
+      if (dayIndex >= lessons.length) {
+        lessonCard.style.display = "none";
+        chatEl.style.display = "none";
+        certificate.classList.add("show");
+        return;
+      }
+
+      const lesson = lessons[dayIndex];
+      if (questionIndex >= lesson.questions.length) {
+        dayIndex += 1;
+        questionIndex = 0;
+        save();
+        render();
+        return;
+      }
+
+      const current = lesson.questions[questionIndex];
+      lessonCard.style.display = "";
+      chatEl.style.display = "";
+      certificate.classList.remove("show");
+      lessonTitle.textContent = `Day ${dayIndex + 1}｜${lesson.title}`;
+      lessonPoint.textContent = lesson.point;
+      lessonTag.textContent = lesson.tag;
+      qCount.textContent = `今日第 ${questionIndex + 1} / ${lesson.questions.length} 题`;
+      question.textContent = current.q;
+      feedback.className = "feedback";
+      feedback.textContent = "";
+      note.className = "note";
+      note.textContent = lesson.note;
+      nextButton.hidden = true;
+      nextButton.textContent = questionIndex === lesson.questions.length - 1 ? "完成今天的小复习" : "下一题";
+      scoreLine.textContent = `本周目前答对 ${score} / ${doneQuestions} 题`;
+
+      chatEl.innerHTML = "";
+      lesson.chat.forEach(([who, text], index) => {
+        const bubble = document.createElement("div");
+        bubble.className = `bubble ${who}`;
+        bubble.style.animationDelay = `${index * .08}s`;
+        bubble.textContent = text;
+        chatEl.appendChild(bubble);
+      });
+
+      optionsEl.innerHTML = "";
+      current.options.forEach((text, index) => {
+        const option = document.createElement("button");
+        option.className = "option";
+        option.textContent = `${String.fromCharCode(65 + index)}. ${text}`;
+        option.addEventListener("click", () => choose(index));
+        optionsEl.appendChild(option);
+      });
+    }
+    function choose(index) {
+      if (answered) return;
+      answered = true;
+      const current = lessons[dayIndex].questions[questionIndex];
+      if (index === current.answer) {
+        score += 1;
+      } else {
+        const key = `${dayIndex}-${questionIndex}`;
+        const chosen = `${String.fromCharCode(65 + index)}. ${current.options[index]}`;
+        const correct = `${String.fromCharCode(65 + current.answer)}. ${current.options[current.answer]}`;
+        mistakes = mistakes.filter((item) => item.key !== key);
+        mistakes.push({
+          key,
+          day: `Day ${dayIndex + 1}`,
+          title: lessons[dayIndex].title,
+          question: current.q,
+          chosen,
+          correct,
+          tip: current.no
+        });
+      }
+      [...optionsEl.querySelectorAll(".option")].forEach((button, buttonIndex) => {
+        if (buttonIndex === current.answer) button.classList.add("correct");
+        if (buttonIndex === index && index !== current.answer) button.classList.add("wrong");
+      });
+      feedback.textContent = index === current.answer ? current.ok : current.no;
+      feedback.classList.add("show");
+      note.classList.add("show");
+      nextButton.hidden = false;
+      statusPill.textContent = index === current.answer ? "答对啦" : "已复习";
+      scoreLine.textContent = `本周目前答对 ${score} / ${totalQuestionsBefore(dayIndex) + questionIndex + 1} 题`;
+      save();
+      renderMistakes();
+    }
+    nextButton.addEventListener("click", () => {
+      questionIndex += 1;
+      if (questionIndex >= lessons[dayIndex].questions.length) {
+        dayIndex += 1;
+        questionIndex = 0;
+      }
+      save();
+      if (sessionLimit) {
+        sessionAnswered += 1;
+        if (sessionAnswered >= sessionLimit && dayIndex < lessons.length) {
+          showHome(`今天 ${sessionLimit} 题完成啦。进度已经存好，下次点“继续上次的小复习”就接着来。`);
+          return;
+        }
+      }
+      render();
+      document.querySelector(".phone").scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+    pauseButton.addEventListener("click", () => {
+      save();
+      showHome("已保存到这里。今天先收工也很好，英语不是一口吞完的。");
+    });
+    resetButton.addEventListener("click", () => {
+      dayIndex = 0;
+      questionIndex = 0;
+      score = 0;
+      mistakes = [];
+      save();
+      showHome("已经从第 1 天重新开始。我们轻一点来，慢慢也会很远。");
+    });
+    clearMistakesButton.addEventListener("click", () => {
+      mistakes = [];
+      save();
+      renderMistakes();
+    });
+    continueButton.addEventListener("click", () => startQuiz(0));
+    miniSessionButton.addEventListener("click", () => startQuiz(5));
+    mistakeHomeButton.addEventListener("click", () => {
+      renderMistakes();
+      if (mistakes.length === 0) {
+        showHome("目前还没有错题，小本本空空的，心情亮亮的。");
+      } else {
+        mistakeBox.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    });
+    showHome();
+  </script>
+</body>
+</html>
